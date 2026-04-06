@@ -1,0 +1,31 @@
+{
+  "name": "aerocloud-engine",
+  "version": "0.1.0",
+  "description": "AeroCloud - Self-learning Word Cloud Engine with Quality-Diversity Optimization",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "wiki:ingest": "tsx scripts/ingest.ts",
+    "wiki:query": "tsx scripts/query.ts",
+    "wiki:lint": "tsx scripts/lint-wiki.ts"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "natural": "^8.0.1",
+    "compromise": "^14.14.3",
+    "marked": "^15.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.21.0",
+    "vitest": "^3.0.0",
+    "@types/node": "^22.0.0"
+  }
+}
