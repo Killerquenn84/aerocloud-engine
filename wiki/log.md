@@ -42,3 +42,18 @@
 - Neue Decision: wiki/decisions/2026-04-07-polyglot-stack-selection.md (gespiegelt aus docs/ai-team-decisions.md)
 - Aktualisiert: wiki/index.md komplett neu strukturiert mit 8 Kategorien
 - Neue Regel von Jens: ALLES landet im Wiki. Code -> wiki/code/, Korrektur -> wiki/corrections/YYYY-MM-DD-topic.md, Diskussion -> wiki/discussions/YYYY-MM-DD-topic.md, etc. Kein Kontextverlust zwischen Sessions.
+
+## [2026-04-07] nightly-research | Initial Seed (manual test runs)
+- Neue Seiten: research/nightly/2026-04-07-sinkhorn-knopp-optimal-transport.md, research/nightly/2026-04-07-spacy-transformer-models-german-english.md
+- Methode: scripts/nightly-research.sh (dry run) + manuelle Regeneration zur Wiederherstellung des ersten Wissens
+- Regel: Wissen wird NIEMALS geloescht. Es waechst nur. Auch Test-Runs sind Wissen.
+- Crontab eingerichtet: 0 2 * * * (02:00 Berlin) fuer aerocloud user
+- Naechster autonomer Lauf: heute Nacht 02:00 MESZ
+
+## [2026-04-07] cron-setup | Nightly Research Orchestration
+- scripts/nightly-research.sh mit --dry Flag getestet (1 topic, erfolgreich)
+- scripts/nightly-topics.txt mit 43 Topics erstellt (Blueprint Teile + Engine Module + Stack Components)
+- scripts/lint-wiki.ts aktualisiert: collectMarkdownFiles rekursiv, research/nightly/ orphan-check ausgenommen
+- Crontab User 'aerocloud' gesetzt mit CRON_TZ=Europe/Berlin
+- Log-Rotation in logs/nightly.log (gitignored)
+- Dry-run Test: Gemini responded mit OTT-JAX v1.4.2 Update + ETH Zuerich Paper
