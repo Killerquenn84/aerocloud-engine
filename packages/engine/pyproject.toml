@@ -68,6 +68,5 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/aerocloud"]
-
-[tool.hatch.build.targets.wheel.force-include]
-"assets/fonts" = "aerocloud/assets/fonts"
+# Font files live inside the package tree at src/aerocloud/assets/fonts/
+# so importlib.resources works in both editable and wheel installs.

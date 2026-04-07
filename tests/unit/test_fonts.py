@@ -1,7 +1,10 @@
-"""Verifies font registration is idempotent and returns a stable set.
+"""Verifies font registration is idempotent and discovers bundled TTFs.
 
-Note: Wave 6 adds the actual font files. Until then, register_fonts()
-returns an empty set (tracked in Phase 1 knowledge as expected behavior).
+As of Wave 6 the bundled fonts are:
+  - Inter/Inter-Variable.ttf
+  - IBM-Plex-Serif/IBMPlexSerif-Regular.ttf
+  - IBM-Plex-Serif/IBMPlexSerif-Bold.ttf
+  - IBM-Plex-Serif/IBMPlexSerif-Italic.ttf
 """
 from __future__ import annotations
 
@@ -11,11 +14,24 @@ from aerocloud.fonts import (
     registered_font_count,
 )
 
+EXPECTED_FONTS = {
+    "Inter-Variable",
+    "IBMPlexSerif-Regular",
+    "IBMPlexSerif-Bold",
+    "IBMPlexSerif-Italic",
+}
+
 
 def test_register_fonts_returns_set() -> None:
     _reset_for_tests()
     result = register_fonts()
     assert isinstance(result, set)
+
+
+def test_register_fonts_discovers_bundled_files() -> None:
+    _reset_for_tests()
+    result = register_fonts()
+    assert EXPECTED_FONTS.issubset(result), f"missing fonts: {EXPECTED_FONTS - result}"
 
 
 def test_register_fonts_is_idempotent() -> None:
@@ -34,3 +50,4 @@ def test_registered_font_count_matches_set() -> None:
     _reset_for_tests()
     result = register_fonts()
     assert registered_font_count() == len(result)
+    assert registered_font_count() >= len(EXPECTED_FONTS)
