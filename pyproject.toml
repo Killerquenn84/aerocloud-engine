@@ -1,0 +1,95 @@
+[project]
+name = "aerocloud-monorepo"
+version = "0.1.0"
+description = "AeroCloud Engine monorepo workspace root (not a package)"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "aerocloud-engine",
+    "aerocloud-api",
+    "aerocloud-worker",
+]
+
+[tool.uv]
+managed = true
+package = false
+
+[tool.uv.workspace]
+members = [
+    "packages/engine",
+    "apps/api",
+    "apps/worker",
+]
+
+[tool.uv.sources]
+aerocloud-engine = { workspace = true }
+aerocloud-api = { workspace = true }
+aerocloud-worker = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13.0",
+    "ruff>=0.8.0",
+    "pytest>=8.3.0",
+    "pytest-env>=1.1.5",
+    "hypothesis>=6.120.0",
+    "testcontainers>=4.9.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["packages/engine/src", "apps/api/src", "apps/worker/src"]
+extend-exclude = ["node_modules", "_bmad", "wiki", ".planning", "dist", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "A", "C4", "T20", "RET", "SIM", "ARG", "PTH", "ERA", "PL", "RUF"]
+ignore = [
+    "PLR0913",  # too-many-arguments (ML often needs many args)
+    "PLR2004",  # magic-value (common in ML hyperparameters)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["PLR", "S101", "ARG001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["aerocloud", "aerocloud_api", "aerocloud_worker"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_configs = true
+plugins = ["pydantic.mypy"]
+exclude = [
+    "node_modules",
+    "_bmad",
+    "wiki",
+    ".planning",
+    "scripts",
+    "src",
+]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests/unit", "tests/integration"]
+pythonpath = [
+    "packages/engine/src",
+    "apps/api/src",
+    "apps/worker/src",
+]
+markers = [
+    "gpu: requires CUDA-capable GPU (skipped on CPU-only hosts)",
+    "slow: long-running tests",
+    "integration: spins up postgres+redis via testcontainers",
+]
+env = [
+    "CUBLAS_WORKSPACE_CONFIG=:4096:8",
+]

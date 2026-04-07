@@ -7,3 +7,19 @@ dist/
 
 # Runtime logs
 logs/*.log
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+
+# Rust
+target/
+Cargo.lock.bak

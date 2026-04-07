@@ -79,3 +79,6 @@
   - FOUND-03 von 'partially satisfied' zu 'SUPERSEDED by D-01'
 - Verification Wave 9 expandiert: uv sync --frozen, uv lock --locked, uv build, import smoke, npm tests, cron check, docker build+compose, actionlint, git status clean
 - Bereit fuer Execution
+
+## [2026-04-07] nightly-research | 1 topics
+- mutmut Mutation Testing Strategy
