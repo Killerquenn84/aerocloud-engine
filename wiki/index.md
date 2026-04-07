@@ -67,7 +67,8 @@ Korrigierte Fehler, Halluzinationen, Fehlannahmen — mit Datum.
 ## 🗣️ Discussions (wiki/discussions/)
 Protokolle der 3-KI Diskussionen (Claude + Gemini + Codex).
 
-_(Noch leer — naechster Eintrag: Phase 1 Discussion)_
+- [discussions/2026-04-07-phase-01-context.md](discussions/2026-04-07-phase-01-context.md) — Phase 1 Foundation Context (3-AI consensus, 40 Decisions)
+- [discussions/2026-04-07-phase-01-discussion-log.md](discussions/2026-04-07-phase-01-discussion-log.md) — Phase 1 Audit Trail
 
 ## 🧭 Decisions (wiki/decisions/)
 Alle architektonischen und designrelevanten Entscheidungen — mit Datum.

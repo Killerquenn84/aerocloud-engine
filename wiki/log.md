@@ -57,3 +57,12 @@
 - Crontab User 'aerocloud' gesetzt mit CRON_TZ=Europe/Berlin
 - Log-Rotation in logs/nightly.log (gitignored)
 - Dry-run Test: Gemini responded mit OTT-JAX v1.4.2 Update + ETH Zuerich Paper
+
+## [2026-04-07] phase-01 | Foundation Context gathered
+- Neue Dateien: .planning/phases/01-foundation/01-CONTEXT.md (40 Decisions), .planning/phases/01-foundation/01-DISCUSSION-LOG.md
+- Neue Wiki-Mirrors: discussions/2026-04-07-phase-01-context.md, discussions/2026-04-07-phase-01-discussion-log.md
+- 3-KI Workflow: Claude Orchestrator, Gemini Research (Option B Migration), Codex Review (blockierte Option B)
+- Konsens: Option A Hybrid — TS Wiki bleibt im Root, Python in packages/engine/, scripts/ bleiben intakt
+- 40 gelockte Decisions D-01 bis D-40 in 13 Bereichen: Repo Struktur, uv Workspace, Docker, Dev Stack, Determinism, CI, Config, Observability, GPU, Fonts, Tests, Code Quality, Scope Exclusions
+- Phase 1 adressiert Pitfalls #10 (NVIDIA-Docker VPS), #11 (Determinismus), #18 (Reproduzierbarkeit) aus .planning/research/PITFALLS.md
+- Naechster Schritt: /gsd-plan-phase 1
