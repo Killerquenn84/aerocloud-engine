@@ -66,3 +66,16 @@
 - 40 gelockte Decisions D-01 bis D-40 in 13 Bereichen: Repo Struktur, uv Workspace, Docker, Dev Stack, Determinism, CI, Config, Observability, GPU, Fonts, Tests, Code Quality, Scope Exclusions
 - Phase 1 adressiert Pitfalls #10 (NVIDIA-Docker VPS), #11 (Determinismus), #18 (Reproduzierbarkeit) aus .planning/research/PITFALLS.md
 - Naechster Schritt: /gsd-plan-phase 1
+
+## [2026-04-07] phase-01 | PLAN.md created (Codex reviewed)
+- Neue Dateien: .planning/phases/01-foundation/01-RESEARCH.md (Gemini templates), .planning/phases/01-foundation/01-PLAN.md (10 Waves, ~70 Tasks)
+- Wiki Mirror: knowledge/phase-01-plan.md, research/phase-01-foundation-research.md
+- Codex Review: 8 Punkte kritisiert, alle eingearbeitet:
+  - Wave-Reorder: Docker (4) und GPU Smoke (5) vor Fonts (6)
+  - Wave 0 Rollback verstaerkt: Tag + Branch + Clean Tree (3-Layer)
+  - Fehlende Tasks ergaenzt: .python-version, .gitignore, .dockerignore, Font License Pre-Check, uv.lock integrity, uv build smoke, package import smoke, Docker build smoke, actionlint
+  - GPU Smoke Test verstaerkt: get_device_capability + get_device_name + torch.version.cuda + Tensor alloc + nvdiffrast probe
+  - Risks erweitert um CUDA/Torch/nvdiffrast ABI, Font licensing, Hybrid drift, Lockfile drift
+  - FOUND-03 von 'partially satisfied' zu 'SUPERSEDED by D-01'
+- Verification Wave 9 expandiert: uv sync --frozen, uv lock --locked, uv build, import smoke, npm tests, cron check, docker build+compose, actionlint, git status clean
+- Bereit fuer Execution
