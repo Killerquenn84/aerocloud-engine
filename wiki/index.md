@@ -61,6 +61,7 @@ Lebendiges Wissen und Versions-Referenzen.
 - [knowledge/project-state.md](knowledge/project-state.md) — Live-Projektstatus und aktive Phase
 - [knowledge/phase-01-plan.md](knowledge/phase-01-plan.md) — Phase 1 Foundation Executable Plan (10 waves, ~70 tasks)
 - [knowledge/phase-02-plan.md](knowledge/phase-02-plan.md) — Phase 2 Datenmodell + Wiki Plan (5 waves)
+- [knowledge/phase-03-plan.md](knowledge/phase-03-plan.md) — Phase 3 NLP-v1 Plan (4 waves, Wave 1 complete)
 
 ## 🔧 Corrections (wiki/corrections/)
 Korrigierte Fehler, Halluzinationen, Fehlannahmen — mit Datum.
@@ -73,6 +74,7 @@ Protokolle der 3-KI Diskussionen (Claude + Gemini + Codex).
 - [discussions/2026-04-07-phase-01-context.md](discussions/2026-04-07-phase-01-context.md) — Phase 1 Foundation Context (3-AI consensus, 40 Decisions)
 - [discussions/2026-04-07-phase-01-discussion-log.md](discussions/2026-04-07-phase-01-discussion-log.md) — Phase 1 Audit Trail
 - [discussions/2026-04-07-phase-02-context.md](discussions/2026-04-07-phase-02-context.md) — Phase 2 Datenmodell + Wiki Context
+- [discussions/2026-04-07-phase-03-context.md](discussions/2026-04-07-phase-03-context.md) — Phase 3 NLP-v1 Context (compact)
 
 ## 🧭 Decisions (wiki/decisions/)
 Alle architektonischen und designrelevanten Entscheidungen — mit Datum.

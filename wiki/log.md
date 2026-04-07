@@ -117,3 +117,12 @@ Issues resolved during execution:
 - Wave 4: Safetensors policy test (no pickle imports in source)
 - Wave 5: Verification — 34 unit tests passing, mypy strict 0 errors, uv build successful
 - Wiki mirror: discussions/2026-04-07-phase-02-context.md, knowledge/phase-02-plan.md
+
+## [2026-04-07] phase-03 Wave 1 | NLP Core (pure-Python, no heavy deps)
+- nlp/tfidf.py: TF-IDF-AP with PositionalSignal (title/heading/first_sentence/emphasis boosts)
+- nlp/zipf.py: log-normalization score -> font size (max log ratio compression)
+- nlp/corpus_guard.py: linear fallback below 20 unique tokens
+- tests/unit/test_nlp_core.py: 22 tests passing (TF-IDF: 7, Zipf: 8, corpus guard: 5, PositionalSignal: 3)
+- Wave 2 (spaCy + lingua + stopwords) deferred to next session — heavy dep install
+- Total unit tests: 56 (34 prior + 22 new)
+- mypy strict: 0 errors in 23 source files
