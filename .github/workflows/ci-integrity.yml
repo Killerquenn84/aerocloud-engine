@@ -1,0 +1,41 @@
+name: CI Integrity
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for leaked secrets
+        run: |
+          # Simple pattern scan — real scanning happens via the telegram-bot token setup
+          # and .env.* gitignore. This catches obvious mistakes.
+          if grep -rE 'sk-[a-zA-Z0-9]{32,}|AKIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36}' \
+            --include="*.py" --include="*.ts" --include="*.md" --include="*.yml" \
+            --exclude-dir="node_modules" --exclude-dir=".venv" --exclude-dir="_bmad" .; then
+            echo "::error::Potential secret leak detected"
+            exit 1
+          fi
+          echo "No obvious secrets detected."
+
+      - name: Validate YAML workflows (actionlint)
+        uses: docker://rhysd/actionlint:latest
+        with:
+          args: -color
+
+      - name: Check pickle usage (safetensors policy)
+        run: |
+          if grep -rE 'pickle\.(load|dump)' \
+            --include="*.py" \
+            --exclude-dir=".venv" --exclude-dir="_bmad" .; then
+            echo "::error::pickle usage detected — use safetensors instead (Phase 1 security policy)"
+            exit 1
+          fi
+          echo "No pickle usage detected."

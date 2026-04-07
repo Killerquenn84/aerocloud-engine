@@ -1,0 +1,56 @@
+name: CI Python
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'apps/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.python-version'
+      - '.github/workflows/ci-python.yml'
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    env:
+      CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python 3.11
+        run: uv python install 3.11
+
+      - name: Sync workspace (frozen lockfile)
+        run: uv sync --frozen
+
+      - name: Lockfile integrity
+        run: uv lock --check
+
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Mypy strict
+        run: uv run mypy packages/engine/src apps/api/src apps/worker/src
+
+      - name: Pytest unit
+        run: uv run pytest tests/unit -v -m "not gpu and not integration"
+
+      - name: Build engine package
+        run: uv build packages/engine
+
+      - name: Import smoke test
+        run: |
+          uv run python -c "import aerocloud; import aerocloud.utils.determinism; import aerocloud.config; import aerocloud.fonts; import aerocloud.logging; import aerocloud.observability"
