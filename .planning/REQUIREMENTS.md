@@ -125,23 +125,63 @@ Explicitly excluded from v1. Documented to prevent scope creep.
 
 ## Traceability
 
-Updated during roadmap creation. Each requirement maps to exactly one phase.
+Updated after roadmap creation: 2026-04-07. Each requirement maps to exactly one phase.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| API-01 to API-07 | TBD | Pending |
-| NLP-01 to NLP-07 | TBD | Pending |
-| GEO-01 to GEO-07 | TBD | Pending |
-| PACK-01 to PACK-08 | TBD | Pending |
-| REND-01 to REND-08 | TBD | Pending |
-| PERF-01 to PERF-05 | TBD | Pending |
-| TEST-01 to TEST-05 | TBD | Pending |
+| API-01 | Phase 1 | Pending |
+| API-02 | Phase 1 | Pending |
+| API-03 | Phase 1 | Pending |
+| API-04 | Phase 1 | Pending |
+| API-05 | Phase 1 | Pending |
+| API-06 | Phase 1 | Pending |
+| API-07 | Phase 1 | Pending |
+| NLP-01 | Phase 2 | Pending |
+| NLP-02 | Phase 2 | Pending |
+| NLP-03 | Phase 2 | Pending |
+| NLP-04 | Phase 2 | Pending |
+| NLP-05 | Phase 2 | Pending |
+| NLP-06 | Phase 2 | Pending |
+| NLP-07 | Phase 2 | Pending |
+| GEO-01 | Phase 3 | Pending |
+| GEO-02 | Phase 3 | Pending |
+| GEO-03 | Phase 3 | Pending |
+| GEO-04 | Phase 3 | Pending |
+| GEO-05 | Phase 3 | Pending |
+| GEO-06 | Phase 3 | Pending |
+| GEO-07 | Phase 3 | Pending |
+| PACK-01 | Phase 4 | Pending |
+| PACK-02 | Phase 4 | Pending |
+| PACK-03 | Phase 4 | Pending |
+| PACK-04 | Phase 4 | Pending |
+| PACK-05 | Phase 4 | Pending |
+| PACK-06 | Phase 4 | Pending |
+| PACK-07 | Phase 4 | Pending |
+| PACK-08 | Phase 4 | Pending |
+| REND-01 | Phase 4 | Pending |
+| REND-02 | Phase 4 | Pending |
+| REND-03 | Phase 4 | Pending |
+| REND-04 | Phase 4 | Pending |
+| REND-05 | Phase 4 | Pending |
+| REND-06 | Phase 4 | Pending |
+| REND-07 | Phase 4 | Pending |
+| REND-08 | Phase 4 | Pending |
+| PERF-01 | Phase 5 | Pending |
+| PERF-02 | Phase 5 | Pending |
+| PERF-03 | Phase 5 | Pending |
+| PERF-04 | Phase 5 | Pending |
+| PERF-05 | Phase 5 | Pending |
+| TEST-01 | Phase 5 | Pending |
+| TEST-02 | Phase 5 | Pending |
+| TEST-03 | Phase 5 | Pending |
+| TEST-04 | Phase 5 | Pending |
+| TEST-05 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 47 total
-- Mapped to phases: 0 (filled by roadmapper)
-- Unmapped: 47 ⚠️ (will be resolved by roadmap step)
+- Mapped to phases: 47
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-07*
-*Last updated: 2026-04-07 after research synthesis*
+*Last updated: 2026-04-07 after roadmap creation*
