@@ -1,0 +1,44 @@
+# Version control
+.git/
+.gitignore
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+
+# Rust
+target/
+
+# Test + planning artifacts (not needed at runtime)
+tests/
+.planning/
+wiki/
+raw/
+docs/
+logs/
+_bmad/
+.claude/
+
+# Secrets
+.env
+.env.*
+!.env.example

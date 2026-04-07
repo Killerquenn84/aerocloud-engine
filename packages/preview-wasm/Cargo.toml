@@ -1,0 +1,13 @@
+[package]
+name = "aerocloud-preview-wasm"
+version = "0.1.0"
+edition = "2021"
+description = "Browser preview engine for AeroCloud — Archimedean spiral + Quadtree (Phase 3+)"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# wasm-bindgen + web-sys will be added in Phase 3 when WASM preview is implemented
+# Kept minimal for Phase 1 skeleton
