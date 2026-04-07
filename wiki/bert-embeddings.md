@@ -3,6 +3,9 @@ title: "BERT Embeddings und Dimensionsreduktion"
 tags: [bert, embeddings, cosinus, tsne, umap, warm-start, semantik]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: bert-embeddings
+created: 2026-04-07
+
 ---
 
 # BERT Embeddings und Dimensionsreduktion
@@ -58,3 +61,9 @@ Anstatt Woerter zufaellig zu platzieren, nutzt AeroCloud die **BERT-Embeddings a
 - Schnellere Konvergenz des Adam-Optimizers
 - Hoehere semantische Kohaerenz im Endergebnis
 - Besserer Startpunkt fuer Optimal Transport
+
+## Siehe auch
+
+- [optimal-transport.md](optimal-transport.md) — Sinkhorn-Knopp nutzt BERT-Embeddings fuer Initial Layout
+- [tf-idf-ap.md](tf-idf-ap.md) — TF-IDF fuer Wort-Gewichtung
+- [research/stack.md](research/stack.md) — sentence-transformers 5.3.0 Pinning

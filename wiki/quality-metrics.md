@@ -3,6 +3,9 @@ title: "Qualitaetsmetriken"
 tags: [metriken, geometrisch, semantisch, vergleich, qualitaet]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: quality-metrics
+created: 2026-04-07
+
 ---
 
 # Qualitaetsmetriken
@@ -63,3 +66,9 @@ Q_total = w_1 * LC + w_2 * SS + w_3 * Compactness
 ```
 
 Die Gewichte `w_i` sind konfigurierbar und bestimmen die Priorisierung geometrischer vs. semantischer Qualitaet.
+
+## Siehe auch
+
+- [cqd-metric.md](cqd-metric.md) — CQD als Meta-Metrik ueber geometrische Metriken
+- [differentiable-rendering.md](differentiable-rendering.md) — Metriken steuern L_fidelity
+- [seam-carving.md](seam-carving.md) — Metriken fuer Whitespace-Optimierung

@@ -1,24 +1,12 @@
 ---
-title: "Requirements: AeroCloud Engine"
-slug: "requirements"
-source: ".planning/REQUIREMENTS.md"
-created: "2026-04-07"
-section: "Mathematische Grundlagen"
-summary: "**Defined:** 2026-04-07"
-cross_refs:
-  - index.md
-  - source-blueprint.md
+title: v1 Requirements (REQUIREMENTS.md mirror)
+tags: [requirements, v1, traceability]
+source: mirrored into wiki by reorganization
+mirrored_on: 2026-04-07
+slug: requirements-v1
+created: 2026-04-07
+
 ---
-
-# Requirements: AeroCloud Engine
-
-> **Defined:** 2026-04-07
-
-## Quelle
-
-Ingested from `.planning/REQUIREMENTS.md` on 2026-04-07.
-
-## Inhalt
 
 # Requirements: AeroCloud Engine
 
@@ -222,8 +210,10 @@ The Blueprint is the source of truth. Every requirement maps directly to a Bluep
 ---
 *Requirements defined: 2026-04-07 after research synthesis (Gemini + Codex consensus)*
 
-
 ## Siehe auch
 
-- [Index](index.md)
-- [Source Blueprint](source-blueprint.md)
+- [knowledge/roadmap-v1.md](knowledge/roadmap-v1.md) — Phasen-Mapping der Requirements
+- [knowledge/project-specification.md](knowledge/project-specification.md) — Core Value und Constraints
+- [knowledge/stack-versions.md](knowledge/stack-versions.md) — Versionen pro Requirement
+- [research/features.md](research/features.md) — Feature-Quellen
+- [source-blueprint.md](source-blueprint.md) — Blueprint als Anforderungs-Quelle

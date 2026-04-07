@@ -3,6 +3,9 @@ title: "MAP-Elites und BOP-Elites"
 tags: [map-elites, bop-elites, quality-diversity, self-play, escape-move]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: map-elites
+created: 2026-04-07
+
 ---
 
 # MAP-Elites und BOP-Elites
@@ -63,3 +66,9 @@ Strategie zum Verlassen lokaler Optima:
   - Kick: Ein Wort wird in ein anderes Segment verschoben
   - Reset: Teilmenge der Woerter wird neu initialisiert
 - **Reoptimierung** nach dem Escape-Move ueber Inner Loop
+
+## Siehe auch
+
+- [cqd-metric.md](cqd-metric.md) — CQD ersetzt die Grid-abhaengige MAP-Elites Metrik
+- [np-hard-packing.md](np-hard-packing.md) — QD statt Single-Optimum
+- [research/stack.md](research/stack.md) — pyribs BayesianEmitter fuer BOP-Elites

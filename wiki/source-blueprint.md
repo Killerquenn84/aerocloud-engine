@@ -3,6 +3,9 @@ title: "Quellen-Referenz: AeroCloud Master-Blueprint"
 tags: [meta, quelle, blueprint, dokumentation]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: source-blueprint
+created: 2026-04-07
+
 ---
 
 # Quellen-Referenz: AeroCloud Master-Blueprint

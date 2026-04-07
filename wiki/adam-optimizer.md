@@ -3,6 +3,9 @@ title: "Adam Optimizer"
 tags: [adam, optimizer, pytorch, konvergenz, speedup]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: adam-optimizer
+created: 2026-04-07
+
 ---
 
 # Adam Optimizer
@@ -65,3 +68,9 @@ for epoch in range(100):
     loss.backward()
     optimizer.step()
 ```
+
+## Siehe auch
+
+- [differentiable-rendering.md](differentiable-rendering.md) — Adam betreibt den Inner Loop Rasterizer
+- [research/pitfalls.md](research/pitfalls.md) — Vanishing Gradients und CUDA OOM vermeiden
+- [knowledge/stack-versions.md](knowledge/stack-versions.md) — torch 2.7.1 + nvdiffrast 0.3.3.1

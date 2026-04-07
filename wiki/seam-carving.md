@@ -3,6 +3,9 @@ title: "Seam Carving"
 tags: [seam-carving, energie, dynamische-programmierung, kompression, semantik]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: seam-carving
+created: 2026-04-07
+
 ---
 
 # Seam Carving
@@ -69,3 +72,9 @@ Die AeroCloud-Adaptierung stellt sicher, dass die **semantische Struktur** erhal
 - Semantische Gruppierungen bleiben intakt
 - Silhouettenform wird besser ausgefuellt
 - Kombination mit Inflate-Algorithmus fuer finale Anpassung
+
+## Siehe auch
+
+- [bezier-export.md](bezier-export.md) — Seam Carving + Bezier fuer Sub-Millimeter Export
+- [medial-axis.md](medial-axis.md) — MAT als Energie-Guide
+- [quality-metrics.md](quality-metrics.md) — Kompression darf Qualitaet nicht reduzieren

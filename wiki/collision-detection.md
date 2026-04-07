@@ -3,6 +3,9 @@ title: "Kollisionserkennung - 5 Stufen"
 tags: [kollision, aabb, quadtree, sat, bitmap, bvh, cache]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: collision-detection
+created: 2026-04-07
+
 ---
 
 # Kollisionserkennung - 5-Stufen-Pipeline
@@ -73,3 +76,9 @@ Overlap = (A.left < B.right) && (A.right > B.left) &&
 | Quadtree | O(log n) | Filterung | Schnell |
 | SAT | O(v) | Exakt (konvex) | Mittel |
 | Bitmap 32-bit | O(p) | Pixel-genau | Langsam |
+
+## Siehe auch
+
+- [sdf-geometry.md](sdf-geometry.md) — SDF liefert Pixel-Distanzen fuer Stage 5
+- [np-hard-packing.md](np-hard-packing.md) — Kollisionsfreiheit ist die Kernanforderung
+- [research/pitfalls.md](research/pitfalls.md) — Kollisions-Fallen und Quadtree-Tiefe

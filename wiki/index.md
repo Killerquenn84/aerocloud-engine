@@ -1,6 +1,7 @@
 # AeroCloud Wiki – Index
 
 > Katalog aller Wiki-Seiten. LLM liest diesen Index zuerst bei Queries.
+> Regel: ALLES was im Projekt passiert landet hier. Nichts darf nur in `.planning/` liegen.
 
 ## Uebersicht
 - [overview.md](overview.md) — Gesamtuebersicht der AeroCloud Engine Architektur
@@ -9,8 +10,6 @@
 - [zipf-law.md](zipf-law.md) — Zipf-Gesetz und logarithmische Font-Size-Normalisierung
 - [tf-idf-ap.md](tf-idf-ap.md) — TF-IDF mit Adaptive Position Weight Scoring
 - [np-hard-packing.md](np-hard-packing.md) — NP-Schwere des 2D Irregular Bin Packing
-- [summary.md](summary.md) — **Researched by:** Gemini CLI (4 dimensions) + Codex CLI (verification)
-- [requirements.md](requirements.md) — **Defined:** 2026-04-07
 
 ## Semantik (The Brain)
 - [bert-embeddings.md](bert-embeddings.md) — BERT-Embeddings und Dimensionsreduktion (t-SNE/UMAP)
@@ -36,9 +35,74 @@
 ## Qualitaetsmetriken
 - [quality-metrics.md](quality-metrics.md) — Geometrische und semantische Metriken
 
-## Stack & Dependencies
-- [stack-versions.md](stack-versions.md) — Codex-verifizierte Library-Versionen (April 2026)
-- [codex-corrections.md](codex-corrections.md) — Lessons Learned: 6 entlarvte Halluzinationen aus 3-KI Stack-Review
-
 ## Quellen
 - [source-blueprint.md](source-blueprint.md) — Zusammenfassung des AeroCloud Master-Blueprints
+
+---
+
+## 📚 Research (wiki/research/)
+Eins-zu-eins Kopien der Planning Research-Dokumente. Primaer-Quelle fuer alle Stack- und Feature-Entscheidungen.
+
+- [research/stack.md](research/stack.md) — Python Polyglot Stack Research (Codex-verified April 2026)
+- [research/features.md](research/features.md) — Blueprint Features Mapping (Maturity Levels)
+- [research/architecture.md](research/architecture.md) — Polyglot Architecture Best Practices
+- [research/pitfalls.md](research/pitfalls.md) — 18 Bekannte Risiken mit Mitigations
+- [research/summary.md](research/summary.md) — Research Synthesis (Cross-Cutting Risks)
+
+## 🧠 Knowledge (wiki/knowledge/)
+Lebendiges Wissen und Versions-Referenzen.
+
+- [knowledge/stack-versions.md](knowledge/stack-versions.md) — Codex-verifizierte Library-Versionen (April 2026)
+- [knowledge/project-specification.md](knowledge/project-specification.md) — PROJECT.md Spiegel: Was, Warum, Constraints, Key Decisions
+- [knowledge/roadmap-v1.md](knowledge/roadmap-v1.md) — 12-Phasen-Roadmap mit Success Criteria + Phase Exit Gates
+- [knowledge/requirements-v1.md](knowledge/requirements-v1.md) — 109 Requirements pro Phase, 100% Coverage
+- [knowledge/project-state.md](knowledge/project-state.md) — Live-Projektstatus und aktive Phase
+
+## 🔧 Corrections (wiki/corrections/)
+Korrigierte Fehler, Halluzinationen, Fehlannahmen — mit Datum.
+
+- [corrections/2026-04-07-stack-hallucinations.md](corrections/2026-04-07-stack-hallucinations.md) — 6 entlarvte Gemini-Halluzinationen durch Codex-Verifikation
+
+## 🗣️ Discussions (wiki/discussions/)
+Protokolle der 3-KI Diskussionen (Claude + Gemini + Codex).
+
+_(Noch leer — naechster Eintrag: Phase 1 Discussion)_
+
+## 🧭 Decisions (wiki/decisions/)
+Alle architektonischen und designrelevanten Entscheidungen — mit Datum.
+
+- [decisions/2026-04-07-polyglot-stack-selection.md](decisions/2026-04-07-polyglot-stack-selection.md) — Polyglot-Stack + Bottom-Up Build Order + Codex-Korrekturen + Rollenklarstellung
+
+## 💻 Code (wiki/code/)
+Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
+
+_(Noch leer — wird ab Phase 1 gefuellt)_
+
+## 🧪 Tests (wiki/tests/)
+Test-Coverage und Test-Strategien pro Modul.
+
+_(Noch leer — wird ab Phase 1 gefuellt)_
+
+## 🐛 Bugs (wiki/bugs/)
+Gefundene Bugs und ihre Fixes — mit Datum.
+
+_(Noch leer)_
+
+---
+
+## Wiki-Kategorien-Regel
+
+Jede Aktion im Projekt wird hier katalogisiert:
+
+| Typ | Verzeichnis | Namens-Schema |
+|-----|-------------|---------------|
+| Code-Modul | `wiki/code/` | `[modul-name].md` |
+| Korrektur | `wiki/corrections/` | `[YYYY-MM-DD]-[topic].md` |
+| Diskussion | `wiki/discussions/` | `[YYYY-MM-DD]-[topic].md` |
+| Recherche | `wiki/research/` | `[topic].md` |
+| Entscheidung | `wiki/decisions/` | `[YYYY-MM-DD]-[topic].md` |
+| Test | `wiki/tests/` | `[modul].md` |
+| Bug + Fix | `wiki/bugs/` | `[YYYY-MM-DD]-[bug].md` |
+| Erkenntnis | `wiki/knowledge/` | `[topic].md` |
+
+**Ziel:** Das Wiki spiegelt immer den aktuellen Projektstand. Kein Kontextverlust zwischen Sessions.

@@ -3,6 +3,9 @@ title: "Zipf-Gesetz und Font-Size-Skalierung"
 tags: [zipf, font-size, power-law, skalierung, linguistik]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: zipf-law
+created: 2026-04-07
+
 ---
 
 # Zipf-Gesetz und Font-Size-Skalierung
@@ -51,3 +54,9 @@ Die `reference_weights` werden zu Beginn der Pipeline fixiert und waehrend der O
 | `min_font_size` | 8 | Minimale Schriftgroesse in px |
 | `max_font_size` | 120 | Maximale Schriftgroesse in px |
 | `scale_mode` | `"log"` | Skalierungsmodus (`"log"`, `"sqrt"`, `"linear"`) |
+
+## Siehe auch
+
+- [tf-idf-ap.md](tf-idf-ap.md) — positional TF-IDF Scoring baut auf Zipf-Hierarchie auf
+- [np-hard-packing.md](np-hard-packing.md) — Zipf Font-Size fliesst als Input ins NP-schwere Packing Problem
+- [research/stack.md](research/stack.md) — spaCy + scipy Implementation-Wahl

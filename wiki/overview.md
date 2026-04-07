@@ -3,6 +3,9 @@ title: "AeroCloud Engine - Gesamtuebersicht"
 tags: [overview, architektur, dual-loop, pytorch, map-elites, bin-packing]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: overview
+created: 2026-04-07
+
 ---
 
 # AeroCloud Engine - Gesamtuebersicht
@@ -52,3 +55,9 @@ Eingabe (Text + Silhouette)
   → Post-Processing (Seam Carving, Bezier Export)
   → Ausgabe (SVG/PDF/PNG)
 ```
+
+## Siehe auch
+
+- [source-blueprint.md](source-blueprint.md) — Blueprint Master-Dokument
+- [knowledge/project-specification.md](knowledge/project-specification.md) — PROJECT.md Spiegel
+- [knowledge/roadmap-v1.md](knowledge/roadmap-v1.md) — 12-Phasen Bauplan

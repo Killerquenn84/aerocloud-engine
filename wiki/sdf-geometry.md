@@ -3,6 +3,9 @@ title: "Signed Distance Field (SDF)"
 tags: [sdf, geometrie, distanzfeld, gradient, spiral-suche, loss]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: sdf-geometry
+created: 2026-04-07
+
 ---
 
 # Signed Distance Field (SDF)
@@ -66,3 +69,9 @@ L_fidelity = Σ_i max(0, SDF(p_i) + margin)²
 - **Stetige Funktion** - ideal fuer Gradient-basierte Optimierung
 - **Abstandsinformation** - nicht nur Boolean, sondern "wie weit drinnen/draussen"
 - **Vorberechnung** einmalig pro Silhouette
+
+## Siehe auch
+
+- [medial-axis.md](medial-axis.md) — MAT baut auf SDF-Feldern auf
+- [collision-detection.md](collision-detection.md) — SDF als Basis fuer Pixel-genaue Kollision
+- [differentiable-rendering.md](differentiable-rendering.md) — SDF-Gradienten fliessen in die Loss-Funktion

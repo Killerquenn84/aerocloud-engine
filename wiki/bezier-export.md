@@ -3,6 +3,9 @@ title: "Bezier-Export und Schnittpunkt-Optimierung"
 tags: [bezier, export, svg, pdf, png, kontrollpunkte, praezision]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: bezier-export
+created: 2026-04-07
+
 ---
 
 # Bezier-Export und Schnittpunkt-Optimierung
@@ -60,3 +63,9 @@ Layout-Ergebnis (Positionen, Rotationen, Skalierungen)
   → Clipping der ueberstehenden Teile
   → Export in Zielformat (SVG/PDF/PNG)
 ```
+
+## Siehe auch
+
+- [seam-carving.md](seam-carving.md) — Seam Carving als Vorstufe des Bezier-Exports
+- [knowledge/stack-versions.md](knowledge/stack-versions.md) — svgelements + ReportLab fuer Export
+- [knowledge/requirements-v1.md](knowledge/requirements-v1.md) — PROD-03 bis PROD-06 Requirements

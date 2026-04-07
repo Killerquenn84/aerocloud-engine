@@ -3,6 +3,9 @@ title: "TF-IDF mit Adaptive Position Weight"
 tags: [tf-idf, nlp, adaptive-position, spacy, semantik]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: tf-idf-ap
+created: 2026-04-07
+
 ---
 
 # TF-IDF mit Adaptive Position Weight (TF-IDF-AP)
@@ -53,3 +56,9 @@ nlp_config = {
     "heading_boost": 2.0,       # Faktor fuer Ueberschriften
 }
 ```
+
+## Siehe auch
+
+- [zipf-law.md](zipf-law.md) — Zipf-Normalisierung liefert die Gewichte fuer TF-IDF-AP
+- [bert-embeddings.md](bert-embeddings.md) — BERT ergaenzt TF-IDF mit semantischer Distanz
+- [knowledge/requirements-v1.md](knowledge/requirements-v1.md) — NLP-04 Requirement

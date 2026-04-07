@@ -4,12 +4,15 @@ tags: [stack, versions, dependencies, polyglot, python, rust, typescript]
 source: .planning/research/STACK.md
 verified_by: Codex CLI
 verified_on: 2026-04-07
+slug: stack-versions
+created: 2026-04-07
+
 ---
 
 # Stack Versions — Codex-Verified
 
 > Jede Version hier wurde von Codex CLI gegen PyPI / offizielle Upstream-Quellen live verifiziert am 2026-04-07.
-> Gemini hatte initial einige Versionen halluziniert — siehe [codex-corrections.md](codex-corrections.md).
+> Gemini hatte initial einige Versionen halluziniert — siehe [corrections/2026-04-07-stack-hallucinations.md](corrections/2026-04-07-stack-hallucinations.md).
 > Vor jedem Dependency-Update: diese Seite lesen und gegen aktuelle PyPI-Stände prüfen.
 
 ## Polyglot-Uebersicht
@@ -128,7 +131,10 @@ Frontend: **Next.js 16** — Codex erkannte die veraltete v14 Gemini-Angabe.
 
 ## Siehe auch
 
-- [codex-corrections.md](codex-corrections.md) — die 6 entlarvten Halluzinationen als Lessons Learned
-- `.planning/research/STACK.md` — vollständige Research-Output mit Rationale
-- `.planning/research/SUMMARY.md` — Cross-Cutting Risks
-- `docs/ai-team-decisions.md` — Log der 3-KI Entscheidungen
+- [corrections/2026-04-07-stack-hallucinations.md](corrections/2026-04-07-stack-hallucinations.md) — die 6 entlarvten Halluzinationen als Lessons Learned
+- [research/stack.md](research/stack.md) — vollständige Gemini Stack Research (pre-Codex)
+- [research/summary.md](research/summary.md) — Cross-Cutting Risks Synthese
+- [research/architecture.md](research/architecture.md) — Polyglot Architecture Best Practices
+- [research/pitfalls.md](research/pitfalls.md) — Bekannte Dependency-Risiken
+- [decisions/2026-04-07-polyglot-stack-selection.md](decisions/2026-04-07-polyglot-stack-selection.md) — Log der 3-KI Entscheidungen
+- [knowledge/roadmap-v1.md](knowledge/roadmap-v1.md) — Wo die Versionen in den 12 Phasen verwendet werden

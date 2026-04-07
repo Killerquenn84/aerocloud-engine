@@ -33,3 +33,12 @@
 - Neue Seite: requirements
 - Sektion: Mathematische Grundlagen
 - Zusammenfassung: **Defined:** 2026-04-07
+
+## [2026-04-07] reorganization | Wiki-Kategorien-Struktur
+- Neue Verzeichnisse: wiki/code/, wiki/corrections/, wiki/discussions/, wiki/research/, wiki/decisions/, wiki/tests/, wiki/bugs/, wiki/knowledge/
+- Kopiert nach wiki/research/: stack.md, features.md, architecture.md, pitfalls.md, summary.md (aus .planning/research/)
+- Verschoben: stack-versions.md -> wiki/knowledge/, codex-corrections.md -> wiki/corrections/2026-04-07-stack-hallucinations.md
+- Geloescht: wiki/summary.md und wiki/requirements.md (auto-generated Ingest-Outputs, ersetzt durch wiki/research/summary.md)
+- Neue Decision: wiki/decisions/2026-04-07-polyglot-stack-selection.md (gespiegelt aus docs/ai-team-decisions.md)
+- Aktualisiert: wiki/index.md komplett neu strukturiert mit 8 Kategorien
+- Neue Regel von Jens: ALLES landet im Wiki. Code -> wiki/code/, Korrektur -> wiki/corrections/YYYY-MM-DD-topic.md, Diskussion -> wiki/discussions/YYYY-MM-DD-topic.md, etc. Kein Kontextverlust zwischen Sessions.

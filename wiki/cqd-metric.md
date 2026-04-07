@@ -3,6 +3,9 @@ title: "CQD-Metrik (Continuous Quality-Diversity)"
 tags: [cqd, quality-diversity, metrik, monte-carlo, hypervolume, gecco]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: cqd-metric
+created: 2026-04-07
+
 ---
 
 # CQD-Metrik (Continuous Quality-Diversity)
@@ -75,3 +78,9 @@ def cqd_score(archive, n_samples=10000):
 | Rotationsverteilung | Vielfalt der Wort-Rotationen |
 | Symmetrie | Grad der Layout-Symmetrie |
 | Semantische Kohaerenz | BERT-basierte Cluster-Qualitaet |
+
+## Siehe auch
+
+- [map-elites.md](map-elites.md) — MAP-Elites nutzt CQD als Quality-Score
+- [quality-metrics.md](quality-metrics.md) — CQD baut auf geometrischen Metriken auf
+- [decisions/2026-04-07-polyglot-stack-selection.md](decisions/2026-04-07-polyglot-stack-selection.md) — pyribs als QD Framework

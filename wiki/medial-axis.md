@@ -3,6 +3,9 @@ title: "Medial Axis Transform (MAT)"
 tags: [medial-axis, skelett, topologie, multi-centric, wordle]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: medial-axis
+created: 2026-04-07
+
 ---
 
 # Medial Axis Transform (MAT)
@@ -59,3 +62,9 @@ skeleton = skimage.morphology.skeletonize(binary_mask)
 mat = medial_axis(binary_mask, return_distance=True)
 skeleton, distance = mat
 ```
+
+## Siehe auch
+
+- [sdf-geometry.md](sdf-geometry.md) — SDF ist die Basis fuer die Skelettierung
+- [collision-detection.md](collision-detection.md) — Multi-Centric Wordle braucht MAT fuer Spiral-Origins
+- [seam-carving.md](seam-carving.md) — MAT als Energie-Guide fuer Whitespace-Kompression

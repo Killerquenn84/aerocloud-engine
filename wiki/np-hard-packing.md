@@ -3,6 +3,9 @@ title: "NP-Schwere des Irregular Bin Packing"
 tags: [np-hard, bin-packing, geometrie, optimierung, komplexitaet]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: np-hard-packing
+created: 2026-04-07
+
 ---
 
 # NP-Schwere des 2D Irregular Bin Packing
@@ -49,3 +52,9 @@ Das AeroCloud-Kernproblem ist ein **2D Irregular Bin Packing**:
 | Kollisionspruefung (naiv) | O(n²) pro Kandidat |
 | Exakte Loesung | NP-schwer (exponentiell) |
 | AeroCloud Heuristik | Polynomiell pro Iteration |
+
+## Siehe auch
+
+- [collision-detection.md](collision-detection.md) — die 5-stufige Hierarchie loest das NP-schwere Problem pragmatisch
+- [map-elites.md](map-elites.md) — Quality-Diversity als alternative Herangehensweise
+- [differentiable-rendering.md](differentiable-rendering.md) — Gradienten-basierte Loesung im Inner Loop

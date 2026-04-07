@@ -3,6 +3,9 @@ title: "Differentiable Rendering"
 tags: [differentiable, pytorch, tensor, loss, soft-rasterization, coarse-to-fine]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: differentiable-rendering
+created: 2026-04-07
+
 ---
 
 # Differentiable Rendering
@@ -80,3 +83,9 @@ Die Aufloesung wird stufenweise erhoeht:
 - Vermeidung lokaler Optima durch hierarchische Suche
 - Spaete Stufen profitieren von guter Initialisierung
 - Gesamtzeit deutlich reduziert gegenueber direkter Hochaufloesung
+
+## Siehe auch
+
+- [adam-optimizer.md](adam-optimizer.md) — Adam optimiert die Loss-Funktion
+- [sdf-geometry.md](sdf-geometry.md) — SDF fliesst in L_wmse der 4-teiligen Loss
+- [quality-metrics.md](quality-metrics.md) — Quality-Metriken steuern L_fidelity

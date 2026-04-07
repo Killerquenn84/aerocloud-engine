@@ -3,6 +3,9 @@ title: "Optimal Transport - Sinkhorn-Knopp"
 tags: [optimal-transport, sinkhorn, wasserstein, clustering, semantik]
 sources: [AeroCloud-Blueprint.md]
 updated: 2026-04-06
+slug: optimal-transport
+created: 2026-04-07
+
 ---
 
 # Optimal Transport - Sinkhorn-Knopp
@@ -62,3 +65,9 @@ BERT Embeddings
 ```
 
 Der O(n²)-Aufwand faellt **einmalig** an und amortisiert sich durch bessere Initialisierung und schnellere Konvergenz im Inner Loop.
+
+## Siehe auch
+
+- [bert-embeddings.md](bert-embeddings.md) — Embeddings als Input fuer Sinkhorn-Knopp
+- [differentiable-rendering.md](differentiable-rendering.md) — OT liefert den Warm-Start fuer den Inner Loop
+- [research/pitfalls.md](research/pitfalls.md) — Sinkhorn Underflow in log-space vermeiden

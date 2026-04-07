@@ -1,24 +1,12 @@
 ---
-title: "Research Summary — AeroCloud Engine"
-slug: "summary"
-source: ".planning/research/SUMMARY.md"
-created: "2026-04-07"
-section: "Mathematische Grundlagen"
-summary: "**Researched by:** Gemini CLI (4 dimensions) + Codex CLI (verification)"
-cross_refs:
-  - index.md
-  - source-blueprint.md
+title: Research Summary (Claude synthesis)
+tags: [research, summary, synthesis, risks]
+source: mirrored into wiki by reorganization
+mirrored_on: 2026-04-07
+slug: summary
+created: 2026-04-07
+
 ---
-
-# Research Summary — AeroCloud Engine
-
-> **Researched by:** Gemini CLI (4 dimensions) + Codex CLI (verification)
-
-## Quelle
-
-Ingested from `.planning/research/SUMMARY.md` on 2026-04-07.
-
-## Inhalt
 
 # Research Summary — AeroCloud Engine
 
@@ -115,8 +103,11 @@ These questions will be addressed during phase planning (`/gsd-discuss-phase`).
 *Synthesis: Claude Code (orchestrator) on 2026-04-07*
 *Sources: Gemini CLI (research), Codex CLI (verification)*
 
-
 ## Siehe auch
 
-- [Index](index.md)
-- [Source Blueprint](source-blueprint.md)
+- [research/stack.md](research/stack.md) — Stack Details
+- [research/features.md](research/features.md) — Feature-Mapping
+- [research/architecture.md](research/architecture.md) — Architektur-Details
+- [research/pitfalls.md](research/pitfalls.md) — Risiken
+- [decisions/2026-04-07-polyglot-stack-selection.md](decisions/2026-04-07-polyglot-stack-selection.md) — Finale Entscheidungen
+- [knowledge/roadmap-v1.md](knowledge/roadmap-v1.md) — 12-Phasen Roadmap

@@ -3,6 +3,9 @@ title: Codex Corrections — Lessons Learned aus 3-KI Stack-Review
 tags: [lessons, codex, verification, anti-sycophancy, stack, versions]
 source: .planning/research/STACK.md + Codex CLI Review
 verified_on: 2026-04-07
+slug: 2026-04-07-stack-hallucinations
+created: 2026-04-07
+
 ---
 
 # Codex Corrections — Lessons Learned
@@ -106,6 +109,7 @@ Für alle zukünftigen Stack-Entscheidungen:
 
 ## Siehe auch
 
-- [stack-versions.md](stack-versions.md) — die verifizierten Versionen als lebendige Referenz
-- `.planning/research/STACK.md` — vollständige Research-Output mit Rationale
-- `docs/ai-team-decisions.md` — Log der 3-KI Entscheidungen
+- [knowledge/stack-versions.md](knowledge/stack-versions.md) — die verifizierten Versionen als lebendige Referenz
+- [research/stack.md](research/stack.md) — vollständige Gemini Stack Research (pre-Codex)
+- [research/summary.md](research/summary.md) — Research Synthesis mit Cross-Cutting Risks
+- [decisions/2026-04-07-polyglot-stack-selection.md](decisions/2026-04-07-polyglot-stack-selection.md) — Log der 3-KI Entscheidungen
