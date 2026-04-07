@@ -9,6 +9,7 @@ Usage:
     uv run python scripts/gpu-smoke-test.py   # repo root wrapper
     uv run python -m aerocloud.scripts.gpu_smoke
 """
+
 from __future__ import annotations
 
 import sys
@@ -49,13 +50,13 @@ def main() -> int:
     try:
         x = torch.zeros(1024, device="cuda:0")
         print(f"tensor alloc: {x.device} numel={x.numel()} [OK]")
-    except (RuntimeError, Exception) as exc:  # noqa: BLE001
+    except (RuntimeError, Exception) as exc:
         print(f"tensor alloc failed: {exc}")
         return 1
 
     # Optional nvdiffrast probe
     try:
-        import nvdiffrast  # noqa: F401, PLC0415
+        import nvdiffrast  # noqa: F401
 
         print("nvdiffrast: importable [OK]")
     except ImportError:
@@ -68,7 +69,8 @@ def main() -> int:
         )
         return 1
 
-    print(f"[ok] at least one device meets compute capability {_format_capability(*_MINIMUM_CAPABILITY)}")
+    min_cap = _format_capability(*_MINIMUM_CAPABILITY)
+    print(f"[ok] at least one device meets compute capability {min_cap}")
     return 0
 
 

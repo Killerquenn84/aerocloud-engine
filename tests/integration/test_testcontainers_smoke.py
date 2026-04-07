@@ -3,6 +3,7 @@
 This test is opt-in via ``-m integration``. Requires Docker daemon running
 on the host.
 """
+
 from __future__ import annotations
 
 import pytest

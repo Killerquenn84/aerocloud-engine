@@ -12,6 +12,7 @@ References:
     - .planning/phases/01-foundation/01-CONTEXT.md D-24..D-26
     - .planning/research/ARCHITECTURE.md §8 (config)
 """
+
 from __future__ import annotations
 
 from pydantic import Field

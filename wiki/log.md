@@ -103,3 +103,6 @@ Issues resolved during execution:
 - Fonts in packages/engine/assets/ not found by importlib.resources -> moved into src/aerocloud/assets/
 
 13 unit tests passing, 2 GPU tests gracefully skipped on CPU-only host.
+
+## [2026-04-07] nightly-research | 1 topics
+- Seam Carving Word Cloud Whitespace

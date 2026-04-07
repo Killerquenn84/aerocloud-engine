@@ -6,6 +6,7 @@ As of Wave 6 the bundled fonts are:
   - IBM-Plex-Serif/IBMPlexSerif-Bold.ttf
   - IBM-Plex-Serif/IBMPlexSerif-Italic.ttf
 """
+
 from __future__ import annotations
 
 from aerocloud.fonts import (

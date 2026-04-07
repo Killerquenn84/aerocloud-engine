@@ -23,3 +23,4 @@ build/
 # Rust
 target/
 Cargo.lock.bak
+dist/

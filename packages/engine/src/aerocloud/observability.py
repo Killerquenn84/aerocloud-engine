@@ -14,6 +14,7 @@ References:
     - .planning/research/ARCHITECTURE.md §8 (observability)
     - .planning/phases/01-foundation/01-CONTEXT.md D-28
 """
+
 from __future__ import annotations
 
 from opentelemetry import trace

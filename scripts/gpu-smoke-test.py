@@ -5,6 +5,7 @@ Keeps the historical root-level scripts/ directory functional. The actual
 logic lives in the installed Python package so it can be invoked via the
 ``aerocloud-gpu-smoke`` entry point.
 """
+
 from __future__ import annotations
 
 import sys

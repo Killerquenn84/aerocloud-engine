@@ -1,4 +1,5 @@
 """Verifies global seeding produces identical outputs across runs."""
+
 from __future__ import annotations
 
 import numpy as np

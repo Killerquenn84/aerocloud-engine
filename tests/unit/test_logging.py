@@ -1,4 +1,5 @@
 """Verifies structlog emits JSON and stdlib LoggerFactory is configured."""
+
 from __future__ import annotations
 
 import json

@@ -13,6 +13,7 @@ References:
     - .planning/research/ARCHITECTURE.md §8 (observability)
     - .planning/phases/01-foundation/01-CONTEXT.md D-27
 """
+
 from __future__ import annotations
 
 import logging
@@ -66,4 +67,5 @@ def configure_logging() -> None:
 
 def get_logger(name: str | None = None) -> structlog.stdlib.BoundLogger:
     """Return a structlog logger. Call :func:`configure_logging` first."""
-    return structlog.get_logger(name)
+    logger: structlog.stdlib.BoundLogger = structlog.get_logger(name)
+    return logger

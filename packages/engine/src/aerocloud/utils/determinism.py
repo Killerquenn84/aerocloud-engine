@@ -10,6 +10,7 @@ References:
     - .planning/research/PITFALLS.md pitfall #11 (determinism loss)
     - .planning/phases/01-foundation/01-CONTEXT.md D-16/D-17/D-18
 """
+
 from __future__ import annotations
 
 import os

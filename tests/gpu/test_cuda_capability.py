@@ -1,4 +1,5 @@
 """GPU smoke tests — skipped on CPU-only hosts."""
+
 from __future__ import annotations
 
 import pytest

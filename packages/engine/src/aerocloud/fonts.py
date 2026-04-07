@@ -9,6 +9,7 @@ References:
       per-request font registration)
     - .planning/phases/01-foundation/01-CONTEXT.md D-32..D-34
 """
+
 from __future__ import annotations
 
 from importlib import resources
@@ -35,7 +36,12 @@ def _discover_font_files() -> list[Path]:
     if not root.is_dir():
         return []
 
-    return sorted(Path(str(p)) for p in root.rglob("*.ttf") if p.is_file())
+    # Convert Traversable to a filesystem Path (works for editable installs
+    # and unpacked wheels; Traversable doesn't expose rglob directly).
+    root_path = Path(str(root))
+    if not root_path.is_dir():
+        return []
+    return sorted(p for p in root_path.rglob("*.ttf") if p.is_file())
 
 
 def register_fonts() -> set[str]:
