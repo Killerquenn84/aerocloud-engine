@@ -6,3 +6,30 @@
 - Neue Seiten: overview, zipf-law, tf-idf-ap, np-hard-packing, bert-embeddings, optimal-transport, sdf-geometry, medial-axis, collision-detection, differentiable-rendering, adam-optimizer, cqd-metric, map-elites, seam-carving, bezier-export, quality-metrics, source-blueprint
 - Aktualisierte Seiten: index.md (erstellt)
 - Erkenntnisse: Blueprint deckt 5 mathematische Disziplinen ab. Implementierung sollte schrittweise erfolgen: NLP → Geometry → Renderer → Optimizer → Export
+
+## [2026-04-07] stack-review | 3-KI Consensus + Codex Verifikation
+- Neue Seiten: stack-versions.md, codex-corrections.md
+- Aktualisierte Seiten: index.md (zwei neue Kategorie-Eintraege)
+- Workflow: Gemini recherchierte Stack-Vorschlaege (Python + PyTorch + CUDA + FastAPI + Celery + Next.js + Rust/WASM). Codex verifizierte alle Versionen live gegen PyPI und offizielle Upstreams.
+- Codex entlarvte 6 Halluzinationen: nvdiffrast v0.4.0 (real: 0.3.3.1), POT v1.0.2 (real: 0.9.6.post1), spaCy v4.1 (real: v3.x), scikit-fmm v2025.12 (real: 2025.6.23), svgwrite v1.5.1 (real: 1.4.3 + inaktiv), Next.js v14 (real: v16 seit 2025-10-21).
+- Codex blockierte 3 Architektur-Smells: structlog+loguru Hybrid, Celery-als-Default, Turborepo-im-Greenfield.
+- Codex ergaenzte kritisch: NumPy/PyTorch Pinning, Alembic, mypy/ruff, OpenTelemetry, safetensors statt pickle.
+- Erkenntnisse: Anti-Sycophancy funktioniert. Version-Pinning ist nicht verhandelbar bei Dependencies mit C-Extensions. "Latest" ist kein Vertrauens-Signal. Inaktive Pakete sind technische Schuld. Produkt vor Plattform.
+- Konsequenz: .planning/research/STACK.md wurde nach Codex-Review korrigiert. Alle zukuenftigen Stack-Entscheidungen laufen durch Codex-Verifikation.
+
+## [2026-04-07] project-init | GSD Planning Artifacts
+- Neue Artifacts: .planning/PROJECT.md, .planning/config.json, .planning/research/ (STACK + FEATURES + ARCHITECTURE + PITFALLS + SUMMARY), .planning/REQUIREMENTS.md (109 reqs), .planning/ROADMAP.md (12 Phasen), .planning/STATE.md
+- 3-KI Workflow: Claude Code (Orchestrator + Code), Gemini CLI (Researcher), Codex CLI (Reviewer)
+- 12-Phasen-Roadmap mit Bottom-Up Build Order (Geometrie → NLP → Inner Loop → Outer Loop → Export) und iterativer Reifung pro Domaene (v1 → v2 innerhalb v1 Milestone)
+- Alle 11 Blueprint-Teile in v1 enthalten, KEINE Vereinfachung
+- Hostinger Cloud VPS mit NVIDIA-Docker als Deployment-Ziel
+
+## [2026-04-07] ingest | SUMMARY.md
+- Neue Seite: summary
+- Sektion: Mathematische Grundlagen
+- Zusammenfassung: **Researched by:** Gemini CLI (4 dimensions) + Codex CLI (verification)
+
+## [2026-04-07] ingest | REQUIREMENTS.md
+- Neue Seite: requirements
+- Sektion: Mathematische Grundlagen
+- Zusammenfassung: **Defined:** 2026-04-07

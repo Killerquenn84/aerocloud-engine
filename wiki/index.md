@@ -9,6 +9,8 @@
 - [zipf-law.md](zipf-law.md) — Zipf-Gesetz und logarithmische Font-Size-Normalisierung
 - [tf-idf-ap.md](tf-idf-ap.md) — TF-IDF mit Adaptive Position Weight Scoring
 - [np-hard-packing.md](np-hard-packing.md) — NP-Schwere des 2D Irregular Bin Packing
+- [summary.md](summary.md) — **Researched by:** Gemini CLI (4 dimensions) + Codex CLI (verification)
+- [requirements.md](requirements.md) — **Defined:** 2026-04-07
 
 ## Semantik (The Brain)
 - [bert-embeddings.md](bert-embeddings.md) — BERT-Embeddings und Dimensionsreduktion (t-SNE/UMAP)
@@ -33,6 +35,10 @@
 
 ## Qualitaetsmetriken
 - [quality-metrics.md](quality-metrics.md) — Geometrische und semantische Metriken
+
+## Stack & Dependencies
+- [stack-versions.md](stack-versions.md) — Codex-verifizierte Library-Versionen (April 2026)
+- [codex-corrections.md](codex-corrections.md) — Lessons Learned: 6 entlarvte Halluzinationen aus 3-KI Stack-Review
 
 ## Quellen
 - [source-blueprint.md](source-blueprint.md) — Zusammenfassung des AeroCloud Master-Blueprints
