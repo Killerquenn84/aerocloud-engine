@@ -109,3 +109,11 @@ Issues resolved during execution:
 
 ## [2026-04-07] nightly-research | 1 topics
 - Sentence Transformers Library
+
+## [2026-04-07] phase-02 | Datenmodell + Wiki completed
+- Wave 1: 13 Pydantic models (tokens, shapes, layout, archive, api, base) with AeroCloudBase(frozen+strict+forbid)
+- Wave 2: ReproducibilityID model + compute_id helper + canonical_input_hash (7 tests)
+- Wave 3: Alembic baseline migration (archive_v1 table + HNSW index on descriptor vector(384))
+- Wave 4: Safetensors policy test (no pickle imports in source)
+- Wave 5: Verification — 34 unit tests passing, mypy strict 0 errors, uv build successful
+- Wiki mirror: discussions/2026-04-07-phase-02-context.md, knowledge/phase-02-plan.md
