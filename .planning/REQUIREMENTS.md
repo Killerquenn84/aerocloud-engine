@@ -11,7 +11,7 @@ The Blueprint is the source of truth. Every requirement maps directly to a Bluep
 
 - [ ] **FOUND-01**: `uv` workspace at repo root with shared `uv.lock` for entire monorepo
 - [ ] **FOUND-02**: Cargo workspace for Rust crates (initially `packages/preview-wasm`)
-- [ ] **FOUND-03**: pnpm workspace for TypeScript apps (initially `apps/web`)
+- [ ] **FOUND-03**: ~~pnpm workspace for TypeScript apps~~ **SUPERSEDED by Phase 1 CONTEXT.md D-01 (2026-04-07):** hybrid layout keeps existing `npm` package.json at root for wiki tools; pnpm migration is an explicit non-goal for v1. The workspace-level requirement is met under `npm`, not `pnpm`.
 - [ ] **FOUND-04**: Multi-stage Dockerfile based on `nvidia/cuda:12.x-base-ubuntu22.04` with pinned SHA digests
 - [ ] **FOUND-05**: CI pipeline runs `mypy --strict`, `ruff check`, `ruff format --check`, `pytest`, `pytest --hypothesis-profile=ci`
 - [ ] **FOUND-06**: Global `set_seed(seed)` function setting numpy, torch, random, `CUBLAS_WORKSPACE_CONFIG=:4096:8`, `torch.use_deterministic_algorithms(True)`

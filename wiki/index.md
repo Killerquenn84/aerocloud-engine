@@ -76,6 +76,7 @@ Protokolle der 3-KI Diskussionen (Claude + Gemini + Codex).
 Alle architektonischen und designrelevanten Entscheidungen — mit Datum.
 
 - [decisions/2026-04-07-polyglot-stack-selection.md](decisions/2026-04-07-polyglot-stack-selection.md) — Polyglot-Stack + Bottom-Up Build Order + Codex-Korrekturen + Rollenklarstellung
+- [decisions/2026-04-07-font-licensing.md](decisions/2026-04-07-font-licensing.md) — Inter + IBM Plex Serif SIL OFL 1.1 licensing assessment
 
 ## 💻 Code (wiki/code/)
 Dokumentation pro Modul — Funktionen, Klassen, Interfaces.

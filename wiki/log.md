@@ -82,3 +82,24 @@
 
 ## [2026-04-07] nightly-research | 1 topics
 - mutmut Mutation Testing Strategy
+
+## [2026-04-07] phase-01 | Execution Waves 0-8 completed
+- Wave 0: rollback branch + baseline tag (phase-1-baseline)
+- Wave 1: uv workspace skeleton (root pyproject.toml, .python-version, uv.lock, workspace members as deps)
+- Wave 2: determinism + config + logging + observability + fonts.py modules
+- Wave 3: unit/integration/gpu test skeleton (13 unit tests green)
+- Wave 4: Docker dev stack (postgres-pgvector, redis, api, worker Dockerfiles, .dockerignore)
+- Wave 5: GPU smoke test (package module + root wrapper, aerocloud-gpu-smoke CLI)
+- Wave 6: Inter + IBM Plex Serif fonts bundled with SIL OFL, font discovery verified via importlib.resources
+- Wave 7: GitHub Actions workflows (ci-python, ci-typescript, ci-rust, ci-integrity with secret scan + pickle policy)
+- Wave 8: README rewritten for polyglot monorepo, FOUND-03 marked SUPERSEDED, wiki-log updated
+
+Issues resolved during execution:
+- uv not installed on host -> installed via official curl script
+- pyribs on PyPI is 'ribs' not 'pyribs' -> corrected optional-dep
+- uv workspace members not installed automatically -> added as root project.dependencies + tool.uv.sources = workspace
+- structlog PrintLoggerFactory has no logger.name -> switched to stdlib LoggerFactory
+- IBM Plex Serif URL path outdated -> packages/plex-serif/fonts/complete/ttf/
+- Fonts in packages/engine/assets/ not found by importlib.resources -> moved into src/aerocloud/assets/
+
+13 unit tests passing, 2 GPU tests gracefully skipped on CPU-only host.
