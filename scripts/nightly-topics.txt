@@ -1,0 +1,43 @@
+Zipf Law Font Size Normalization
+TF-IDF-AP Positional Weighting
+NP-Hard Irregular Bin Packing
+BERT Embeddings all-MiniLM-L6-v2
+Sentence Transformers Library
+Sinkhorn-Knopp Optimal Transport
+POT Python Optimal Transport Library
+Signed Distance Field Meijster EDT
+Medial Axis Transform scikit-fmm
+Multi-Centric Wordle Placement
+5-Stage Collision Hierarchy
+AABB Bounding Box Collision
+Quadtree Spatial Indexing
+SAT Separating Axis Theorem
+Bitmap Pixel-Exact Collision
+Differentiable Rendering nvdiffrast
+PyTorch3D Soft-Rasterization
+PyTorch Autograd Graph Memory
+4-Part Loss Function Word Placement
+Adam Optimizer Hyperparameters
+Coarse-to-Fine Optimization Pipeline
+Seam Carving Word Cloud Whitespace
+Bezier Sub-Millimeter Precision Export
+SVG Sanitization Security CVE
+CQD Quality-Diversity Metric Kent 2022
+MAP-Elites pyribs Library
+BOP-Elites Bayesian Optimization
+Self-Play Training QD Archive
+Pareto-Front Hypervolume CQD_HV
+spaCy Transformer Models German English
+PostgreSQL pgvector HNSW Index
+Celery GPU Worker Pool Management
+FastAPI Async Patterns
+structlog OpenTelemetry Tracing
+NVIDIA DCGM Exporter GPU Metrics
+CUDA 12 PyTorch Compatibility Matrix
+Rust WASM wasm-bindgen Next.js
+uv Python Monorepo Workspace
+Alembic pgvector Migrations
+safetensors Model Checkpoints Security
+Hypothesis Property-Based Testing
+mutmut Mutation Testing Strategy
+testcontainers Python Integration Tests

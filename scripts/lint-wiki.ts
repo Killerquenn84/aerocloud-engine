@@ -24,24 +24,24 @@ interface LintIssue {
 }
 
 /**
- * Recursively collect all .md files from a directory (flat for wiki/).
+ * Recursively collect all .md files from a directory tree.
+ * Paths are returned relative to the root `dir` using forward slashes.
  */
-async function collectMarkdownFiles(dir: string): Promise<string[]> {
+async function collectMarkdownFiles(
+  dir: string,
+  prefix: string = ""
+): Promise<string[]> {
   const entries = await readdir(dir, { withFileTypes: true });
   const files: string[] = [];
 
   for (const entry of entries) {
+    const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
     if (entry.isFile() && entry.name.endsWith(".md")) {
-      files.push(entry.name);
+      files.push(rel);
     } else if (entry.isDirectory()) {
-      // Support nested wiki directories if they exist
       const subDir = path.join(dir, entry.name);
-      const subFiles = await readdir(subDir, { withFileTypes: true });
-      for (const sub of subFiles) {
-        if (sub.isFile() && sub.name.endsWith(".md")) {
-          files.push(path.join(entry.name, sub.name));
-        }
-      }
+      const nested = await collectMarkdownFiles(subDir, rel);
+      files.push(...nested);
     }
   }
   return files;
@@ -181,7 +181,13 @@ async function lint(): Promise<void> {
     });
   } else {
     const indexedPages = parseIndexPages(indexContent);
-    const contentPages = allFiles.filter((f) => f !== "index.md" && f !== "log.md");
+    const contentPages = allFiles.filter(
+      (f) =>
+        f !== "index.md" &&
+        f !== "log.md" &&
+        // Auto-generated nightly research files are intentionally unindexed
+        !f.startsWith("research/nightly/")
+    );
 
     for (const page of contentPages) {
       if (!indexedPages.includes(page)) {
