@@ -131,3 +131,13 @@ Issues resolved during execution:
 - BERT Embeddings all-MiniLM-L6-v2
 - POT Python Optimal Transport Library
 - BOP-Elites Bayesian Optimization
+
+## [2026-04-08] phase-03 Wave 2 | spaCy tokenizer + lingua detection + stopwords
+- nlp/tokenize.py: spaCy adapter with thread-safe RLock registry, MissingSpacyModelError fail-fast (no auto-download), stem fallback to lowercased surface (works with spacy.blank in tests), Token emission drops whitespace + punctuation
+- nlp/language.py: lingua LanguageDetectorBuilder limited to EN+DE, lazy RLock-guarded singleton, confidence threshold with 'und' fallback on short/ambiguous input
+- nlp/stopwords.py: spaCy builtin word lists (spacy.lang.{en,de}.stop_words) — stopwordsiso PyPI package declared dead by Codex (letzter Release 2020-09, Alpha)
+- tests/unit/test_nlp_wave2.py: 20 tests (stopwords 6, tokenize 10 incl. thread-safety race on cold cache, language detect 4)
+- Hermetic tests: spacy.load patched to return real spacy.blank('en')/('de') — authentic Doc/Token object graph without 50 MB model downloads
+- pyproject.toml [nlp] extra: added lingua-language-detector>=2.1,<2.2 (2.2+ only ships cp312+ wheels, engine pins py<3.12)
+- 3-KI Konsens dokumentiert: wiki/discussions/2026-04-08-phase-03-wave-2-design.md — Gemini initial, Codex adversarial review entlarvte 4 Schwaechen (dict ohne Lock, MagicMock-Fragility, stopwordsiso-Tod, lingua-Pin), alle Fixes eingearbeitet
+- Total unit tests: 76 (56 prior + 20 new), mypy strict: 0 errors in 24 source files, ruff: clean
