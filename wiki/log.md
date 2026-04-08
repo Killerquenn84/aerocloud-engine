@@ -126,3 +126,8 @@ Issues resolved during execution:
 - Wave 2 (spaCy + lingua + stopwords) deferred to next session — heavy dep install
 - Total unit tests: 56 (34 prior + 22 new)
 - mypy strict: 0 errors in 23 source files
+
+## [2026-04-08] nightly-research | 3 topics
+- BERT Embeddings all-MiniLM-L6-v2
+- POT Python Optimal Transport Library
+- BOP-Elites Bayesian Optimization
