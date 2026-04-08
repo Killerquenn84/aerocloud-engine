@@ -178,9 +178,7 @@ class TestDetectLanguage:
         assert detect_language("The quick brown fox jumps over the lazy dog.") == "en"
 
     def test_detects_german(self) -> None:
-        assert (
-            detect_language("Der schnelle braune Fuchs springt ueber den faulen Hund.") == "de"
-        )
+        assert detect_language("Der schnelle braune Fuchs springt ueber den faulen Hund.") == "de"
 
     def test_empty_string_is_undetermined(self) -> None:
         assert detect_language("") == "und"

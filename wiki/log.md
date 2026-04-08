@@ -154,3 +154,18 @@ Issues resolved during execution:
 - tests/unit/test_nlp_pipeline.py: 18 new tests across 4 classes (tokenize_sentences 3, small-corpus path 5, IDF path 4, edges 6)
 - 3-KI Konsens: Codex review (8 questions answered, all approved before code) — sentencizer over regex, top-N before Zipf, raise on 'und', drop 1-char alphabetic, score-then-stem deterministic order
 - Total unit tests: 94 (76 prior + 18 new), mypy strict: 0 errors in 25 source files, ruff: clean
+
+## [2026-04-08] phase-03 Wave 4 | Code Review + Hardening + merge to main
+- 3-Daumen-Code-Review per Regel 6: Claude self (3 findings), Codex (3 + 6 findings, APPROVED-WITH-FIXES), Gemini (BLOCK on 6 findings)
+- Konsens must-fix Liste eingearbeitet:
+  - F-1/N-1: _extract_markdown_title_line walks chars iteratively with scan budget 4096 + max title 256, KEIN splitlines() mehr (DoS guard against multi-megabyte first lines)
+  - F-2: _apply_positional_boost neuer helper, small-corpus linear fallback bekommt jetzt title + first_sentence boost (vorher silently dropped)
+  - F-3: text_to_candidates docstring listet alle 4 raises (ValueError, LanguageDetectionFailedError, UnsupportedLanguageError, MissingSpacyModelError)
+  - Symbol/Numeric leak: _is_content_token droppt Tokens ohne jeden alpha-Char (covers spaCy SYM tokens '==', '+', '$' und numerische '2024', '100.0' die vorher Geschaeftsberichte fluteten)
+  - N-6: min_font_size + max_font_size validation am Funktionsanfang vor jeder anderen Arbeit
+- Codex Re-Review nach Fixes (mit code im prompt): APPROVED-WITH-NEXT-PHASE-NOTES — alle 5 Fixes korrekt implementiert, Tests substanziell (kein cargo-cult). Empfahl direkten Unit-Test fuer _extract_markdown_title_line.
+- 17 neue Wave 4 Tests (8 hardening + 8 markdown title helper + 1 strengthening): oversized title rejected, scan-budget bails on 1MB no-newline input, exact-cap kept + one-over rejected, symbol/numeric drop, alphanumeric (covid-19) kept, small-corpus title boost flips ranking, font validation early
+- Known Limits (next phase, v2 backlog): N-2 mixed-language, N-3 casing collapse, N-4 title double-count, N-5 stem-alphabetical tiebreak — alle dokumentiert in .planning/STATE.md
+- Wave 4 doc: wiki/discussions/2026-04-08-phase-03-wave-4-codereview.md
+- Total unit tests: 111 (94 prior + 17 new), mypy strict: 0 errors in 25 source files, ruff check + format: clean
+- Phase 3 NLP-v1 abgeschlossen, ready fuer Phase 4 Geometry-v1

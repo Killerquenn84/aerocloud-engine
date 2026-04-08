@@ -48,6 +48,13 @@ DEFAULT_MIN_FONT_SIZE: Final[float] = 10.0
 DEFAULT_MAX_FONT_SIZE: Final[float] = 96.0
 DEFAULT_FONT_FAMILY: Final[str] = "Inter"
 
+# Cap how far we scan for the markdown title — long enough to skip a few
+# blank lines before a heading, short enough that an attacker cannot stream
+# megabytes of "title" content into the second tokenization pass. (DoS guard
+# from the Wave 4 3-AI code review.)
+_TITLE_SCAN_BUDGET_CHARS: Final[int] = 4096
+_MAX_TITLE_CHARS: Final[int] = 256
+
 
 class LanguageDetectionFailedError(RuntimeError):
     """Raised when automatic language detection could not reach a verdict.
@@ -65,14 +72,29 @@ def _extract_markdown_title_line(text: str) -> str | None:
     We deliberately do NOT run a full markdown parser — we just check the
     opening line. A heading further down the document is still useful input
     for `heading=True` in the future, but that is out of scope for Wave 3.
+
+    DoS guard: we scan at most ``_TITLE_SCAN_BUDGET_CHARS`` of the input and
+    reject any candidate title longer than ``_MAX_TITLE_CHARS``. This means
+    `text.splitlines()` (which would materialize the full line list of a
+    multi-megabyte input) is never called on the hot path — we walk the
+    leading slice character-by-character and bail as soon as we have a
+    verdict.
     """
-    for line in text.splitlines():
-        stripped = line.strip()
-        if not stripped:
-            continue
-        if stripped.startswith("# "):
-            return stripped[2:].strip()
-        return None
+    end = min(len(text), _TITLE_SCAN_BUDGET_CHARS)
+    pos = 0
+    while pos < end:
+        nl = text.find("\n", pos, end)
+        line_end = nl if nl != -1 else end
+        line = text[pos:line_end].strip()
+        if line:
+            if len(line) > _MAX_TITLE_CHARS:
+                return None
+            if line.startswith("# "):
+                return line[2:].strip()
+            return None
+        if nl == -1:
+            return None
+        pos = nl + 1
     return None
 
 
@@ -90,8 +112,20 @@ def _resolve_language(text: str, language: str) -> str:
 
 
 def _is_content_token(tok: Token) -> bool:
-    """Content-token filter used by the orchestrator."""
+    """Content-token filter used by the orchestrator.
+
+    Drops:
+    - stopwords (per spaCy's per-language list)
+    - tokens that contain no alphabetic character at all (covers `==`, `=>`,
+      `+`, `$`, `42`, `2024`, `100.0` — Wave 4 review found that spaCy's
+      built-in `is_punct` flag does NOT cover `SYM` tokens or numerals,
+      which leak code-snippet syntax and year-noise into word clouds)
+    - single-character alphabetic tokens (single letters are noise even when
+      not on the stopword list)
+    """
     if tok.is_stopword:
+        return False
+    if not any(c.isalpha() for c in tok.surface):
         return False
     return not (len(tok.surface) == 1 and tok.surface.isalpha())
 
@@ -137,6 +171,24 @@ def _build_positional_signals(
     return positional_signals
 
 
+def _apply_positional_boost(
+    base_scores: dict[str, float],
+    positional_signals: dict[str, PositionalSignal],
+) -> dict[str, float]:
+    """Multiply each base score by its positional weight (>= 1.0).
+
+    Used so the small-corpus linear-fallback path honours title and
+    first-sentence boosts the same way the TF-IDF-AP path does. Without
+    this, short inputs (a one-line slogan, a tweet) would silently lose
+    every positional cue — exactly the inputs where heuristics matter
+    most. (Wave 4 3-AI review F-2.)
+    """
+    return {
+        stem: score * positional_signals.get(stem, PositionalSignal()).weight()
+        for stem, score in base_scores.items()
+    }
+
+
 def _score_stems(
     content_sentences: list[list[Token]],
     all_stems: list[str],
@@ -144,15 +196,19 @@ def _score_stems(
     language: str,
 ) -> dict[str, float]:
     """Pick the right scorer (linear fallback or TF-IDF-AP) and return scores."""
+    positional_signals = _build_positional_signals(content_sentences, text, language)
+
     if is_small_corpus(len({tok.stem for sent in content_sentences for tok in sent})):
-        return linear_fallback_scores(all_stems)
+        return _apply_positional_boost(
+            linear_fallback_scores(all_stems),
+            positional_signals,
+        )
 
     doc_frequencies: dict[str, int] = {}
     for sent in content_sentences:
         for stem in {tok.stem for tok in sent}:
             doc_frequencies[stem] = doc_frequencies.get(stem, 0) + 1
 
-    positional_signals = _build_positional_signals(content_sentences, text, language)
     return compute_tfidf_ap(
         document_terms=all_stems,
         corpus_document_frequencies=doc_frequencies,
@@ -192,8 +248,7 @@ def text_to_candidates(
         text: Raw input text. Markdown-style headings are detected heuristically.
         max_words: Hard cap on the number of returned candidates.
         language: ISO 639-1 code (``'en'`` / ``'de'``) or ``'auto'`` to run
-            lingua detection first. ``'auto'`` raises
-            `LanguageDetectionFailedError` on undetermined input.
+            lingua detection first.
         min_font_size: Smallest font size passed to `zipf_font_sizes`.
         max_font_size: Largest font size passed to `zipf_font_sizes`.
         font_family: Font family recorded on every emitted `WordCandidate`.
@@ -201,7 +256,24 @@ def text_to_candidates(
     Returns:
         Up to `max_words` `WordCandidate` instances, deterministically ordered
         by score DESC then stem ASC.
+
+    Raises:
+        ValueError: ``min_font_size`` is non-positive or ``max_font_size`` is
+            not strictly greater than ``min_font_size``. Validated up front so
+            misconfiguration fails before any expensive tokenization runs.
+        LanguageDetectionFailedError: ``language='auto'`` and lingua returned
+            ``'und'`` (input is empty, too short, or language-ambiguous).
+        UnsupportedLanguageError: ``language`` is outside the Wave 2 scope
+            (``'en'`` / ``'de'`` only).
+        MissingSpacyModelError: the spaCy model for the resolved language is
+            not installed. Install via ``python -m spacy download <model>``.
     """
+    if min_font_size <= 0:
+        raise ValueError(f"min_font_size must be > 0, got {min_font_size}")
+    if max_font_size <= min_font_size:
+        raise ValueError(
+            f"max_font_size must be > min_font_size, got {max_font_size} <= {min_font_size}"
+        )
     if max_words <= 0:
         return []
 
