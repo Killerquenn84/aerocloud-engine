@@ -76,6 +76,7 @@ Protokolle der 3-KI Diskussionen (Claude + Gemini + Codex).
 - [discussions/2026-04-07-phase-02-context.md](discussions/2026-04-07-phase-02-context.md) — Phase 2 Datenmodell + Wiki Context
 - [discussions/2026-04-07-phase-03-context.md](discussions/2026-04-07-phase-03-context.md) — Phase 3 NLP-v1 Context (compact)
 - [discussions/2026-04-08-phase-03-wave-2-design.md](discussions/2026-04-08-phase-03-wave-2-design.md) — Phase 3 Wave 2 3-KI Konsens (Gemini + Codex), 4 Schwaechen entlarvt
+- [discussions/2026-04-08-phase-03-wave-3-design.md](discussions/2026-04-08-phase-03-wave-3-design.md) — Phase 3 Wave 3 Pipeline Orchestrator (Codex Review, 8 Designfragen)
 
 ## 🧭 Decisions (wiki/decisions/)
 Alle architektonischen und designrelevanten Entscheidungen — mit Datum.

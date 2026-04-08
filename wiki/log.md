@@ -141,3 +141,16 @@ Issues resolved during execution:
 - pyproject.toml [nlp] extra: added lingua-language-detector>=2.1,<2.2 (2.2+ only ships cp312+ wheels, engine pins py<3.12)
 - 3-KI Konsens dokumentiert: wiki/discussions/2026-04-08-phase-03-wave-2-design.md — Gemini initial, Codex adversarial review entlarvte 4 Schwaechen (dict ohne Lock, MagicMock-Fragility, stopwordsiso-Tod, lingua-Pin), alle Fixes eingearbeitet
 - Total unit tests: 76 (56 prior + 20 new), mypy strict: 0 errors in 24 source files, ruff: clean
+
+## [2026-04-08] phase-03 Wave 3 | Pipeline orchestrator (single-doc TF-IDF via sentence-DF)
+- nlp/pipeline.py: text_to_candidates(text, max_words=200, language='auto') -> list[WordCandidate]
+- nlp/tokenize.py extended: tokenize_sentences() + idempotent _ensure_sentence_boundaries() that adds sentencizer if pipeline lacks parser/sentencizer (covers spacy.blank() in tests AND trained pipelines in production)
+- Single-document TF-IDF: sentences ARE the documents — DF = number of sentences a stem appears in. Codex bestaetigt sound for single-doc IDF surrogate.
+- Pipeline order (sequential, language-dependent): detect_language -> tokenize_sentences -> filter (stopwords + 1-char alpha) -> stems aggregate -> small-corpus guard OR compute_tfidf_ap with first-sentence + markdown-title PositionalSignal -> top-N by score -> zipf_font_sizes -> WordCandidate emit
+- Determinism: score DESC, stem ASC tiebreak. Two runs on same input produce byte-identical output (test verifies via model_dump).
+- 'und' from auto detect raises LanguageDetectionFailedError — explicit failure beats silent fallback to English
+- Markdown title heuristic: first non-empty line starting with '# ' is the title; its content stems get title=True boost
+- Display surface: most-frequent surface form per stem, tiebreak first-occurrence
+- tests/unit/test_nlp_pipeline.py: 18 new tests across 4 classes (tokenize_sentences 3, small-corpus path 5, IDF path 4, edges 6)
+- 3-KI Konsens: Codex review (8 questions answered, all approved before code) — sentencizer over regex, top-N before Zipf, raise on 'und', drop 1-char alphabetic, score-then-stem deterministic order
+- Total unit tests: 94 (76 prior + 18 new), mypy strict: 0 errors in 25 source files, ruff: clean

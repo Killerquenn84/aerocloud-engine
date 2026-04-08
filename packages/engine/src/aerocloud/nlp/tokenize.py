@@ -94,6 +94,37 @@ def get_nlp(language: str) -> Any:
         return nlp
 
 
+def _spacy_token_to_token(spacy_token: Any, language: str) -> Token | None:
+    """Convert a spaCy `Token` to our `Token` model, or return None to drop."""
+    if spacy_token.is_space or spacy_token.is_punct:
+        return None
+    surface = spacy_token.text
+    # `spacy.blank(...)` pipelines emit empty lemmas. Fall back to the
+    # lowercased surface so tests using blank pipelines still get usable
+    # stems and stem-based counting stays correct.
+    lemma = spacy_token.lemma_ or surface.lower()
+    stem = lemma.lower()
+    return Token(
+        surface=surface,
+        stem=stem,
+        language=language,
+        is_stopword=is_stopword(stem, language),
+    )
+
+
+def _ensure_sentence_boundaries(nlp: Any) -> None:
+    """Attach a sentencizer if the pipeline cannot already produce sentences.
+
+    `spacy.load('..._sm')` ships with a trained parser that already segments
+    sentences, but `spacy.blank()` pipelines (used in unit tests) do not.
+    We idempotently add a `sentencizer` in that case so `doc.sents` is always
+    walkable regardless of how the pipeline was loaded.
+    """
+    if "parser" in nlp.pipe_names or "sentencizer" in nlp.pipe_names:
+        return
+    nlp.add_pipe("sentencizer")
+
+
 def tokenize(text: str, language: str) -> list[Token]:
     """Tokenize `text` with the cached pipeline for `language`.
 
@@ -106,20 +137,30 @@ def tokenize(text: str, language: str) -> list[Token]:
     doc = nlp(text)
     tokens: list[Token] = []
     for spacy_token in doc:
-        if spacy_token.is_space or spacy_token.is_punct:
-            continue
-        surface = spacy_token.text
-        # `spacy.blank(...)` pipelines emit empty lemmas. Fall back to the
-        # lowercased surface so tests using blank pipelines still get usable
-        # stems and stem-based counting stays correct.
-        lemma = spacy_token.lemma_ or surface.lower()
-        stem = lemma.lower()
-        tokens.append(
-            Token(
-                surface=surface,
-                stem=stem,
-                language=language,
-                is_stopword=is_stopword(stem, language),
-            )
-        )
+        token = _spacy_token_to_token(spacy_token, language)
+        if token is not None:
+            tokens.append(token)
     return tokens
+
+
+def tokenize_sentences(text: str, language: str) -> list[list[Token]]:
+    """Return sentence-grouped tokens for single-document IDF computation.
+
+    The pipeline orchestrator uses this to treat sentences as "documents" for
+    TF-IDF — a stem that appears in many sentences gets a lower IDF than one
+    that clusters in a single sentence. The sentencizer is added lazily if
+    the loaded pipeline cannot segment sentences on its own.
+    """
+    nlp = get_nlp(language)
+    _ensure_sentence_boundaries(nlp)
+    doc = nlp(text)
+    sentences: list[list[Token]] = []
+    for sent in doc.sents:
+        sent_tokens: list[Token] = []
+        for spacy_token in sent:
+            token = _spacy_token_to_token(spacy_token, language)
+            if token is not None:
+                sent_tokens.append(token)
+        if sent_tokens:
+            sentences.append(sent_tokens)
+    return sentences
