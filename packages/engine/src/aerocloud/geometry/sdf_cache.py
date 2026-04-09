@@ -13,7 +13,7 @@ Design rationale (ADR references):
 - D-18: 384 MiB default budget per worker process
 - D-19: float32 values — no int16/float16 quantization
 - D-20: composite key includes blake3 digest + preprocessing params + algo version + shape
-- D-21: blake3 primary, sha256 fallback if blake3 unavailable; xxhash BLOCKED
+- D-21: blake3 primary, sha256 fallback if blake3 unavailable (non-cryptographic hashes blocked)
 - D-22: module-level RLock; compute_sdf MUST be called OUTSIDE the lock
 - D-23: in-memory only; disk persistence deferred to Phase 12
 """
