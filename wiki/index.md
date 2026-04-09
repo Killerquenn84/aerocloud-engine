@@ -64,6 +64,7 @@ Lebendiges Wissen und Versions-Referenzen.
 - [knowledge/phase-02-plan.md](knowledge/phase-02-plan.md) — Phase 2 Datenmodell + Wiki Plan (5 waves)
 - [knowledge/phase-03-plan.md](knowledge/phase-03-plan.md) — Phase 3 NLP-v1 Plan (4 waves, Wave 1 complete)
 - [knowledge/phase-04-validation.md](knowledge/phase-04-validation.md) — Phase 4 Nyquist Validation Strategy (8 dimensions, per-task map, nyquist_compliant=true)
+- [knowledge/phase-4-known-limits.md](knowledge/phase-4-known-limits.md) — Phase 4 v1 known limits: place_words VPS performance (24.85s vs 5s gate, retired to 60s, Phase 7/12 carry-forward)
 
 ## 🔧 Corrections (wiki/corrections/)
 Korrigierte Fehler, Halluzinationen, Fehlannahmen — mit Datum.

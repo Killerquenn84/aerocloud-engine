@@ -60,7 +60,7 @@ created: 2026-04-09
 | 04-05-T2 | 04-05 | 3 | GEO-06 | T-4-P1, T-4-P2 | per-word adaptive POI, integer Archimedean spiral, PlacementResult+DropReason | unit | `pytest tests/geometry/unit/test_placement.py -x` | ❌ W0 | ⬜ pending |
 | 04-05-T3 | 04-05 | 3 | GEO-01..06 | — | end-to-end pipeline on circle/square/C/crescent + empty-mask | integration | `pytest tests/geometry/integration/test_pipeline.py -x` | ❌ W0 | ⬜ pending |
 | 04-06-T1 | 04-06 | 4 | GEO-04, GEO-06 | T-4-06 | debug dump (AEROCLOUD_DEBUG_GEO), structlog+OTel wiring | unit+integration | `pytest tests/geometry/unit/test_debug.py tests/geometry/unit/test_metrics.py -x` | ❌ W0 | ⬜ pending |
-| 04-06-T2 | 04-06 | 4 | GEO-02..06 | T-4-07 | Nyquist dims 6/7/8: determinism, hypothesis fuzz, pytest-benchmark 2048² SDF <1s | determinism+security+perf | `pytest tests/geometry/determinism tests/geometry/security tests/geometry/performance -x --benchmark-disable` | ❌ W0 | ⬜ pending |
+| 04-06-T2 | 04-06 | 4 | GEO-02..06 | T-4-07 | Nyquist dims 6/7/8: determinism, hypothesis fuzz, pytest-benchmark 2048² SDF <1s, placement <60s (VPS; 5s retired Wave 5, re-eval Phase 12) | determinism+security+perf | `pytest tests/geometry/determinism tests/geometry/security tests/geometry/performance -x --benchmark-disable` | ❌ W0 | ⬜ pending |
 | 04-06-T3 | 04-06 | 4 | GEO-01..07 | — | 11 wiki files (Regel 11): 7 code, 3 decisions, 1 tests, log+index append | docs | `test -f wiki/code/geometry-mask.md && grep -q 'Phase 4' wiki/log.md` | ❌ W0 | ⬜ pending |
 | 04-07-T1 | 04-07 | 5 | GEO-01..07 | T-4-R2 | Claude self-review Regel 7 S/L/A checklists | review | `grep -E 'APPROVED\|CHANGES_REQUESTED' .planning/phases/04-geometry-v1/04-3ki-review/claude-self.md` | ❌ W0 | ⬜ pending |
 | 04-07-T2 | 04-07 | 5 | GEO-01..07 | T-4-R1 | Codex adversarial review | review | `test -s .planning/phases/04-geometry-v1/04-3ki-review/codex.md` | ❌ W0 | ⬜ pending |
@@ -97,7 +97,7 @@ created: 2026-04-09
 | 5 | Concurrency (RLock) | `tests/geometry/state/test_cache_threadsafe.py` | 1 file, 16 threads × 1000 ops | per wave merge |
 | 6 | Determinism | `tests/geometry/determinism/test_byte_identical.py` | 1 file, 10 runs same input, diff hashes | per phase gate |
 | 7 | Security | Phase 2 pickle-lint carry-forward + `tests/geometry/security/test_mask_fuzz.py` (hypothesis fuzz) | 1 new file | per phase gate |
-| 8 | Performance | `tests/geometry/performance/test_sdf_benchmark.py` (pytest-benchmark) | 1 file, 2048² SDF < 1 s, 100-word placement < 5 s | per phase gate |
+| 8 | Performance | `tests/geometry/performance/test_sdf_benchmark.py` (pytest-benchmark) | 1 file, 2048² SDF < 1 s, 100-word placement < 60 s (VPS ceiling; 5.0 s re-evaluated Phase 12) | per phase gate |
 
 ---
 
