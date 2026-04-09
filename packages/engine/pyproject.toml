@@ -36,6 +36,8 @@ geometry = [
     "opencv-python-headless>=4.10.0",
     "svgelements>=1.9.6",
     "reportlab>=4.2.0",
+    "cachetools>=7.0.0",  # Phase 4 D-17: bytes-bounded LRU cache
+    "blake3>=1.0.0",      # Phase 4 D-21: strong content digest for cache key
 ]
 # NLP: Phase 3 (NLP-v1)
 nlp = [

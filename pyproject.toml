@@ -33,6 +33,7 @@ dev = [
     "pytest-env>=1.1.5",
     "hypothesis>=6.120.0",
     "testcontainers>=4.9.0",
+    "pytest-benchmark>=4.0.0",  # Phase 4 D-50: geometry performance tests (2048² SDF <1s)
 ]
 
 [tool.ruff]
