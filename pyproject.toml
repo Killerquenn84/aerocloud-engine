@@ -54,6 +54,7 @@ ignore = [
 "packages/engine/tests/**" = ["PLR", "S101", "ARG001", "ARG002", "ARG005", "PLC0415"]
 # CLI entry points legitimately print to stdout
 "packages/engine/src/aerocloud/scripts/**" = ["T201", "PLC0415", "BLE001"]
+"packages/engine/scripts/**" = ["T201", "PLC0415", "E402"]
 "scripts/**" = ["T201", "PLC0415"]
 
 [tool.ruff.lint.isort]
