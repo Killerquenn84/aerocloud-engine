@@ -95,18 +95,18 @@ Each phase ends ONLY when ALL of:
 
 ## Phase 4: Geometry-v1
 
-**Goal:** Silhouette mask → exact SDF + AABB collision + simple convex placement.
+**Goal:** Silhouette mask → exact signed float32 SDF (positive=inside) + bytes-bounded cache with blake3 composite key + vectorized integer AABB collision + per-word adaptive POI spiral placement with structured DropReason contract + pixel-scanned glyph AABBs with cross-platform golden-corpus firewall.
 
 **Requirements covered:** GEO-01 to GEO-07 (7)
 
-**Plans:**
-- `Pillow` mask decoder
-- `scipy.ndimage.distance_transform_edt` (exact Meijster EDT)
-- LRU cache for SDF (50 entries, sha256 key)
-- AABB collision (Stage 1 of 5)
-- Centroid-origin spiral placement (convex shapes only)
-- Pixel-scanned glyph bounding boxes (NOT measureText)
-- Reference fixture validation (circle, square)
+**Plans:** 7 plans in 6 waves
+- [ ] 04-01-scaffolding-PLAN.md — ADRs (0004/0005/0006), errors.py, deps (cachetools, blake3), config.sdf_cache_max_bytes, test subtree + conftest fixtures [Wave 0]
+- [ ] 04-02-mask-sdf-PLAN.md — mask.py (Pillow L/RGB/RGBA decode, D-08 empty guard), sdf.py (scipy two-call EDT, float32, positive=inside), __init__.py (_assert_freetype, (y,x) adapters), hypothesis property tests [Wave 1]
+- [ ] 04-03-sdf-cache-PLAN.md — bytes-bounded LRUCache 384 MiB, blake3 composite key (D-20), module RLock, 16-thread concurrency test [Wave 2 parallel]
+- [ ] 04-04-glyph-golden-PLAN.md — font.getmask per-codepoint, pixel-scanned AABB, Pydantic GlyphBBox/AABB (y,x), golden .npy corpus ~450 fixtures, regression test [Wave 2 parallel]
+- [ ] 04-05-collision-placement-PLAN.md — vectorized int AABB collision, per-word adaptive POI + feasibility field, integer Archimedean spiral (MAX_STEP=16), PlacementResult + DropReason enum, integration test [Wave 3]
+- [ ] 04-06-observability-gates-PLAN.md — debug dump (AEROCLOUD_DEBUG_GEO), structlog+OTel metrics, Nyquist dims 6/7/8 (determinism + fuzz + 2048² SDF <1s benchmark), 11 wiki files [Wave 4]
+- [ ] 04-07-3ki-review-PLAN.md — Claude self + Codex + Gemini review per Regel 6, consensus ratification, phase close-out (ROADMAP/STATE/wiki) [Wave 5 gate]
 
 **Success criteria:**
 1. Circle mask: SDF center value equals radius ± 1px

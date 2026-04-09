@@ -189,3 +189,26 @@ Issues resolved during execution:
 - Scope: STRICT GEO-01..07, absolutes Phase-7-Pull-forward-Verbot
 - Anti-Sycophancy Self-Check passed — jede Acceptance hat independent evidence
 - Bereit fuer /gsd-plan-phase 4
+
+## [2026-04-09] phase-04 | PLAN.md 7 plans / 22 tasks / 6 waves (plan-checker PASSED)
+- Neue Dateien: .planning/phases/04-geometry-v1/04-RESEARCH.md (948 Zeilen, 12 findings + Validation Architecture + 6-wave topology + 9 Risks), 04-VALIDATION.md (Nyquist 8-dim, per-task map fuer alle 22 Tasks, nyquist_compliant=true), 04-01..04-07 PLAN.md (3750 Zeilen gesamt)
+- Wiki Mirror: wiki/research/2026-04-09-phase-04-research.md, wiki/knowledge/phase-04-validation.md
+- Wave-Topologie:
+  - Wave 0: 04-01-scaffolding (ADRs 0004/0005/0006, errors.py, test subtree, cachetools+blake3 deps) — serial, blocks all
+  - Wave 1: 04-02-mask-sdf (Pillow decoder + scipy EDT double-call + _assert_freetype import gate) — 3 tasks
+  - Wave 2a: 04-03-sdf-cache (LRUCache 384 MiB bytes-bounded, blake3 composite key, module RLock, 16-thread concurrency test) — 2 tasks
+  - Wave 2b: 04-04-glyph-golden (font.getmask mode='L', ~450 golden .npy fixtures Inter+IBM Plex, Pydantic AABB/GlyphBBox) — 3 tasks, PARALLEL zu 2a
+  - Wave 3: 04-05-collision-placement (vectorized int AABB + per-word adaptive POI + integer Archimedean spiral + PlacementResult+DropReason + integration test) — 3 tasks
+  - Wave 4: 04-06-observability-gates (AEROCLOUD_DEBUG_GEO dump, structlog+OTel, Nyquist dims 6/7/8: determinism+fuzz+benchmark 2048² SDF <1s, 11 wiki files) — 3 tasks
+  - Wave 5: 04-07-3ki-review (Claude self + Codex adversarial + Gemini perf, 3-Daumen-Prinzip, autonomous=false checkpoint) — 5 tasks
+- Plan-checker VERIFICATION PASSED (gsd-plan-checker, sonnet): 10 Dimensionen alle gruen
+  - Alle 7 GEO-01..07 Requirements mapped
+  - Alle 16 kritischen CONTEXT.md D-constraints in Task-Actions implementiert
+  - Alle 51 D-XX Decisions mindestens einmal zitiert
+  - Alle 8 Nyquist-Dimensionen (unit/integration/contract/state/concurrency/determinism/security/perf) covered
+  - Alle 7 Threat-Model-Items (T-4-01..T-4-07) zu Tasks mapped
+  - Scope-Sanity: max 3-5 Tasks pro Plan, files_modified realistisch, wiki-mandate erfuellt
+  - D-26 hallucination protection: grep-assert `hint_style` nirgendwo im Glyph-Code
+  - D-51 no-mocking: alle tests benutzen reale Pillow/scipy/numpy, mit einer dokumentierten Ausnahme (monkeypatch `PIL.features.version` fuer mismatch-test)
+- INFO (non-blocking): REQUIREMENTS.md GEO-04 text ist stale (pre-Codex-redesign), wird waehrend Wave 0/2a aktualisiert. 04-05-T2 verify-tag hat kleines copy-paste-Artefakt (doppeltes `<automated>`), zweiter Block ist korrekt.
+- Bereit fuer /gsd-execute-phase 4
