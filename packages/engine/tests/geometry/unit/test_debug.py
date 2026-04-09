@@ -16,9 +16,7 @@ output directory is isolated.
 
 from __future__ import annotations
 
-import io
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -29,11 +27,6 @@ from PIL import Image
 from aerocloud.geometry.debug import debug_enabled, dump_geometry_debug
 
 _ENV_VAR = "AEROCLOUD_DEBUG_GEO"
-
-
-# ---------------------------------------------------------------------------
-# debug_enabled()
-# ---------------------------------------------------------------------------
 
 
 def test_debug_disabled_by_default(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -67,11 +60,6 @@ def test_debug_enabled_with_true_string(monkeypatch: pytest.MonkeyPatch) -> None
     assert debug_enabled() is True
 
 
-# ---------------------------------------------------------------------------
-# dump_geometry_debug — disabled path
-# ---------------------------------------------------------------------------
-
-
 def test_dump_returns_none_when_disabled(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -90,11 +78,6 @@ def test_dump_returns_none_when_disabled(
         placement_json={"placed": [], "dropped_words": [], "stats": {}},
     )
     assert result is None
-
-
-# ---------------------------------------------------------------------------
-# dump_geometry_debug — enabled path (real files)
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture()

@@ -7,7 +7,6 @@ tests — we only verify the objects exist and are the correct type.
 
 from __future__ import annotations
 
-import structlog
 from opentelemetry.metrics import Counter, Histogram
 
 from aerocloud.geometry.metrics import (
