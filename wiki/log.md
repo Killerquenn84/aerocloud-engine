@@ -213,6 +213,22 @@ Issues resolved during execution:
 - INFO (non-blocking): REQUIREMENTS.md GEO-04 text ist stale (pre-Codex-redesign), wird waehrend Wave 0/2a aktualisiert. 04-05-T2 verify-tag hat kleines copy-paste-Artefakt (doppeltes `<automated>`), zweiter Block ist korrekt.
 - Bereit fuer /gsd-execute-phase 4
 
+## [2026-04-09] phase-04 | Wave 5 — 3-KI Code Review + Phase Close-Out (COMPLETE)
+
+- 3-KI code review applied: Claude self (APPROVED-WITH-NOTES), Codex (BLOCKED), Gemini 2.5-pro (BLOCKED)
+- Two deviations presented to Jens: performance gate miss (24.85s vs 5.0s) + FreeType pin mismatch
+- Jens approved Action A = Decision A (Option 1) + Decision B (Option A):
+  - Decision B: FreeType pin updated 2.13.2 -> 2.14.3; AEROCLOUD_SKIP_FREETYPE_CHECK bypass removed;
+    conftest.py shims removed; test_package_init.py updated; ADR-0006 v2 written
+  - Decision A: place_words 5.0s gate formally retired to 60s (VPS ceiling);
+    wiki/knowledge/phase-4-known-limits.md created with root cause + Phase 7 mitigation paths
+- Gemini bonus fixes applied: gc.collect RSS fix (cast edt_in to f32 first) + float32 promotion
+  fix in select_origin (np.float32 threshold avoids widening)
+- Result: 595/595 tests green WITHOUT bypass, mypy strict 0 errors, ruff clean
+- consensus.md ratified at .planning/phases/04-geometry-v1/04-3ki-review/consensus.md
+- Wiki: discussions/2026-04-09-phase-04-wave5-codereview.md + discussions/2026-04-09-phase-04-summary.md
+- Phase 4 Geometry-v1: COMPLETE. All 7 plans, 22 tasks, 595 tests, GEO-01..07 requirements covered.
+
 ## [2026-04-09] phase-04 | Wave 4 — Observability Gates + Nyquist dims 6/7/8 + Wiki Mirror
 
 - geometry/debug.py: AEROCLOUD_DEBUG_GEO dump (D-47) — mask.png, sdf_heatmap.png (lazy matplotlib R-7), spiral_trace.png, placement.json, env.json
