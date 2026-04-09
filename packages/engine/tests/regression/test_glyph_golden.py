@@ -13,29 +13,23 @@ Fail loudly with the FreeType version to aid diagnosis.
 FreeType version note:
     Fixtures in this directory were generated on FreeType 2.14.3 (server
     reality). ADR-0006 pin is 2.13.2 — this mismatch is a KNOWN deviation
-    to be reconciled in Wave 5 3-KI review. The conftest.py shim patches
-    PIL.features.version to "2.13.2" during test collection so
+    to be reconciled in Wave 5 3-KI review. The conftest.py in this
+    directory patches PIL.features.version to "2.13.2" during test
+    collection (same pattern as tests/geometry/conftest.py) so
     _assert_freetype() does not block test imports. The regression test
-    still asserts byte-for-byte equality against the 2.14.3-generated
-    fixtures, which is correct: we are running on 2.14.3 so the output
-    will match.
+    asserts byte-for-byte equality against the 2.14.3-generated fixtures,
+    which is correct: the server runs 2.14.3 so the raster output matches.
 
 D-51: No mocking of Pillow decode path — this test uses real FreeType.
 """
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import numpy as np
 import pytest
 from PIL import features
-
-# Set the FreeType bypass so geometry package can be imported on this server
-# (FreeType 2.14.3 vs ADR-0006 pin 2.13.2). This is consistent with how the
-# tests/geometry/conftest.py shim works during unit tests.
-os.environ.setdefault("AEROCLOUD_SKIP_FREETYPE_CHECK", "1")
 
 from aerocloud.fonts import _discover_font_files
 from aerocloud.geometry.glyph import _glyph_to_array
