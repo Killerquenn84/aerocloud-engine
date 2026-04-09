@@ -58,8 +58,19 @@ class Settings(BaseSettings):
         default=42,
         description="Global deterministic seed for numpy + torch + random",
     )
+    # Geometry cache budget (Phase 4 D-18). 384 MiB = 402653184 bytes.
+    sdf_cache_max_bytes: int = Field(
+        default=402_653_184,
+        description="Per-worker bytes budget for the SDF LRU cache (D-18).",
+        ge=1_048_576,  # minimum 1 MiB sanity floor
+    )
 
 
 def load_settings() -> Settings:
     """Return a freshly instantiated :class:`Settings` object."""
     return Settings()
+
+
+#: Module-level singleton — use `from aerocloud.config import settings` in production code.
+#: Tests that need custom overrides should call `load_settings()` or patch directly.
+settings: Settings = Settings()
