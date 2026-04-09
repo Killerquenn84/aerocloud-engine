@@ -152,7 +152,12 @@ def select_origin(
     if not math.isfinite(max_val) or max_val <= 0.0:
         return None
 
-    cand: np.ndarray = np.argwhere(feasible_sdf >= max_val - EPS_BAND)
+    # Use np.float32 for the threshold to avoid float32→float64 promotion:
+    # `feasible_sdf >= (float64 - float64)` would silently upcast the float32
+    # array to float64 for the comparison. Keeping the threshold in float32
+    # avoids that widening. Gemini Wave 5 finding.
+    threshold = np.float32(max_val) - np.float32(EPS_BAND)
+    cand: np.ndarray = np.argwhere(feasible_sdf >= threshold)
     cy, cx = mask_centroid
     dist: np.ndarray = np.abs(cand[:, 0] - cy) + np.abs(cand[:, 1] - cx)
     # lexsort: LAST key = primary sort key; sort by (dist asc, y asc, x asc)

@@ -53,9 +53,16 @@ def compute_sdf(mask: np.ndarray) -> np.ndarray:
         raise PlacementFailedError(f"compute_sdf expects 2D mask, got ndim={mask.ndim}")
 
     # Two-call EDT pattern (D-11, ADR-0004):
-    # edt_in: distance from each True pixel to nearest False pixel (inside depth)
-    edt_in: np.ndarray[tuple[int, int], np.dtype[np.float64]] = ndimage.distance_transform_edt(mask)
-    # Release the float64 temporary before the second EDT to cap peak RSS.
+    # edt_in: distance from each True pixel to nearest False pixel (inside depth).
+    # Cast to float32 immediately to halve the per-array footprint before edt_out
+    # is allocated. This is the minimal-RSS variant: peak = 1×f64 + 1×f32 instead
+    # of 2×f64. Gemini Wave 5 finding: the original pattern kept edt_in (f64) live
+    # across gc.collect(), making the gc call a no-op for that allocation.
+    edt_in_f32: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (
+        ndimage.distance_transform_edt(mask).astype(np.float32, copy=False)
+    )
+    # The f64 intermediate from distance_transform_edt is now unreferenced; gc
+    # can reclaim it before the second (larger) f64 edt_out allocation.
     gc.collect()
     # edt_out: distance from each False pixel to nearest True pixel (outside depth)
     edt_out: np.ndarray[tuple[int, int], np.dtype[np.float64]] = ndimage.distance_transform_edt(
@@ -63,8 +70,8 @@ def compute_sdf(mask: np.ndarray) -> np.ndarray:
     )
 
     # Cast to float32 at the public boundary per D-10
-    sdf: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (edt_in - edt_out).astype(
-        np.float32, copy=False
+    sdf: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (
+        edt_in_f32 - edt_out.astype(np.float32, copy=False)
     )
 
     # Validate contract (D-09 + D-10 runtime assertion)
