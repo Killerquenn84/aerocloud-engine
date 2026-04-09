@@ -1,8 +1,8 @@
 # Project State: AeroCloud Engine
 
-**Last updated:** 2026-04-08 after Phase 3 completion (Wave 4 merge to main)
+**Last updated:** 2026-04-09 after Phase 4 CONTEXT.md gathered (3-KI adversarial)
 **Active milestone:** v1 — Full Blueprint Realization
-**Active phase:** Phase 4 — Geometry-v1 (next, awaiting `/gsd-discuss-phase 4`)
+**Active phase:** Phase 4 — Geometry-v1 (CONTEXT.md locked, awaiting `/gsd-plan-phase 4`)
 
 ## Project Reference
 
@@ -10,7 +10,7 @@ See: `.planning/PROJECT.md` (updated 2026-04-07)
 
 **Core value:** Mathematically optimal word placement in arbitrary silhouettes through GPU-accelerated differentiable optimization, exploring the entire continuous solution space (Quality-Diversity).
 
-**Current focus:** Phase 1 — Foundation (next, awaiting `/gsd-discuss-phase 1`)
+**Current focus:** Phase 4 — Geometry-v1 (CONTEXT.md locked 2026-04-09, next step `/gsd-plan-phase 4`)
 
 ## Roadmap Summary
 
@@ -21,7 +21,7 @@ See: `.planning/PROJECT.md` (updated 2026-04-07)
 | 1 | Foundation | ✅ Complete (commit f141d86) |
 | 2 | Datenmodell + Wiki | ✅ Complete (commit b770f57) |
 | 3 | NLP-v1 | ✅ Complete (Wave 1 cced714, Wave 2 454ee36, Wave 3 beba7c4, Wave 4 hardening pending commit) |
-| 4 | Geometry-v1 | ⏸ Pending — next |
+| 4 | Geometry-v1 | 🟡 Context locked (51 decisions, 3-KI adversarial Codex BLOCKED-then-redesigned G-3/G-4/G-5) |
 | 5 | Renderer-v1 | ⏸ Pending |
 | 6 | Inner Loop-v1 | ⏸ Pending |
 | 7 | Geometry-v2 | ⏸ Pending |
@@ -64,7 +64,7 @@ See: `.planning/config.json`
 
 ## Next Action
 
-`/gsd-discuss-phase 4` — gather context and clarify approach for Phase 4: Geometry-v1
+`/gsd-plan-phase 4` — plan waves for Phase 4 Geometry-v1 based on 51 locked decisions in `.planning/phases/04-geometry-v1/04-CONTEXT.md`
 
 ## Phase 3 Known Limitations (carried into v2)
 

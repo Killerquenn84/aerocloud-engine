@@ -176,3 +176,16 @@ Issues resolved during execution:
 - NP-Hard Irregular Bin Packing
 - Bezier Sub-Millimeter Precision Export
 - Sinkhorn-Knopp Optimal Transport
+
+## [2026-04-09] phase-04 | CONTEXT.md gathered (3-KI adversarial, Codex BLOCKED all 3 risk areas)
+- Neue Dateien: .planning/phases/04-geometry-v1/04-CONTEXT.md (51 D-decisions), 04-DISCUSSION-LOG.md, 3ki-g3-g4-g5/{codex-g3,codex-g4,codex-g5,gemini-g3,gemini-g5}.md
+- Wiki Mirror: discussions/2026-04-09-phase-04-context.md, discussions/2026-04-09-phase-04-discussion-log.md
+- Architekt (Jens) triagierte 6 Gray Areas: G-1/G-2/G-6 Claude's Discretion, G-3/G-4/G-5 zwingend 3-KI; dazu 4 blind-spot constraints (SDF sign positive=inside D-09, (y,x) coord dogma D-14, EmptyMaskError fail-fast D-08, AEROCLOUD_DEBUG_GEO dump D-47)
+- **Codex BLOCKED all 3 adversarial reviews** mit konkreten Failure-Szenarios:
+  - G-3 SDF Cache: xxhash64 Kollisionsrisiko, int16-Quantisierung staircased Phase 6 Adam, maxsize=50 = 3.2 GB OOM, cachetools not thread-safe. Resolution: blake3+params+algo-salt Key, bytes-bounded 384 MiB, float32, RLock, no quantization
+  - G-4 Glyph Raster: HALLUCI-CATCH `hint_style` Parameter existiert nicht in Pillow. Homebrew Pillow freetype 2.14.2 drift real. BASIC layout kills ligatures → render per codepoint. Image.resize() FP math unreliable. Resolution: `font.getmask(char, mode="L")` + `PIL.features.version("freetype2")` runtime assertion + Homebrew Pillow blocked + golden-corpus CI regression
+  - G-5 Spiral: single-origin O(4.1e7) probes for 200 words confirmed by math, MAX_STEP=32 creates aliasing pockets, per-word adaptive origin mandatory. Resolution: per-word POI recompute, eps-band + centroid-distance + (y,x) lex tiebreak, integer candidate order, MAX_STEP=16, per-seed budgets, structured PlacementResult mit DropReason enum
+- Gemini: g-3 + g-5 succeeded (g-5 via 2.5-flash fallback), g-4 capacity-exhausted (alle 3 Modelle 429) → Codex + Architekt als sole verification for G-4
+- Scope: STRICT GEO-01..07, absolutes Phase-7-Pull-forward-Verbot
+- Anti-Sycophancy Self-Check passed — jede Acceptance hat independent evidence
+- Bereit fuer /gsd-plan-phase 4
