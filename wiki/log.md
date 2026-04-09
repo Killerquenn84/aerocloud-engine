@@ -169,3 +169,10 @@ Issues resolved during execution:
 - Wave 4 doc: wiki/discussions/2026-04-08-phase-03-wave-4-codereview.md
 - Total unit tests: 111 (94 prior + 17 new), mypy strict: 0 errors in 25 source files, ruff check + format: clean
 - Phase 3 NLP-v1 abgeschlossen, ready fuer Phase 4 Geometry-v1
+
+## [2026-04-09] nightly-research | 5 topics
+- Alembic pgvector Migrations
+- structlog OpenTelemetry Tracing
+- NP-Hard Irregular Bin Packing
+- Bezier Sub-Millimeter Precision Export
+- Sinkhorn-Knopp Optimal Transport
