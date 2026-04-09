@@ -212,3 +212,15 @@ Issues resolved during execution:
   - D-51 no-mocking: alle tests benutzen reale Pillow/scipy/numpy, mit einer dokumentierten Ausnahme (monkeypatch `PIL.features.version` fuer mismatch-test)
 - INFO (non-blocking): REQUIREMENTS.md GEO-04 text ist stale (pre-Codex-redesign), wird waehrend Wave 0/2a aktualisiert. 04-05-T2 verify-tag hat kleines copy-paste-Artefakt (doppeltes `<automated>`), zweiter Block ist korrekt.
 - Bereit fuer /gsd-execute-phase 4
+
+## [2026-04-09] phase-04 | Wave 4 — Observability Gates + Nyquist dims 6/7/8 + Wiki Mirror
+
+- geometry/debug.py: AEROCLOUD_DEBUG_GEO dump (D-47) — mask.png, sdf_heatmap.png (lazy matplotlib R-7), spiral_trace.png, placement.json, env.json
+- geometry/metrics.py: structlog logger + 3 OTel counters (sdf_cache_hits/misses, dropped_words) + 2 histograms (sdf_build_seconds, placement_seconds) (D-48, D-49)
+- sdf_cache.py wired: hits/misses counters + sdf_build_seconds histogram
+- placement.py wired: structlog bind (geometry_phase/word/budget_left) + placement_seconds + dropped_words counter + debug dump on failure path
+- Nyquist dim 6 (determinism): test_byte_identical.py — 10-run byte-identity, clear_cache() between runs, wall_clock_ms excluded (D-45)
+- Nyquist dim 7 (security): test_mask_fuzz.py — hypothesis 200 examples, random bytes to mask_from_bytes, only GeometryError may escape
+- Nyquist dim 8 (performance): test_sdf_benchmark.py — pytest-benchmark, 2048x2048 SDF < 1.0s, 100-word 1024x1024 < 5.0s
+- Wiki: 7 code/, 3 decisions/, 1 tests/geometry.md (11 files total — Regel 11 mandate)
+- Next: Wave 5 3-KI code review per Regel 6

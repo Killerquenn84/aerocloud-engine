@@ -88,16 +88,27 @@ Alle architektonischen und designrelevanten Entscheidungen — mit Datum.
 
 - [decisions/2026-04-07-polyglot-stack-selection.md](decisions/2026-04-07-polyglot-stack-selection.md) — Polyglot-Stack + Bottom-Up Build Order + Codex-Korrekturen + Rollenklarstellung
 - [decisions/2026-04-07-font-licensing.md](decisions/2026-04-07-font-licensing.md) — Inter + IBM Plex Serif SIL OFL 1.1 licensing assessment
+- [decisions/2026-04-09-phase-4-sdf-sign-convention.md](decisions/2026-04-09-phase-4-sdf-sign-convention.md) — ADR-0004: SDF positive=inside, UNCHANGEABLE, float32 only (D-09, D-10)
+- [decisions/2026-04-09-phase-4-coordinate-system-yx.md](decisions/2026-04-09-phase-4-coordinate-system-yx.md) — ADR-0005: (y, x) canonical internally, (x, y) only at Pydantic boundary (D-14..D-16)
+- [decisions/2026-04-09-phase-4-freetype-pinning.md](decisions/2026-04-09-phase-4-freetype-pinning.md) — ADR-0006: FreeType 2.13.2 pin + server reality (2.14.3) + bypass mechanism (D-28..D-30)
 
 ## 💻 Code (wiki/code/)
 Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 
-_(Noch leer — wird ab Phase 1 gefuellt)_
+### Phase 4 Geometry-v1
+
+- [code/geometry-errors.md](code/geometry-errors.md) — GeometryError hierarchy (D-08, D-28, D-43)
+- [code/geometry-mask.md](code/geometry-mask.md) — mask_from_bytes, threshold, alpha handling (D-04..D-08)
+- [code/geometry-sdf.md](code/geometry-sdf.md) — compute_sdf, sign convention, double-EDT (D-09..D-13, ADR-0004)
+- [code/geometry-sdf-cache.md](code/geometry-sdf-cache.md) — bytes-bounded LRU, blake3 key, RLock (D-17..D-23)
+- [code/geometry-collision.md](code/geometry-collision.md) — vectorized AABB, half-open intervals (D-35..D-37)
+- [code/geometry-glyph.md](code/geometry-glyph.md) — getmask() pattern, golden corpus, FreeType pin (D-24..D-34)
+- [code/geometry-placement.md](code/geometry-placement.md) — adaptive POI, spiral, DropReason (D-38..D-49)
 
 ## 🧪 Tests (wiki/tests/)
 Test-Coverage und Test-Strategien pro Modul.
 
-_(Noch leer — wird ab Phase 1 gefuellt)_
+- [tests/geometry.md](tests/geometry.md) — Phase 4 Nyquist 8-dimension coverage (unit/integration/contract/state/concurrency/determinism/security/performance)
 
 ## 🐛 Bugs (wiki/bugs/)
 Gefundene Bugs und ihre Fixes — mit Datum.
