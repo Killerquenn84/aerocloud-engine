@@ -24,7 +24,7 @@ Determinism (D-45/D-46):
 
 Locked constants (D-41/D-42 -- NEVER change without 3-KI review):
     MIN_STEP = 1     (Codex g-5: lower bound prevents infinite loop on tiny AABB)
-    MAX_STEP = 16    (Codex g-5: MAX_STEP=32 creates aliasing pockets; use 16)
+    MAX_STEP = 16    (Codex g-5: higher values create aliasing pockets; 16 chosen)
     MAX_ITERATIONS_PER_SEED = 500
     MAX_SEEDS_PER_WORD = 3
     MAX_WALL_CLOCK_PER_WORD = 1.0  seconds
