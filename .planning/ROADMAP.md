@@ -99,14 +99,21 @@ Each phase ends ONLY when ALL of:
 
 **Requirements covered:** GEO-01 to GEO-07 (7)
 
-**Plans:** 7 plans in 6 waves
-- [ ] 04-01-scaffolding-PLAN.md — ADRs (0004/0005/0006), errors.py, deps (cachetools, blake3), config.sdf_cache_max_bytes, test subtree + conftest fixtures [Wave 0]
-- [ ] 04-02-mask-sdf-PLAN.md — mask.py (Pillow L/RGB/RGBA decode, D-08 empty guard), sdf.py (scipy two-call EDT, float32, positive=inside), __init__.py (_assert_freetype, (y,x) adapters), hypothesis property tests [Wave 1]
-- [ ] 04-03-sdf-cache-PLAN.md — bytes-bounded LRUCache 384 MiB, blake3 composite key (D-20), module RLock, 16-thread concurrency test [Wave 2 parallel]
-- [ ] 04-04-glyph-golden-PLAN.md — font.getmask per-codepoint, pixel-scanned AABB, Pydantic GlyphBBox/AABB (y,x), golden .npy corpus ~450 fixtures, regression test [Wave 2 parallel]
-- [ ] 04-05-collision-placement-PLAN.md — vectorized int AABB collision, per-word adaptive POI + feasibility field, integer Archimedean spiral (MAX_STEP=16), PlacementResult + DropReason enum, integration test [Wave 3]
-- [ ] 04-06-observability-gates-PLAN.md — debug dump (AEROCLOUD_DEBUG_GEO), structlog+OTel metrics, Nyquist dims 6/7/8 (determinism + fuzz + 2048² SDF <1s benchmark), 11 wiki files [Wave 4]
-- [ ] 04-07-3ki-review-PLAN.md — Claude self + Codex + Gemini review per Regel 6, consensus ratification, phase close-out (ROADMAP/STATE/wiki) [Wave 5 gate]
+**Plans:** 7 plans in 6 waves ✅ ALL COMPLETE 2026-04-09
+- [x] 04-01-scaffolding-PLAN.md — ADRs (0004/0005/0006), errors.py, deps, config, test subtree [Wave 0]
+- [x] 04-02-mask-sdf-PLAN.md — mask.py + sdf.py + _assert_freetype + property tests [Wave 1]
+- [x] 04-03-sdf-cache-PLAN.md — bytes-bounded LRU + blake3 composite key + RLock + 16-thread test [Wave 2 parallel]
+- [x] 04-04-glyph-golden-PLAN.md — font.getmask + Pydantic AABB/GlyphBBox + 480 golden .npy fixtures [Wave 2 parallel]
+- [x] 04-05-collision-placement-PLAN.md — vectorized int AABB + per-word adaptive POI + integer Archimedean (MAX_STEP=16) + DropReason enum [Wave 3]
+- [x] 04-06-observability-gates-PLAN.md — debug dump + structlog+OTel + Nyquist dims 6/7/8 + 11 wiki files [Wave 4]
+- [x] 04-07-3ki-review-PLAN.md — Claude self + Codex + Gemini review, Jens-ratified consensus, 2 Gemini bonus fixes applied [Wave 5]
+
+**Phase 4 Status:** ✅ COMPLETE 2026-04-09
+- 595/595 tests green (mypy strict clean, ruff clean)
+- 3-KI review: Claude APPROVED-WITH-NOTES, Codex BLOCKED + Gemini BLOCKED (both overridden by Jens with documented rationale)
+- 2 accepted deviations: (A) place_words perf 24.85s vs retired 5.0s gate → 60s VPS ceiling + Phase 12 re-validate, (B) FreeType 2.13.2 → 2.14.3 ADR-0006 update + bypass removed
+- 2 Gemini bonus fixes applied inline: del edt_in before gc.collect (sdf.py), float32 promotion audit (placement.py)
+- Known limits carried forward: `wiki/knowledge/phase-4-known-limits.md`
 
 **Success criteria:**
 1. Circle mask: SDF center value equals radius ± 1px
