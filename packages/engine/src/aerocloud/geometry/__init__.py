@@ -1,6 +1,6 @@
 """aerocloud.geometry — Phase 4 Geometry-v1 public package.
 
-On import this module enforces the FreeType 2.13.2 runtime pin (ADR-0006 /
+On import this module enforces the FreeType 2.14.3 runtime pin (ADR-0006 v2 /
 D-28). If the pin fails the whole geometry package refuses to load and callers
 get a GeometryEnvironmentError with a documented remediation path.
 
@@ -11,7 +11,6 @@ Coordinate system: (y, x) canonical internally, (x, y) only at Pydantic boundary
 
 from __future__ import annotations
 
-import os
 from typing import Final
 
 from PIL import features
@@ -24,28 +23,27 @@ from aerocloud.geometry.errors import (
     PlacementFailedError,
 )
 
-_EXPECTED_FREETYPE: Final[str] = "2.13.2"
+_EXPECTED_FREETYPE: Final[str] = "2.14.3"
 
 
 def _assert_freetype() -> None:
-    """Enforce D-28 / ADR-0006 at import time.
+    """Enforce D-28 / ADR-0006 v2 at import time.
 
     Calls ``PIL.features.version("freetype2")`` (the documented check per
     ADR-0006; NOT ``freetype.__version__`` which reads the Python binding
     version, NOT the native library version — Codex g-4 finding).
 
+    Pin updated from 2.13.2 to 2.14.3 in Wave 5 3-KI review (2026-04-09)
+    to align ADR, runtime, and golden corpus fixtures on one version.
+    The AEROCLOUD_SKIP_FREETYPE_CHECK bypass has been removed — it was a
+    transitional measure that is no longer needed. See ADR-0006 v2.
+
     Raises:
         GeometryEnvironmentError: If the runtime FreeType version differs from
-            the pinned 2.13.2 (e.g., Homebrew Pillow ships 2.14.2, this
-            server may have 2.14.3). Homebrew Pillow is explicitly unsupported
+            the pinned 2.14.3. Homebrew Pillow is explicitly unsupported
             for geometry generation. Use the pinned Docker image or the
             uv-pinned wheel. See ADR-0006.
     """
-    # AEROCLOUD_SKIP_FREETYPE_CHECK=1 allows the golden-corpus generator to run
-    # on this server (FreeType 2.14.3) while ADR-0006 pin is still 2.13.2.
-    # NEVER set this in production. Wave 5 3-KI review will reconcile the pin.
-    if os.getenv("AEROCLOUD_SKIP_FREETYPE_CHECK") == "1":
-        return
     actual = features.version("freetype2")
     if actual != _EXPECTED_FREETYPE:
         raise GeometryEnvironmentError(
