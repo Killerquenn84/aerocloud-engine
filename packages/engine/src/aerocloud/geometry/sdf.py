@@ -55,8 +55,8 @@ def compute_sdf(mask: np.ndarray) -> np.ndarray:
     # Two-call EDT pattern (D-11, ADR-0004):
     # edt_in: distance from each True pixel to nearest False pixel (inside depth).
     # Cast to float32 immediately to halve the per-array footprint before edt_out
-    # is allocated. This is the minimal-RSS variant: peak = 1×f64 + 1×f32 instead
-    # of 2×f64. Gemini Wave 5 finding: the original pattern kept edt_in (f64) live
+    # is allocated. This is the minimal-RSS variant: peak = 1xf64 + 1xf32 instead
+    # of 2xf64. Gemini Wave 5 finding: the original pattern kept edt_in (f64) live
     # across gc.collect(), making the gc call a no-op for that allocation.
     edt_in_f32: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (
         ndimage.distance_transform_edt(mask).astype(np.float32, copy=False)
