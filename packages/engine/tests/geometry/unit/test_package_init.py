@@ -11,6 +11,7 @@ This is the ONE permissible test monkeypatch in Phase 4 per the plan — we patc
 the feature-introspection API, not Pillow's decode path (D-51 forbids mocking
 Pillow's image decode, not its version reporting).
 """
+
 from __future__ import annotations
 
 import importlib
@@ -27,11 +28,14 @@ import pytest
 #     (after patching to the expected version)
 # ---------------------------------------------------------------------------
 
+
 def test_i1_public_symbols_importable(monkeypatch: pytest.MonkeyPatch) -> None:
     """I1: _assert_freetype, xy_to_yx, yx_to_xy are importable from aerocloud.geometry."""
     import PIL.features
+
     monkeypatch.setattr(PIL.features, "version", lambda feat: "2.13.2")
     import aerocloud.geometry as geo
+
     importlib.reload(geo)
     assert hasattr(geo, "_assert_freetype"), "_assert_freetype not found"
     assert hasattr(geo, "xy_to_yx"), "xy_to_yx not found"
@@ -45,6 +49,7 @@ def test_i1_public_symbols_importable(monkeypatch: pytest.MonkeyPatch) -> None:
 # I2: On the pinned Docker image (2.13.2), _assert_freetype() returns None
 # ---------------------------------------------------------------------------
 
+
 def test_i2_assert_freetype_passes_with_pinned_version(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -54,8 +59,10 @@ def test_i2_assert_freetype_passes_with_pinned_version(
     returns "2.13.2", and _assert_freetype() must return None without raising.
     """
     import PIL.features
+
     monkeypatch.setattr(PIL.features, "version", lambda feat: "2.13.2")
     import aerocloud.geometry as geo
+
     importlib.reload(geo)
     # Should not raise — this simulates the Docker environment
     result = geo._assert_freetype()
@@ -65,6 +72,7 @@ def test_i2_assert_freetype_passes_with_pinned_version(
 # ---------------------------------------------------------------------------
 # I3: Mismatch injection — wrong FreeType version raises GeometryEnvironmentError
 # ---------------------------------------------------------------------------
+
 
 def test_i3_freetype_mismatch_raises_geometry_environment_error(
     monkeypatch: pytest.MonkeyPatch,
@@ -85,6 +93,7 @@ def test_i3_freetype_mismatch_raises_geometry_environment_error(
     # First reload with pinned version so module is importable
     monkeypatch.setattr(PIL.features, "version", lambda feat: "2.13.2")
     import aerocloud.geometry as geo
+
     importlib.reload(geo)
 
     # Now test that calling _assert_freetype() with a mismatched version raises
@@ -101,11 +110,14 @@ def test_i3_freetype_mismatch_raises_geometry_environment_error(
 # I4: xy_to_yx and yx_to_xy round-trip correctly
 # ---------------------------------------------------------------------------
 
+
 def test_i4_xy_to_yx_and_back(monkeypatch: pytest.MonkeyPatch) -> None:
     """I4: xy_to_yx((3, 5)) == (5, 3) and yx_to_xy((5, 3)) == (3, 5)."""
     import PIL.features
+
     monkeypatch.setattr(PIL.features, "version", lambda feat: "2.13.2")
     import aerocloud.geometry as geo
+
     importlib.reload(geo)
 
     assert geo.xy_to_yx((3, 5)) == (5, 3), (
@@ -123,6 +135,7 @@ def test_i4_xy_to_yx_and_back(monkeypatch: pytest.MonkeyPatch) -> None:
 # I5: Importing aerocloud.geometry triggers _assert_freetype() at module load
 # ---------------------------------------------------------------------------
 
+
 def test_i5_import_triggers_assert_freetype_at_module_load(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -132,8 +145,10 @@ def test_i5_import_triggers_assert_freetype_at_module_load(
     (not lazily) — a fresh reload with the pinned version must succeed silently.
     """
     import PIL.features
+
     monkeypatch.setattr(PIL.features, "version", lambda feat: "2.13.2")
     import aerocloud.geometry as geo
+
     # Reload should call _assert_freetype() at module level without raising
     # If it is NOT called at import time, this test is vacuous (can't detect it here).
     # The test for the FAILURE path (I3) is the true enforcement: if the module

@@ -4,6 +4,7 @@ TDD: Tests written BEFORE implementation (RED phase).
 Tests M1..M9 cover D-04..D-08, D-14 from 04-CONTEXT.md.
 No mocking of Pillow (D-51 — tests use real Pillow dependencies).
 """
+
 from __future__ import annotations
 
 import io
@@ -36,6 +37,7 @@ def _jpeg(mask_u8: np.ndarray) -> bytes:
 # M1: L-mode PNG → bool ndarray shape (H, W), True where pixel > 127
 # ---------------------------------------------------------------------------
 
+
 def test_m1_l_mode_png_to_bool_array() -> None:
     """M1: L-mode PNG decodes to bool ndarray shape (H, W), True where pixel > 127."""
     arr = np.zeros((8, 8), dtype=np.uint8)
@@ -51,6 +53,7 @@ def test_m1_l_mode_png_to_bool_array() -> None:
 # ---------------------------------------------------------------------------
 # M2: RGB PNG → convert to luminance then threshold at 127
 # ---------------------------------------------------------------------------
+
 
 def test_m2_rgb_png_to_bool_via_luminance() -> None:
     """M2: RGB PNG bytes → convert to luminance then threshold at 127."""
@@ -72,6 +75,7 @@ def test_m2_rgb_png_to_bool_via_luminance() -> None:
 # ---------------------------------------------------------------------------
 # M3: RGBA PNG → use alpha channel (D-05), alpha > 127 = inside
 # ---------------------------------------------------------------------------
+
 
 def test_m3_rgba_png_uses_alpha_channel() -> None:
     """M3: RGBA PNG bytes → use alpha channel (D-05), alpha > 127 = inside."""
@@ -95,6 +99,7 @@ def test_m3_rgba_png_uses_alpha_channel() -> None:
 # M4: JPEG bytes raise MaskFormatError (only PNG allowed in v1, D-04)
 # ---------------------------------------------------------------------------
 
+
 def test_m4_jpeg_raises_mask_format_error() -> None:
     """M4: JPEG bytes raise MaskFormatError — only PNG supported in v1 (D-04)."""
     arr = np.full((8, 8), 200, dtype=np.uint8)
@@ -106,6 +111,7 @@ def test_m4_jpeg_raises_mask_format_error() -> None:
 # ---------------------------------------------------------------------------
 # M5: All-True mask raises EmptyMaskError("no outside")
 # ---------------------------------------------------------------------------
+
 
 def test_m5_all_true_mask_raises_empty_no_outside() -> None:
     """M5: All-True mask (all pixels 255) raises EmptyMaskError with 'no outside'."""
@@ -119,6 +125,7 @@ def test_m5_all_true_mask_raises_empty_no_outside() -> None:
 # M6: All-False mask raises EmptyMaskError("no inside")
 # ---------------------------------------------------------------------------
 
+
 def test_m6_all_false_mask_raises_empty_no_inside() -> None:
     """M6: All-zero mask raises EmptyMaskError with 'no inside'."""
     arr = np.zeros((8, 8), dtype=np.uint8)
@@ -130,6 +137,7 @@ def test_m6_all_false_mask_raises_empty_no_inside() -> None:
 # ---------------------------------------------------------------------------
 # M7: Result ordering is (y, x) row-major per D-07/D-14
 # ---------------------------------------------------------------------------
+
 
 def test_m7_shape_is_height_width_row_major() -> None:
     """M7: Decoded mask shape is (H, W) = (height, width) row-major, D-07/D-14."""
@@ -153,6 +161,7 @@ def test_m7_shape_is_height_width_row_major() -> None:
 # M8: circle_mask_bytes fixture decodes to a valid non-degenerate mask
 # ---------------------------------------------------------------------------
 
+
 def test_m8_circle_fixture_is_nontrivial(circle_mask_bytes: bytes) -> None:
     """M8: circle_mask_bytes fixture decodes to mask with sum > 0 and sum < size."""
     mask = mask_from_bytes(circle_mask_bytes)
@@ -163,6 +172,7 @@ def test_m8_circle_fixture_is_nontrivial(circle_mask_bytes: bytes) -> None:
 # ---------------------------------------------------------------------------
 # M9: Threshold is EXACTLY 127 — pixel value 127 is OUTSIDE (> 127, not >= 127)
 # ---------------------------------------------------------------------------
+
 
 def test_m9_threshold_exactly_127_is_outside() -> None:
     """M9: A pixel with value exactly 127 is OUTSIDE (threshold is > 127, not >= 127)."""

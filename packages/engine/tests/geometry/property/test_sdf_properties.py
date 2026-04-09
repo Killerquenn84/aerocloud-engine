@@ -8,6 +8,7 @@ Tests random masks to verify:
 
 No mocking of scipy or numpy (D-51).
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -49,6 +50,7 @@ def _dilated_boundary(mask: np.ndarray) -> np.ndarray:
 # Property 1: dtype = float32, shape matches, all finite
 # ---------------------------------------------------------------------------
 
+
 @given(_mask_shape_st.flatmap(_nontrivial_mask))
 @settings(deadline=2000, max_examples=200)
 def test_sdf_dtype_and_finite(mask: np.ndarray) -> None:
@@ -62,6 +64,7 @@ def test_sdf_dtype_and_finite(mask: np.ndarray) -> None:
 # ---------------------------------------------------------------------------
 # Property 2: sign matches mask (D-09 sign convention)
 # ---------------------------------------------------------------------------
+
 
 @given(_mask_shape_st.flatmap(_nontrivial_mask))
 @settings(deadline=2000, max_examples=200)
@@ -82,20 +85,19 @@ def test_sdf_sign_matches_mask(mask: np.ndarray) -> None:
     if interior.any():
         interior_vals = sdf[interior]
         assert (interior_vals > 0).all(), (
-            f"strict interior pixels must have sdf > 0 (D-09), "
-            f"min={interior_vals.min():.4f}"
+            f"strict interior pixels must have sdf > 0 (D-09), min={interior_vals.min():.4f}"
         )
     if exterior.any():
         exterior_vals = sdf[exterior]
         assert (exterior_vals < 0).all(), (
-            f"strict exterior pixels must have sdf < 0 (D-09), "
-            f"max={exterior_vals.max():.4f}"
+            f"strict exterior pixels must have sdf < 0 (D-09), max={exterior_vals.max():.4f}"
         )
 
 
 # ---------------------------------------------------------------------------
 # Property 3: inversion symmetry — SDF(mask) == -SDF(~mask) up to atol=1e-5
 # ---------------------------------------------------------------------------
+
 
 @given(_mask_shape_st.flatmap(_nontrivial_mask))
 @settings(deadline=2000, max_examples=200)

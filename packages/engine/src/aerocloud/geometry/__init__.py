@@ -8,6 +8,7 @@ Sign convention: sdf > 0 inside, sdf == 0 on boundary, sdf < 0 outside (ADR-0004
 Coordinate system: (y, x) canonical internally, (x, y) only at Pydantic boundary
 (ADR-0005). Boundary adapters: ``xy_to_yx`` and ``yx_to_xy``.
 """
+
 from __future__ import annotations
 
 from typing import Final

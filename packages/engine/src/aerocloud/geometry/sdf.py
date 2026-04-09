@@ -13,6 +13,7 @@ No downsampling (D-12). Resolution = input resolution.
 Caller must guarantee non-degenerate mask (D-08 / ``mask_from_bytes`` enforces
 this before calling ``compute_sdf``).
 """
+
 from __future__ import annotations
 
 import gc
@@ -47,29 +48,23 @@ def compute_sdf(mask: np.ndarray) -> np.ndarray:
             resulting SDF contains NaN or inf (contract violation).
     """
     if mask.dtype != np.bool_:
-        raise PlacementFailedError(
-            f"compute_sdf expects bool mask, got {mask.dtype}"
-        )
+        raise PlacementFailedError(f"compute_sdf expects bool mask, got {mask.dtype}")
     if mask.ndim != 2:
-        raise PlacementFailedError(
-            f"compute_sdf expects 2D mask, got ndim={mask.ndim}"
-        )
+        raise PlacementFailedError(f"compute_sdf expects 2D mask, got ndim={mask.ndim}")
 
     # Two-call EDT pattern (D-11, ADR-0004):
     # edt_in: distance from each True pixel to nearest False pixel (inside depth)
-    edt_in: np.ndarray[tuple[int, int], np.dtype[np.float64]] = (
-        ndimage.distance_transform_edt(mask)
-    )
+    edt_in: np.ndarray[tuple[int, int], np.dtype[np.float64]] = ndimage.distance_transform_edt(mask)
     # Release the float64 temporary before the second EDT to cap peak RSS.
     gc.collect()
     # edt_out: distance from each False pixel to nearest True pixel (outside depth)
-    edt_out: np.ndarray[tuple[int, int], np.dtype[np.float64]] = (
-        ndimage.distance_transform_edt(~mask)
+    edt_out: np.ndarray[tuple[int, int], np.dtype[np.float64]] = ndimage.distance_transform_edt(
+        ~mask
     )
 
     # Cast to float32 at the public boundary per D-10
-    sdf: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (
-        (edt_in - edt_out).astype(np.float32, copy=False)
+    sdf: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (edt_in - edt_out).astype(
+        np.float32, copy=False
     )
 
     # Validate contract (D-09 + D-10 runtime assertion)
@@ -92,10 +87,6 @@ def validate_sdf(sdf: np.ndarray) -> None:
             inf values (non-finite SDF is a contract violation, D-43).
     """
     if sdf.dtype != np.float32:
-        raise PlacementFailedError(
-            f"SDF must be float32 at boundary, got {sdf.dtype}"
-        )
+        raise PlacementFailedError(f"SDF must be float32 at boundary, got {sdf.dtype}")
     if not np.isfinite(sdf).all():
-        raise PlacementFailedError(
-            "SDF contains NaN or inf — contract violation (D-09/D-43)"
-        )
+        raise PlacementFailedError("SDF contains NaN or inf — contract violation (D-09/D-43)")

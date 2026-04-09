@@ -6,6 +6,7 @@ downstream work if the mask has zero True or zero False pixels (D-08).
 
 Coordinate system: result is (H, W) = (height, width), indexed [y, x] (D-07, D-14).
 """
+
 from __future__ import annotations
 
 import io
@@ -57,9 +58,7 @@ def mask_from_bytes(raw: bytes) -> np.ndarray:
     elif img.mode in ("RGB", "P"):
         mask = np.asarray(img.convert("L"), dtype=np.uint8) > THRESHOLD
     else:
-        raise MaskFormatError(
-            f"unsupported mode {img.mode!r}; expected L/RGB/RGBA"
-        )
+        raise MaskFormatError(f"unsupported mode {img.mode!r}; expected L/RGB/RGBA")
 
     inside = int(mask.sum())
     if inside == 0:

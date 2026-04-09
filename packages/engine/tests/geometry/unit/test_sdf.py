@@ -6,6 +6,7 @@ No mocking of scipy or numpy (D-51 — real dependencies only).
 
 GEO-03 is the linchpin: circle SDF center == radius ± 1 pixel.
 """
+
 from __future__ import annotations
 
 import io
@@ -31,6 +32,7 @@ def _png_from_bool(mask: np.ndarray) -> bytes:
 # S1: compute_sdf returns float32 (H, W)
 # ---------------------------------------------------------------------------
 
+
 def test_s1_sdf_dtype_is_float32(circle_mask_bytes: bytes) -> None:
     """S1: compute_sdf(circle_mask) returns ndarray of dtype float32."""
     mask = mask_from_bytes(circle_mask_bytes)
@@ -42,6 +44,7 @@ def test_s1_sdf_dtype_is_float32(circle_mask_bytes: bytes) -> None:
 # ---------------------------------------------------------------------------
 # S2: GEO-03 circle fixture — center SDF == radius ± 1 pixel
 # ---------------------------------------------------------------------------
+
 
 def test_s2_geo03_circle_center_radius(circle_mask_bytes: bytes) -> None:
     """S2 / GEO-03: Circle SDF center value is within [R-1, R+1] pixels.
@@ -68,6 +71,7 @@ def test_s2_geo03_circle_center_radius(circle_mask_bytes: bytes) -> None:
 # S3: Square fixture — center SDF == half side ± 0.5
 # ---------------------------------------------------------------------------
 
+
 def test_s3_square_center_sdf(square_mask_bytes: bytes) -> None:
     """S3: Square 40x40 centered in 64x64 — center SDF in [19.5, 20.5].
 
@@ -79,9 +83,7 @@ def test_s3_square_center_sdf(square_mask_bytes: bytes) -> None:
     h, w = sdf.shape  # 64, 64
     cy, cx = h // 2, w // 2  # (32, 32) — center of square
     center_val = float(sdf[cy, cx])
-    assert center_val > 0, (
-        f"center of square must be positive (D-09), got {center_val}"
-    )
+    assert center_val > 0, f"center of square must be positive (D-09), got {center_val}"
     assert 19.5 <= center_val <= 20.5, (
         f"square center SDF should be ≈ 20.0 (half side), got {center_val:.4f}"
     )
@@ -90,6 +92,7 @@ def test_s3_square_center_sdf(square_mask_bytes: bytes) -> None:
 # ---------------------------------------------------------------------------
 # S4: Sign invariant — strict interior > 0, strict exterior < 0
 # ---------------------------------------------------------------------------
+
 
 def test_s4_sign_invariant_interior_exterior(circle_mask_bytes: bytes) -> None:
     """S4: Strict interior pixel has sdf > 0; strict exterior pixel has sdf < 0.
@@ -120,6 +123,7 @@ def test_s4_sign_invariant_interior_exterior(circle_mask_bytes: bytes) -> None:
 # S5: validate_sdf raises PlacementFailedError on NaN
 # ---------------------------------------------------------------------------
 
+
 def test_s5_validate_sdf_raises_on_nan() -> None:
     """S5: validate_sdf(sdf_with_nan) raises PlacementFailedError."""
     sdf = np.array([[1.0, float("nan")], [-1.0, 0.5]], dtype=np.float32)
@@ -131,6 +135,7 @@ def test_s5_validate_sdf_raises_on_nan() -> None:
 # S6: validate_sdf raises PlacementFailedError on inf
 # ---------------------------------------------------------------------------
 
+
 def test_s6_validate_sdf_raises_on_inf() -> None:
     """S6: validate_sdf(sdf_with_inf) raises PlacementFailedError."""
     sdf = np.array([[1.0, float("inf")], [-1.0, 0.5]], dtype=np.float32)
@@ -141,6 +146,7 @@ def test_s6_validate_sdf_raises_on_inf() -> None:
 # ---------------------------------------------------------------------------
 # S7: compute_sdf contract — assumes non-degenerate input (D-08 pre-validated)
 # ---------------------------------------------------------------------------
+
 
 def test_s7_compute_sdf_contract_requires_bool_mask() -> None:
     """S7: compute_sdf requires bool dtype — non-bool mask raises PlacementFailedError.
@@ -156,6 +162,7 @@ def test_s7_compute_sdf_contract_requires_bool_mask() -> None:
 # ---------------------------------------------------------------------------
 # Additional: verify SDF is finite everywhere on valid masks
 # ---------------------------------------------------------------------------
+
 
 def test_sdf_finite_on_circle(circle_mask_bytes: bytes) -> None:
     """SDF is finite everywhere for the circle fixture."""
