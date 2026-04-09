@@ -51,8 +51,10 @@ import numpy as np
 from scipy import ndimage
 
 from aerocloud.geometry.collision import has_any_collision
+from aerocloud.geometry.debug import debug_enabled, dump_geometry_debug
 from aerocloud.geometry.errors import EmptyMaskError, PlacementFailedError
 from aerocloud.geometry.mask import mask_from_bytes
+from aerocloud.geometry.metrics import DROPPED_WORDS, PLACEMENT_SECONDS, logger
 from aerocloud.geometry.sdf_cache import get_or_build
 from aerocloud.models.geometry import (
     AABB,
@@ -378,6 +380,13 @@ def place_words(request: PlacementRequest) -> PlacementResult:
     set_seed(request.seed)
     t_start = time.perf_counter()
 
+    log = logger.bind(
+        geometry_phase="placement",
+        seed=request.seed,
+        total_words=len(request.words),
+    )
+    log.info("placement_start")
+
     mask = mask_from_bytes(request.raw_png_bytes)
     sdf = get_or_build(request.raw_png_bytes, mask)
 
@@ -397,7 +406,12 @@ def place_words(request: PlacementRequest) -> PlacementResult:
     total_iters: int = 0
 
     for word, h, w in request.words:
+        budget_left = len(request.words) - len(placements) - len(dropped)
+        word_log = log.bind(geometry_word=word, geometry_budget_left=budget_left)
+
         if h <= 0 or w <= 0 or h > canvas_height or w > canvas_width:
+            word_log.warning("word_dropped", reason=DropReason.TOO_LARGE_FOR_MASK.value)
+            DROPPED_WORDS.add(1, {"reason": DropReason.TOO_LARGE_FOR_MASK.value})
             dropped.append(DroppedWord(word=word, reason=DropReason.TOO_LARGE_FOR_MASK))
             continue
 
@@ -427,9 +441,13 @@ def place_words(request: PlacementRequest) -> PlacementResult:
             new_row = np.array([[y_min, x_min, y_max, x_max]], dtype=np.int32)
             existing = np.vstack([existing, new_row])
         else:
+            word_log.warning("word_dropped", reason=reason.value)
+            DROPPED_WORDS.add(1, {"reason": reason.value})
             dropped.append(DroppedWord(word=word, reason=reason))
 
     wall_ms = (time.perf_counter() - t_start) * 1000.0
+    PLACEMENT_SECONDS.record(wall_ms / 1000.0)
+
     stats = PlacementStats(
         total_words=len(request.words),
         placed=len(placements),
@@ -437,4 +455,22 @@ def place_words(request: PlacementRequest) -> PlacementResult:
         total_iterations=total_iters,
         wall_clock_ms=wall_ms,
     )
-    return PlacementResult(placements=placements, dropped_words=dropped, stats=stats)
+    result = PlacementResult(placements=placements, dropped_words=dropped, stats=stats)
+
+    log.info(
+        "placement_done",
+        placed=len(placements),
+        dropped=len(dropped),
+        wall_ms=round(wall_ms, 1),
+    )
+
+    # Debug dump on failure path (D-47) — gated on AEROCLOUD_DEBUG_GEO env var
+    if dropped and debug_enabled():
+        dump_geometry_debug(
+            mask=mask,
+            sdf=sdf,
+            placement_json=result.model_dump(mode="json"),
+            tag="failed",
+        )
+
+    return result

@@ -22,12 +22,19 @@ from __future__ import annotations
 
 import contextlib
 import threading
+import time
 from typing import Any, Final
 
 import numpy as np
 from cachetools import LRUCache
 
 from aerocloud.config import settings
+from aerocloud.geometry.metrics import (
+    SDF_BUILD_SECONDS,
+    SDF_CACHE_HITS,
+    SDF_CACHE_MISSES,
+    logger,
+)
 from aerocloud.geometry.sdf import compute_sdf
 
 try:
@@ -120,10 +127,16 @@ def get_or_build(raw_mask_bytes: bytes, mask: np.ndarray) -> np.ndarray:
     with _CACHE_LOCK:
         cached: np.ndarray | None = _CACHE.get(key)
         if cached is not None:
+            SDF_CACHE_HITS.add(1)
+            logger.info("sdf_cache_hit", shape=mask.shape)
             return cached
 
     # Slow path: compute OUTSIDE the lock (D-22 invariant — NEVER inside with block)
+    SDF_CACHE_MISSES.add(1)
+    logger.info("sdf_cache_miss", shape=mask.shape)
+    t0 = time.perf_counter()
     sdf = compute_sdf(mask)
+    SDF_BUILD_SECONDS.record(time.perf_counter() - t0)
 
     with _CACHE_LOCK:
         # Re-check in case a competing thread populated the entry while we computed.
