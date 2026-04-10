@@ -240,3 +240,10 @@ Issues resolved during execution:
 - Nyquist dim 8 (performance): test_sdf_benchmark.py — pytest-benchmark, 2048x2048 SDF < 1.0s, 100-word 1024x1024 < 5.0s
 - Wiki: 7 code/, 3 decisions/, 1 tests/geometry.md (11 files total — Regel 11 mandate)
 - Next: Wave 5 3-KI code review per Regel 6
+
+## [2026-04-10] nightly-research | 5 topics
+- uv Python Monorepo Workspace
+- PostgreSQL pgvector HNSW Index
+- BERT Embeddings all-MiniLM-L6-v2
+- FastAPI Async Patterns
+- SVG Sanitization Security CVE
