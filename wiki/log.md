@@ -247,3 +247,10 @@ Issues resolved during execution:
 - BERT Embeddings all-MiniLM-L6-v2
 - FastAPI Async Patterns
 - SVG Sanitization Security CVE
+
+## [2026-04-11] nightly-research | 5 topics
+- NP-Hard Irregular Bin Packing
+- Signed Distance Field Meijster EDT
+- PyTorch Autograd Graph Memory
+- NVIDIA DCGM Exporter GPU Metrics
+- Celery GPU Worker Pool Management
