@@ -108,6 +108,19 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 - [code/geometry-glyph.md](code/geometry-glyph.md) — getmask() pattern, golden corpus, FreeType pin (D-24..D-34)
 - [code/geometry-placement.md](code/geometry-placement.md) — adaptive POI, spiral, DropReason (D-38..D-49)
 
+### Phase 5 Renderer-v1
+
+- [code/renderer-differentiable.md](code/renderer-differentiable.md) — DifferentiableRenderer: grid_sample+affine_grid, alpha-over, sprite cache, REND-01..06
+
+## 🧠 Knowledge (wiki/knowledge/) — additions
+
+- [knowledge/phase-5-renderer-design.md](knowledge/phase-5-renderer-design.md) — D-01 nvdiffrast supersession rationale, grid_sample architecture, alpha-over compositing, Phase 5 design decisions (D-01..D-21)
+
+## 🗣️ Discussions — additions
+
+- [discussions/2026-04-12-phase-5-codereview.md](discussions/2026-04-12-phase-5-codereview.md) — Phase 5 Wave 4 3-KI Code Review (Claude APPROVED; Codex + Gemini pending)
+- [discussions/2026-04-12-phase-5-summary.md](discussions/2026-04-12-phase-5-summary.md) — Phase 5 Close-Out Summary (4 plans, 48 tests, REND-01..06 satisfied)
+
 ## 🧪 Tests (wiki/tests/)
 Test-Coverage und Test-Strategien pro Modul.
 

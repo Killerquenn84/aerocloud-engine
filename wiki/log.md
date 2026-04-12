@@ -261,3 +261,18 @@ Issues resolved during execution:
 - SVG Sanitization Security CVE
 - FastAPI Async Patterns
 - Sentence Transformers Library
+
+## [2026-04-12] phase-05 | Renderer-v1 Plans 01-03 complete
+
+- Plan 05-01: Renderer package scaffold — `_sprites.py` SPRITE_CACHE + FONT_REGISTRY with RLock, `register_glyph()` uint8->float32/255 tensor (1,1,H,W), `clear_caches()`, conftest autouse fixture, 13 unit tests, psutil to gpu optional-deps
+- Plan 05-02: DifferentiableRenderer — `_renderer.py` with packed (N,4) nn.Parameter, `forward(h,w) -> Tensor[1,1,H,W]`, affine_grid+grid_sample (align_corners=False), alpha-over compositing, rotation clamping, 19 unit tests (RED->GREEN TDD)
+- Plan 05-03: Test pyramid completion — 7 hypothesis property tests, 3 Phase4->Phase5 integration tests, 3 determinism tests (byte-identical D-18), 3 RSS/leak tests (<50 MiB D-20). Total: 48 tests, all pass on CPU. 2 plan template bugs auto-fixed (Rule 1): DropReason.OUTSIDE_MASK -> NO_FEASIBLE_ANCHOR, set_seed warn_only kwarg removed
+- Requirements satisfied: REND-01, REND-02, REND-03, REND-04, REND-05, REND-06
+
+## [2026-04-12] phase-05 | 3-KI Review + Wiki Update (Plan 04)
+
+- Claude self-review completed: APPROVED. S-1..S-8 all pass. L-1..L-8 all pass. A-1..A-5 all pass.
+- Deferred items: D-DEFER-01 N upper bound guard (Phase 12), D-DEFER-02 align_corners coordinate correction (Phase 6/7)
+- Codex + Gemini reviews: PENDING (external tools not available in auto mode — prompts preserved in 05-3ki-review/)
+- New wiki files: wiki/code/renderer-differentiable.md, wiki/knowledge/phase-5-renderer-design.md, wiki/discussions/2026-04-12-phase-5-codereview.md, wiki/discussions/2026-04-12-phase-5-summary.md
+- Phase close-out gate: all 3 reviewers must APPROVE before ROADMAP.md update (Jens confirmation required)
