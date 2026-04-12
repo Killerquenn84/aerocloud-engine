@@ -126,17 +126,16 @@ Each phase ends ONLY when ALL of:
 
 ## Phase 5: Renderer-v1
 
-**Goal:** PyTorch differentiable rasterizer with learnable tensors and forward pass.
+**Goal:** Pure PyTorch differentiable 2D sprite compositor with learnable tensors, grid_sample forward pass, and alpha-over compositing (D-01 supersedes nvdiffrast).
 
 **Requirements covered:** REND-01 to REND-06 (6)
 
-**Plans:**
-- Tensor representation: position, scale, rotation with `requires_grad=True`
-- nvdiffrast soft-rasterization forward pass (PyTorch3D fallback if build fails)
-- Glyph rasterization with integer-snapped sprite positions
-- Module-level font registration Set
-- Coarse-resolution forward pass smoke test (8px)
-- Gradient flow test (`backward()` runs without error)
+**Plans:** 3 plans in 3 waves
+
+Plans:
+- [ ] 05-01-PLAN.md — Scaffolding: psutil dep, renderer package, sprite cache + font registry + unit tests [Wave 1]
+- [ ] 05-02-PLAN.md — DifferentiableRenderer nn.Module: affine_grid + grid_sample forward pass + alpha-over + unit tests [Wave 2]
+- [ ] 05-03-PLAN.md — Test pyramid: hypothesis property, Phase 4 integration, determinism, RSS stability, font leak [Wave 3]
 
 **Success criteria:**
 1. Forward pass on 8px canvas produces non-NaN tensor
