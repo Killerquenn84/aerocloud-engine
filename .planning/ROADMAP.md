@@ -133,9 +133,9 @@ Each phase ends ONLY when ALL of:
 **Plans:** 3 plans in 3 waves
 
 Plans:
-- [ ] 05-01-PLAN.md — Scaffolding: psutil dep, renderer package, sprite cache + font registry + unit tests [Wave 1]
-- [ ] 05-02-PLAN.md — DifferentiableRenderer nn.Module: affine_grid + grid_sample forward pass + alpha-over + unit tests [Wave 2]
-- [ ] 05-03-PLAN.md — Test pyramid: hypothesis property, Phase 4 integration, determinism, RSS stability, font leak [Wave 3]
+- [x] 05-01-PLAN.md — Scaffolding: psutil dep, renderer package, sprite cache + font registry + unit tests [Wave 1]
+- [x] 05-02-PLAN.md — DifferentiableRenderer nn.Module: affine_grid + grid_sample forward pass + alpha-over + unit tests [Wave 2]
+- [x] 05-03-PLAN.md — Test pyramid: hypothesis property, Phase 4 integration, determinism, RSS stability, font leak [Wave 3]
 
 **Success criteria:**
 1. Forward pass on 8px canvas produces non-NaN tensor
