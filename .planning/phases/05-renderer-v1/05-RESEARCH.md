@@ -557,17 +557,15 @@ def test_random_params_produce_valid_output(n: int, canvas_size: int):
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **PlacementResult full definition and glyph access**
-   - What we know: `PlacementResult` contains `placed_words: list[PlacedWord]` and `PlacedWord` has `word`, `y`, `x`, `bbox`, `size_pt`
-   - What's unclear: Does `PlacementResult` carry `GlyphBBox` objects? `PlacedWord` does not have a `pixel_buffer` field directly.
-   - Recommendation: Planner should read `packages/engine/src/aerocloud/models/geometry.py` line 197+ and `packages/engine/src/aerocloud/geometry/placement.py` to determine if the factory function receives glyphs separately or if the renderer is constructed from a `(PlacementResult, dict[str, GlyphBBox])` pair.
+1. **PlacementResult full definition and glyph access** — RESOLVED
+   - What we know: `PlacementResult` contains `placements: list[PlacedWord]` and `PlacedWord` has `word`, `y`, `x`, `bbox`, `size_pt`
+   - Resolution: `PlacementResult` does NOT carry `GlyphBBox` objects. The caller passes glyphs separately. The `DifferentiableRenderer` factory accepts `(PlacementResult, list[GlyphBBox])` as a pair. Plan 03 integration test builds params from `result.placements` and sprites from a separate glyph list.
 
-2. **pytest testpaths config includes renderer tests**
+2. **pytest testpaths config includes renderer tests** — RESOLVED
    - What we know: `pyproject.toml [tool.pytest.ini_options]` testpaths = `["tests/unit", "tests/integration"]` — these are repo-root-relative paths, not package-relative.
-   - What's unclear: Phase 4 geometry tests live at `packages/engine/tests/geometry/`, not at `tests/unit`. The testpaths configuration may not auto-discover the renderer tests.
-   - Recommendation: Verify how Phase 4 tests are actually invoked (likely via `uv run pytest packages/engine/` directly, not via root testpaths). Wave 0 should confirm the correct invocation.
+   - Resolution: Phase 4 geometry tests are invoked via explicit path `uv run pytest packages/engine/tests/geometry/ -x -q`, not via root testpaths. Renderer tests follow the same pattern: `uv run pytest packages/engine/tests/renderer/ -x -q`. All plan verify commands use explicit package paths.
 
 ---
 
