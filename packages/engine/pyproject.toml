@@ -55,7 +55,8 @@ embeddings = [
 # GPU / Differentiable Rendering: Phase 5 (Renderer-v1)
 # nvdiffrast installed via tool.uv.sources (git) — see root pyproject.toml when Phase 5 begins
 gpu = [
-    # Placeholder — nvdiffrast + pytorch3d added in Phase 5 planning
+    # Phase 5 Renderer-v1: psutil for RSS memory tests (D-20)
+    "psutil>=5.9.0",
 ]
 # Quality-Diversity: Phase 9 (Outer Loop-v1)
 # Note: PyPI package is named "ribs", not "pyribs" (common source of confusion)
