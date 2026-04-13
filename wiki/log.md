@@ -276,3 +276,11 @@ Issues resolved during execution:
 - Codex + Gemini reviews: PENDING (external tools not available in auto mode — prompts preserved in 05-3ki-review/)
 - New wiki files: wiki/code/renderer-differentiable.md, wiki/knowledge/phase-5-renderer-design.md, wiki/discussions/2026-04-12-phase-5-codereview.md, wiki/discussions/2026-04-12-phase-5-summary.md
 - Phase close-out gate: all 3 reviewers must APPROVE before ROADMAP.md update (Jens confirmation required)
+
+## [2026-04-13] nightly-research | 5 topics
+- Coarse-to-Fine Optimization Pipeline
+- testcontainers Python Integration Tests
+- Alembic pgvector Migrations
+- Celery GPU Worker Pool Management
+- Self-Play Training QD Archive
+- Failures: 1
