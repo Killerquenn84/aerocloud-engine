@@ -162,10 +162,10 @@ Plans:
 **Plans:** 4 plans in 4 waves
 
 Plans:
-- [ ] 06-01-PLAN.md — Scaffolding + Pydantic models + 4 loss functions + convergence detection + unit tests [Wave 1]
-- [ ] 06-02-PLAN.md — InnerLoop class + Coarse-to-Fine pipeline + Adam optimizer + integration tests [Wave 2]
-- [ ] 06-03-PLAN.md — Test pyramid: hypothesis property + determinism + RSS memory stability [Wave 3]
-- [ ] 06-04-PLAN.md — 3-KI Review (Claude + Codex + Gemini) + Wiki Update + phase exit gates [Wave 4]
+- [x] 06-01-PLAN.md — Scaffolding + Pydantic models + 4 loss functions + convergence detection + unit tests [Wave 1]
+- [x] 06-02-PLAN.md — InnerLoop class + Coarse-to-Fine pipeline + Adam optimizer + integration tests [Wave 2]
+- [x] 06-03-PLAN.md — Test pyramid: hypothesis property + determinism + RSS memory stability [Wave 3]
+- [x] 06-04-PLAN.md — 3-KI Review (Claude + Codex + Gemini) + Wiki Update + phase exit gates [Wave 4]
 
 **Success criteria:**
 1. Loss converges from random init within 100 epochs at 8px
