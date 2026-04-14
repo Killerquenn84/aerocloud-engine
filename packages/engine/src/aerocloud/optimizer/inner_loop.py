@@ -61,6 +61,9 @@ def _downsample_sdf(
     )
 
 
+_MIN_RESOLUTION: int = 8
+
+
 def _build_stage_schedule(
     base_resolutions: list[int],
     target: int,
@@ -68,8 +71,8 @@ def _build_stage_schedule(
     """Build the Coarse-to-Fine resolution schedule (Assumption A2).
 
     Filters base_resolutions to only keep values strictly less than target,
-    then appends target. If target is <= the smallest base resolution,
-    returns [target] only.
+    then appends target. Enforces a minimum resolution of 8px to prevent
+    optimizer collapse at ultra-low resolutions (F-7).
 
     Args:
         base_resolutions: Candidate stage resolutions (e.g. [8, 32, 128]).
@@ -78,8 +81,9 @@ def _build_stage_schedule(
     Returns:
         Ordered list of resolutions ending with target.
     """
-    filtered = [r for r in base_resolutions if r < target]
-    filtered.append(target)
+    safe_target = max(target, _MIN_RESOLUTION)
+    filtered = [r for r in base_resolutions if r < safe_target]
+    filtered.append(safe_target)
     return filtered
 
 
@@ -127,6 +131,16 @@ class InnerLoop:
 
         self._sdf_full: torch.Tensor = sdf_tensor.to(renderer._device)
 
+        # Validate ref_weights shape against renderer params (F-6)
+        n_params = renderer.params.shape[0]
+        if ref_weights.shape[0] != n_params:
+            msg = (
+                f"ref_weights length {ref_weights.shape[0]} does not match "
+                f"renderer params count {n_params}. "
+                "Must have one weight per word."
+            )
+            raise ValueError(msg)
+
         # Store ref_weights detached on renderer._device
         self._ref_weights: torch.Tensor = ref_weights.detach().to(renderer._device)
 
@@ -149,11 +163,12 @@ class InnerLoop:
         config = self._config
         renderer = self._renderer
 
-        # Build resolution schedule (Assumption A2: filter >= target)
-        target = max(self._target_h, self._target_w)
+        # Build resolution schedule preserving aspect ratio (F-2 fix)
+        target_long = max(self._target_h, self._target_w)
+        aspect = self._target_w / self._target_h if self._target_h > 0 else 1.0
         schedule = _build_stage_schedule(
             list(config.stage_resolutions),
-            target,
+            target_long,
         )
 
         stage_loss_histories: list[list[float]] = []
@@ -161,8 +176,13 @@ class InnerLoop:
         total_epochs = 0
 
         for stage_idx, res in enumerate(schedule):
-            stage_h = res
-            stage_w = res
+            # Preserve aspect ratio: scale both dims proportionally (F-2)
+            if self._target_h >= self._target_w:
+                stage_h = res
+                stage_w = max(_MIN_RESOLUTION, round(res * aspect))
+            else:
+                stage_w = res
+                stage_h = max(_MIN_RESOLUTION, round(res / aspect))
 
             # Downsample SDF for this stage
             sdf_stage = _downsample_sdf(self._sdf_full, stage_h, stage_w)
@@ -241,7 +261,7 @@ class InnerLoop:
         wall_clock_s = time.perf_counter() - wall_start
 
         return OptimizationResult(
-            params=renderer.params.detach(),
+            params=renderer.params.detach().clone(),
             stage_loss_histories=stage_loss_histories,
             total_epochs=total_epochs,
             convergence_flags=convergence_flags,

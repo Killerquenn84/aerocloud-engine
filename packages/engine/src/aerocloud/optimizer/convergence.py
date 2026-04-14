@@ -36,5 +36,5 @@ def check_convergence(
     max_val = max(window_vals)
     min_val = min(window_vals)
     range_val = max_val - min_val
-    scale = max(abs(max_val), 1e-8)
+    scale = max(abs(max_val), abs(min_val), 1e-8)
     return (range_val / scale) < epsilon

@@ -26,14 +26,17 @@ def compute_l_wmse(
     density: torch.Tensor,
     sdf: torch.Tensor,
 ) -> torch.Tensor:
-    """Weighted Mean Squared Error loss (D-01).
+    """Weighted Mean Squared Error loss (D-01, extended with outside penalty).
 
-    Penalizes uncovered interior pixels weighted by their SDF depth.
-    Exterior pixels (sdf < 0) contribute zero via the clamp.
+    Two complementary terms:
+    1. **Inside penalty**: uncovered interior pixels weighted by SDF depth.
+       ``mean((clamp(sdf, min=0) * (1 - density))^2)``
+    2. **Outside penalty**: density that leaks beyond the silhouette boundary.
+       ``mean((clamp(-sdf, min=0) * density)^2)``
 
-    Formula::
-
-        L_wmse = mean((clamp(sdf, min=0) * (1 - density))^2)
+    Without the outside penalty, words can expand freely beyond the
+    silhouette because only L_overlap constrains sprite-to-sprite overlap,
+    not silhouette boundary adherence (F-1 finding, Gemini+Codex consensus).
 
     Args:
         density: (1, 1, H, W) float32 renderer output in [0, 1].
@@ -44,7 +47,10 @@ def compute_l_wmse(
         Scalar tensor.
     """
     sdf_positive = sdf.clamp(min=0.0)
-    return ((sdf_positive * (1.0 - density)) ** 2).mean()
+    sdf_negative = (-sdf).clamp(min=0.0)
+    inside_penalty = ((sdf_positive * (1.0 - density)) ** 2).mean()
+    outside_penalty = ((sdf_negative * density) ** 2).mean()
+    return inside_penalty + outside_penalty
 
 
 def compute_l_overlap(
@@ -180,6 +186,16 @@ def compute_additive_density(
         (1, 1, canvas_h, canvas_w) float32 tensor. Values may exceed 1.0
         at pixels covered by more than one sprite.
     """
+    n_sprites = len(renderer._sprites)
+    n_params = renderer.params.shape[0]
+    if n_sprites != n_params:
+        msg = (
+            f"Sprite/params count mismatch: {n_sprites} sprites "
+            f"but params has {n_params} rows. "
+            "Each sprite must have exactly one parameter row."
+        )
+        raise ValueError(msg)
+
     additive = torch.zeros(
         1,
         1,
