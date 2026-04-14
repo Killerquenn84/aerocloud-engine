@@ -14,9 +14,9 @@ progress:
 
 # Project State: AeroCloud Engine
 
-**Last updated:** 2026-04-09 after Phase 4 COMPLETE (595 tests, 3-KI ratified)
+**Last updated:** 2026-04-14 after Phase 5 COMPLETE (48 renderer tests, 3-KI ratified + 6 post-review fixes)
 **Active milestone:** v1 — Full Blueprint Realization
-**Active phase:** Phase 5 — Renderer-v1 (next, awaiting `/gsd-discuss-phase 5`)
+**Active phase:** Phase 6 — Inner Loop-v1 (next, awaiting `/gsd-discuss-phase 6`)
 
 ## Project Reference
 
@@ -24,7 +24,7 @@ See: `.planning/PROJECT.md` (updated 2026-04-07)
 
 **Core value:** Mathematically optimal word placement in arbitrary silhouettes through GPU-accelerated differentiable optimization, exploring the entire continuous solution space (Quality-Diversity).
 
-**Current focus:** Phase 4 ✅ COMPLETE 2026-04-09 — next is Phase 5 Renderer-v1 (`/gsd-discuss-phase 5`)
+**Current focus:** Phase 5 ✅ COMPLETE 2026-04-14 — next is Phase 6 Inner Loop-v1 (`/gsd-discuss-phase 6`)
 
 ## Roadmap Summary
 
@@ -36,7 +36,7 @@ See: `.planning/PROJECT.md` (updated 2026-04-07)
 | 2 | Datenmodell + Wiki | ✅ Complete (commit b770f57) |
 | 3 | NLP-v1 | ✅ Complete (Wave 1 cced714, Wave 2 454ee36, Wave 3 beba7c4, Wave 4 hardening pending commit) |
 | 4 | Geometry-v1 | ✅ Complete 2026-04-09 (7 plans, 22 tasks, 6 waves, 595 tests, 3-KI ratified, 2 deviations accepted by Jens) |
-| 5 | Renderer-v1 | ⏸ Pending |
+| 5 | Renderer-v1 | ✅ Complete 2026-04-14 (4 plans, 4 waves, 48 tests, 3-KI ratified, 6 post-review fixes) |
 | 6 | Inner Loop-v1 | ⏸ Pending |
 | 7 | Geometry-v2 | ⏸ Pending |
 | 8 | Semantic Vector Space | ⏸ Pending |

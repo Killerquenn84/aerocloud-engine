@@ -130,12 +130,19 @@ Each phase ends ONLY when ALL of:
 
 **Requirements covered:** REND-01 to REND-06 (6)
 
-**Plans:** 3 plans in 3 waves
+**Plans:** 4 plans in 4 waves ✅ ALL COMPLETE 2026-04-14
 
 Plans:
 - [x] 05-01-PLAN.md — Scaffolding: psutil dep, renderer package, sprite cache + font registry + unit tests [Wave 1]
 - [x] 05-02-PLAN.md — DifferentiableRenderer nn.Module: affine_grid + grid_sample forward pass + alpha-over + unit tests [Wave 2]
 - [x] 05-03-PLAN.md — Test pyramid: hypothesis property, Phase 4 integration, determinism, RSS stability, font leak [Wave 3]
+- [x] 05-04-3ki-review-PLAN.md — 3-KI Review (Claude + Codex + Gemini) + Wiki Update + 6 post-review fixes [Wave 4]
+
+**Phase 5 Status:** ✅ COMPLETE 2026-04-14
+- 48/48 tests green (mypy strict clean, ruff clean)
+- 3-KI review: Claude APPROVED, Codex APPROVED (after 6 fixes), Gemini APPROVED (after affine inversion fix)
+- D-01 supersession: nvdiffrast replaced by pure PyTorch grid_sample (zero external deps, CPU fallback)
+- Post-review fixes: affine target-to-source, NDC (2p+1)/size-1, softplus scale clamp, TOCTOU, device cache key, accessor functions
 
 **Success criteria:**
 1. Forward pass on 8px canvas produces non-NaN tensor
