@@ -19,9 +19,8 @@ Then: max(additive_density) > 1.0.
 from __future__ import annotations
 
 import torch
-import pytest
 
-from aerocloud.optimizer.loss import compute_l_overlap, compute_additive_density
+from aerocloud.optimizer.loss import compute_additive_density, compute_l_overlap
 
 
 class TestLOverlapNoOverlap:

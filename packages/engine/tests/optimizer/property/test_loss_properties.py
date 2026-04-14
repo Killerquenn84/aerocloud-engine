@@ -29,9 +29,7 @@ from aerocloud.renderer._renderer import DifferentiableRenderer
 # Strategy helpers
 # ---------------------------------------------------------------------------
 
-_finite_floats = st.floats(
-    min_value=-10.0, max_value=10.0, allow_nan=False, allow_infinity=False
-)
+_finite_floats = st.floats(min_value=-10.0, max_value=10.0, allow_nan=False, allow_infinity=False)
 
 
 def _draw_tensor(draw: st.DrawFn, rows: int, cols: int) -> torch.Tensor:
@@ -96,9 +94,7 @@ def test_l_fidelity_in_range(n: int) -> None:
     assert torch.isfinite(result), f"L_fidelity not finite: {result}"
     # cosine_similarity with dim=1 on unsqueezed (1,N) vectors -> scalar in [-1,1]
     # 1 - (-1..1) = [0, 2]
-    assert 0.0 <= float(result) <= 2.0 + 1e-5, (
-        f"L_fidelity out of [0, 2]: {result}"
-    )
+    assert 0.0 <= float(result) <= 2.0 + 1e-5, f"L_fidelity out of [0, 2]: {result}"
 
 
 @given(

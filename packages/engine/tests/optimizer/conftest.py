@@ -15,7 +15,6 @@ import torch
 
 from aerocloud.renderer._renderer import DifferentiableRenderer
 
-
 # ---------------------------------------------------------------------------
 # GPU skip marker (D-23)
 # ---------------------------------------------------------------------------

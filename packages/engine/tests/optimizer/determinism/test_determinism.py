@@ -126,9 +126,7 @@ def test_determinism_across_stages() -> None:
         result = loop.optimize()
         histories.append(result.stage_loss_histories)
 
-    assert len(histories[0]) == 2, (
-        f"Expected 2 stages (schedule [8,16]), got {len(histories[0])}"
-    )
+    assert len(histories[0]) == 2, f"Expected 2 stages (schedule [8,16]), got {len(histories[0])}"
 
     for i in range(1, 3):
         assert histories[i] == histories[0], (

@@ -14,10 +14,9 @@ Then: total = sum of weights * 1.0.
 from __future__ import annotations
 
 import torch
-import pytest
 
-from aerocloud.optimizer.loss import compute_total_loss
 from aerocloud.models.optimizer import LossWeights
+from aerocloud.optimizer.loss import compute_total_loss
 
 
 class TestComputeTotalLoss:
@@ -32,9 +31,7 @@ class TestComputeTotalLoss:
         l_temporal = torch.tensor(1.0)
         total = compute_total_loss(weights, l_wmse, l_overlap, l_fidelity, l_temporal)
         expected = 1.0 * 1.0 + 10.0 * 1.0 + 0.1 * 1.0 + 0.0 * 1.0  # = 11.1
-        assert abs(total.item() - expected) < 1e-4, (
-            f"Expected {expected}, got {total.item()}"
-        )
+        assert abs(total.item() - expected) < 1e-4, f"Expected {expected}, got {total.item()}"
 
     def test_lambda_zero_suppresses_temporal(self) -> None:
         """Default lambda_=0.0 means temporal loss has no effect."""
@@ -44,9 +41,7 @@ class TestComputeTotalLoss:
         l_fidelity = torch.tensor(0.0)
         l_temporal = torch.tensor(999.0)  # large value, should be suppressed
         total = compute_total_loss(weights, l_wmse, l_overlap, l_fidelity, l_temporal)
-        assert abs(total.item()) < 1e-5, (
-            f"Expected ~0 with lambda=0, got {total.item()}"
-        )
+        assert abs(total.item()) < 1e-5, f"Expected ~0 with lambda=0, got {total.item()}"
 
     def test_custom_weights(self) -> None:
         """Custom weights are applied correctly."""
@@ -57,9 +52,7 @@ class TestComputeTotalLoss:
         l_temporal = torch.tensor(1.0)
         total = compute_total_loss(weights, l_wmse, l_overlap, l_fidelity, l_temporal)
         expected = 2.0 + 3.0 + 4.0 + 5.0  # = 14.0
-        assert abs(total.item() - expected) < 1e-4, (
-            f"Expected {expected}, got {total.item()}"
-        )
+        assert abs(total.item() - expected) < 1e-4, f"Expected {expected}, got {total.item()}"
 
     def test_returns_scalar_tensor(self) -> None:
         """compute_total_loss returns a scalar tensor."""

@@ -17,7 +17,6 @@ Note: Only the y/x columns ([:, :2]) contribute; scale/rotation drift is ignored
 from __future__ import annotations
 
 import torch
-import pytest
 
 from aerocloud.optimizer.loss import compute_l_temporal
 
@@ -66,9 +65,7 @@ class TestLTemporalGradientFlows:
     def test_gradient_flows(self) -> None:
         """backward() does not raise and params_current.grad is not None."""
         initial = torch.tensor([[0.0, 0.0, 1.0, 0.0], [1.0, 1.0, 0.5, 0.0]])
-        current = torch.tensor(
-            [[0.5, 0.5, 1.0, 0.0], [1.5, 1.5, 0.5, 0.0]], requires_grad=True
-        )
+        current = torch.tensor([[0.5, 0.5, 1.0, 0.0], [1.5, 1.5, 0.5, 0.0]], requires_grad=True)
         loss = compute_l_temporal(current, initial)
         loss.backward()
         assert current.grad is not None, "Expected gradient on params_current tensor"

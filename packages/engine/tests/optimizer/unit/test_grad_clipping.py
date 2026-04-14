@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import pytest
 
 
 class TestGradientClipping:
@@ -29,9 +28,7 @@ class TestGradientClipping:
         loss.backward()
         assert params.grad is not None, "Expected gradient after backward"
         grad_norm = params.grad.norm().item()
-        assert grad_norm > 1.0, (
-            f"Expected large gradient (> 1.0) before clipping, got {grad_norm}"
-        )
+        assert grad_norm > 1.0, f"Expected large gradient (> 1.0) before clipping, got {grad_norm}"
 
     def test_clip_grad_norm_limit(self) -> None:
         """After clip_grad_norm_, the gradient norm is <= 1.0."""
@@ -41,9 +38,7 @@ class TestGradientClipping:
         nn.utils.clip_grad_norm_([params], max_norm=1.0)
         assert params.grad is not None, "Expected gradient after clip"
         grad_norm = params.grad.norm().item()
-        assert grad_norm <= 1.0 + 1e-6, (
-            f"Expected grad norm <= 1.0 after clipping, got {grad_norm}"
-        )
+        assert grad_norm <= 1.0 + 1e-6, f"Expected grad norm <= 1.0 after clipping, got {grad_norm}"
 
     def test_small_grad_unchanged_by_clip(self) -> None:
         """Small gradient is not affected by clip_grad_norm_(max_norm=1.0)."""
@@ -73,15 +68,15 @@ class TestGradientClipping:
         loss = output.sum() * 1000.0
         loss.backward()
         # Check at least one grad exists and is large
-        grad_norms = [
-            p.grad.norm().item() for p in model.parameters() if p.grad is not None
-        ]
+        grad_norms = [p.grad.norm().item() for p in model.parameters() if p.grad is not None]
         assert len(grad_norms) > 0
         # Clip
-        total_norm_before = nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-        total_norm_after = torch.stack([
-            p.grad.norm() for p in model.parameters() if p.grad is not None
-        ]).norm().item()
+        nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+        total_norm_after = (
+            torch.stack([p.grad.norm() for p in model.parameters() if p.grad is not None])
+            .norm()
+            .item()
+        )
         assert total_norm_after <= 1.0 + 1e-5, (
             f"Expected total norm <= 1.0 after clipping, got {total_norm_after}"
         )

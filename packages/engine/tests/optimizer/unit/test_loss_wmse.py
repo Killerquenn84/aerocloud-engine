@@ -17,7 +17,6 @@ Then: clamp(sdf, min=0) = 0, so L_wmse = 0.0 regardless of density.
 from __future__ import annotations
 
 import torch
-import pytest
 
 from aerocloud.optimizer.loss import compute_l_wmse
 

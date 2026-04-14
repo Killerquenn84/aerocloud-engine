@@ -17,8 +17,6 @@ Then: returns False (not enough data).
 
 from __future__ import annotations
 
-import pytest
-
 from aerocloud.optimizer.convergence import check_convergence
 
 

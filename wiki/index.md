@@ -112,14 +112,21 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 
 - [code/renderer-differentiable.md](code/renderer-differentiable.md) — DifferentiableRenderer: grid_sample+affine_grid, alpha-over, sprite cache, REND-01..06
 
+### Phase 6 Inner Loop-v1
+
+- [code/optimizer-inner-loop.md](code/optimizer-inner-loop.md) — InnerLoop class: Coarse-to-Fine pipeline, Adam optimizer, convergence detection, OptimizationResult API
+- [code/optimizer-loss-functions.md](code/optimizer-loss-functions.md) — L_wmse, L_overlap, L_fidelity, L_temporal, L_total formulas + compute_additive_density + check_convergence
+
 ## 🧠 Knowledge (wiki/knowledge/) — additions
 
 - [knowledge/phase-5-renderer-design.md](knowledge/phase-5-renderer-design.md) — D-01 nvdiffrast supersession rationale, grid_sample architecture, alpha-over compositing, Phase 5 design decisions (D-01..D-21)
+- [knowledge/phase-6-inner-loop-design.md](knowledge/phase-6-inner-loop-design.md) — Additive vs alpha-over for L_overlap, rolling-window convergence rationale, Coarse-to-Fine stage design, memory hygiene, Phase 12 known gaps
 
 ## 🗣️ Discussions — additions
 
 - [discussions/2026-04-12-phase-5-codereview.md](discussions/2026-04-12-phase-5-codereview.md) — Phase 5 Wave 4 3-KI Code Review (Claude APPROVED; Codex + Gemini pending)
 - [discussions/2026-04-12-phase-5-summary.md](discussions/2026-04-12-phase-5-summary.md) — Phase 5 Close-Out Summary (4 plans, 48 tests, REND-01..06 satisfied)
+- [discussions/2026-04-14-phase-6-codereview.md](discussions/2026-04-14-phase-6-codereview.md) — Phase 6 Inner Loop-v1 3-KI Code Review (Claude APPROVED; Codex + Gemini pending)
 
 ## 🧪 Tests (wiki/tests/)
 Test-Coverage und Test-Strategien pro Modul.

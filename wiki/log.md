@@ -291,3 +291,20 @@ Issues resolved during execution:
 - Seam Carving Word Cloud Whitespace
 - safetensors Model Checkpoints Security
 - Pareto-Front Hypervolume CQD_HV
+
+## [2026-04-14] phase-06 | Inner Loop-v1 Plans 01-04 complete
+
+- Plan 06-01: Inner loop scaffolding — 4-part composite loss (L_wmse + L_overlap + L_fidelity + L_temporal), compute_additive_density SUM-compositing helper, rolling-window convergence detection, Pydantic models (LossWeights, InnerLoopConfig, OptimizationResult). 38 unit tests, mypy strict clean, ruff clean.
+- Plan 06-02: InnerLoop class — Coarse-to-Fine optimization pipeline, Adam with gradient clipping, _build_stage_schedule filtering, _downsample_sdf bilinear, warm-start per stage. 5 integration tests. Total: 43 tests.
+- Plan 06-03: Test pyramid completion — 7 hypothesis property tests (NaN-freedom, value bounds), 3 determinism tests (10-run identity), 3 memory tests (RSS < 50 MiB, tensor count, float hygiene). Total: 56 tests. All ROADMAP success criteria 3/4/5 satisfied.
+- Plan 06-04: 3-KI code review + wiki documentation:
+  - Phase exit gates passed: 56 tests green, mypy strict 0 errors, ruff check+format clean
+  - Ruff pre-existing issues fixed (unused imports, import sort, B905, F841) in test files from Plans 01-02
+  - Claude self-review: APPROVED. S-1..S-8 all pass, L-1..L-8 all pass, A-1..A-5 all pass. 9 low-severity findings documented. Blueprint math verified.
+  - Codex + Gemini review prompts prepared (full source included)
+  - Wiki: 2 code docs (optimizer-inner-loop.md, optimizer-loss-functions.md), 1 knowledge doc (phase-6-inner-loop-design.md), 1 discussion doc (2026-04-14-phase-6-codereview.md)
+  - Phase close-out checkpoint: awaiting Jens approval + Codex/Gemini external reviews
+
+- Requirements satisfied: INNER-01..INNER-10 (all)
+- Total optimizer tests: 56 (>= 35 D-22 requirement)
+- ROADMAP success criteria: 1 (8px convergence), 3 (NaN-freedom), 4 (RSS stable), 5 (determinism) — all satisfied

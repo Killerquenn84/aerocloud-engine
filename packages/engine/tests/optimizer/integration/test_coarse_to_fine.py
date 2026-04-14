@@ -13,14 +13,12 @@ from __future__ import annotations
 import math
 
 import numpy as np
-import pytest
 import torch
 
-from aerocloud.optimizer.inner_loop import InnerLoop
 from aerocloud.models.optimizer import InnerLoopConfig, OptimizationResult
+from aerocloud.optimizer.inner_loop import InnerLoop
 from aerocloud.renderer._renderer import DifferentiableRenderer
 from aerocloud.utils.determinism import set_seed
-
 
 # ---------------------------------------------------------------------------
 # Helpers / inline fixtures
@@ -94,9 +92,7 @@ def test_coarse_to_fine_converges_8px() -> None:
     # Loss should decrease during optimization
     hist = result.stage_loss_histories[0]
     assert len(hist) > 1, "Should have at least 2 epoch losses recorded"
-    assert hist[0] > hist[-1], (
-        f"Loss should decrease: first={hist[0]:.4f}, last={hist[-1]:.4f}"
-    )
+    assert hist[0] > hist[-1], f"Loss should decrease: first={hist[0]:.4f}, last={hist[-1]:.4f}"
 
 
 def test_stage_schedule_filters_large_resolutions() -> None:
@@ -181,7 +177,9 @@ def test_determinism_two_runs() -> None:
     result2 = loop2.optimize()
 
     assert len(result1.stage_loss_histories) == len(result2.stage_loss_histories)
-    for hist1, hist2 in zip(result1.stage_loss_histories, result2.stage_loss_histories):
+    for hist1, hist2 in zip(
+        result1.stage_loss_histories, result2.stage_loss_histories, strict=True
+    ):
         assert hist1 == hist2, (
             f"Loss histories differ between identical runs:\n{hist1}\nvs\n{hist2}"
         )

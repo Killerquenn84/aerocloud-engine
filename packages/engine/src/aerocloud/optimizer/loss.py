@@ -92,9 +92,7 @@ def compute_l_fidelity(
         Scalar tensor in approximately [0, 2].
     """
     s_current = params[:, 2]
-    return 1.0 - F.cosine_similarity(
-        s_ref.unsqueeze(0), s_current.unsqueeze(0)
-    ).squeeze()
+    return 1.0 - F.cosine_similarity(s_ref.unsqueeze(0), s_current.unsqueeze(0)).squeeze()
 
 
 def compute_l_temporal(
@@ -183,7 +181,10 @@ def compute_additive_density(
         at pixels covered by more than one sprite.
     """
     additive = torch.zeros(
-        1, 1, canvas_h, canvas_w,
+        1,
+        1,
+        canvas_h,
+        canvas_w,
         device=renderer._device,
         dtype=torch.float32,
     )
@@ -216,11 +217,16 @@ def compute_additive_density(
         theta_mat = torch.stack([a11, a12, tx, a21, a22, ty]).reshape(1, 2, 3)
 
         grid = F.affine_grid(
-            theta_mat, [1, 1, canvas_h, canvas_w], align_corners=False,
+            theta_mat,
+            [1, 1, canvas_h, canvas_w],
+            align_corners=False,
         )
         warped = F.grid_sample(
-            sprite, grid,
-            mode="bilinear", padding_mode="zeros", align_corners=False,
+            sprite,
+            grid,
+            mode="bilinear",
+            padding_mode="zeros",
+            align_corners=False,
         )
 
         # SUM instead of alpha-over — allows values to exceed 1.0

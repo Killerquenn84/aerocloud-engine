@@ -19,7 +19,6 @@ Then: value is in [0, 2] (cosine similarity in [-1, 1]).
 from __future__ import annotations
 
 import torch
-import pytest
 
 from aerocloud.optimizer.loss import compute_l_fidelity
 
@@ -58,9 +57,7 @@ class TestLFidelityGradientFlows:
 
     def test_gradient_flows(self, ref_weights_2: torch.Tensor) -> None:
         """backward() does not raise and params.grad is not None."""
-        params = torch.tensor(
-            [[0.0, 0.0, 0.8, 0.0], [0.0, 0.0, 0.4, 0.0]], requires_grad=True
-        )
+        params = torch.tensor([[0.0, 0.0, 0.8, 0.0], [0.0, 0.0, 0.4, 0.0]], requires_grad=True)
         loss = compute_l_fidelity(ref_weights_2, params)
         loss.backward()
         assert params.grad is not None, "Expected gradient on params tensor"
