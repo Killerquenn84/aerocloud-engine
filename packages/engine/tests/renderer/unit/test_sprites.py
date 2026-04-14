@@ -26,9 +26,9 @@ import pytest
 import torch
 
 from aerocloud.renderer._sprites import (
-    FONT_REGISTRY,
-    SPRITE_CACHE,
     clear_caches,
+    get_font_registry,
+    get_sprite_cache_size,
     register_glyph,
 )
 
@@ -101,10 +101,10 @@ def test_register_glyph_detaches() -> None:
 
 
 def test_clear_caches() -> None:
-    """After register + clear_caches() → both SPRITE_CACHE and FONT_REGISTRY are empty."""
+    """After register + clear_caches() → both caches are empty."""
     register_glyph("Inter", 24, 65, _buf(), _CPU)
-    assert len(SPRITE_CACHE) >= 1
-    assert len(FONT_REGISTRY) >= 1
+    assert get_sprite_cache_size() >= 1
+    assert len(get_font_registry()) >= 1
     clear_caches()
-    assert len(SPRITE_CACHE) == 0
-    assert len(FONT_REGISTRY) == 0
+    assert get_sprite_cache_size() == 0
+    assert len(get_font_registry()) == 0

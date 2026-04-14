@@ -67,19 +67,34 @@ class DifferentiableRenderer(nn.Module):
             # Clamp rotation to [-pi, pi] (D-09)
             theta_i = torch.remainder(theta_i + math.pi, 2 * math.pi) - math.pi
 
+            # Clamp scale to prevent div-by-zero (Codex review: validate, don't mask)
+            s_i = torch.clamp(s_i, min=0.01)
+
             # Normalize pixel coords to NDC [-1, 1] for affine_grid (D-07)
-            x_n = (x_i / (canvas_w / 2.0)) - 1.0
-            y_n = (y_i / (canvas_h / 2.0)) - 1.0
+            # align_corners=False: pixel center p maps to ((2p+1)/size) - 1 (Codex Fix 2)
+            x_n = ((2.0 * x_i + 1.0) / canvas_w) - 1.0
+            y_n = ((2.0 * y_i + 1.0) / canvas_h) - 1.0
 
             cos_t = torch.cos(theta_i)
             sin_t = torch.sin(theta_i)
 
-            # 2x3 affine matrix: scale + rotate + translate (D-16)
+            # Inverse scale for target-to-source mapping (Gemini + Codex review)
+            inv_s = 1.0 / s_i
+
+            # 2x3 affine matrix: TARGET-TO-SOURCE (D-16)
+            # affine_grid maps output pixels to input (sprite) coordinates.
+            # A^{-1} = (1/s) * R(-theta), translation b = -A^{-1} * T
             # Row 0 controls x-sampling, Row 1 controls y-sampling
-            # in affine_grid's convention
+            a11 = inv_s * cos_t
+            a12 = inv_s * sin_t
+            a21 = -inv_s * sin_t
+            a22 = inv_s * cos_t
+            tx = -(a11 * x_n + a12 * y_n)
+            ty = -(a21 * x_n + a22 * y_n)
+
             theta_mat = torch.stack([
-                s_i * cos_t, -s_i * sin_t, x_n,
-                s_i * sin_t,  s_i * cos_t, y_n,
+                a11, a12, tx,
+                a21, a22, ty,
             ]).reshape(1, 2, 3)
 
             # affine_grid + grid_sample (D-02)

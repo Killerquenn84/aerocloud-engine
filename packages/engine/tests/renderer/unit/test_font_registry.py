@@ -20,7 +20,7 @@ import threading
 
 import pytest
 
-from aerocloud.renderer._sprites import FONT_REGISTRY, register_glyph
+from aerocloud.renderer._sprites import get_font_registry, register_glyph
 
 
 # ---------------------------------------------------------------------------
@@ -46,33 +46,35 @@ def _register(font_family: str, size_pt: int) -> None:
 # ---------------------------------------------------------------------------
 
 def test_register_single_font() -> None:
-    """Registering one (font_family, size_pt) pair → FONT_REGISTRY has 1 entry."""
+    """Registering one (font_family, size_pt) pair → registry has 1 entry."""
     _register("Inter", 24)
-    assert len(FONT_REGISTRY) == 1
-    assert ("Inter", 24) in FONT_REGISTRY
+    reg = get_font_registry()
+    assert len(reg) == 1
+    assert ("Inter", 24) in reg
 
 
 def test_register_duplicate_font() -> None:
-    """Registering the same pair twice → FONT_REGISTRY still has 1 entry."""
+    """Registering the same pair twice → registry still has 1 entry."""
     _register("Inter", 24)
     _register("Inter", 24)
-    assert len(FONT_REGISTRY) == 1
+    assert len(get_font_registry()) == 1
 
 
 def test_register_multiple_fonts() -> None:
-    """Registering two distinct pairs → FONT_REGISTRY has 2 entries."""
+    """Registering two distinct pairs → registry has 2 entries."""
     _register("Inter", 24)
     _register("Inter", 48)
-    assert len(FONT_REGISTRY) == 2
-    assert ("Inter", 24) in FONT_REGISTRY
-    assert ("Inter", 48) in FONT_REGISTRY
+    reg = get_font_registry()
+    assert len(reg) == 2
+    assert ("Inter", 24) in reg
+    assert ("Inter", 48) in reg
 
 
 def test_font_registry_count_stable_after_100_calls() -> None:
     """Registering the same pair 100 times → count stays at 1."""
     for _ in range(100):
         _register("Roboto", 32)
-    assert len(FONT_REGISTRY) == 1
+    assert len(get_font_registry()) == 1
 
 
 def test_font_registry_thread_safety() -> None:
@@ -94,5 +96,6 @@ def test_font_registry_thread_safety() -> None:
         t.join()
 
     assert not errors, f"Thread errors: {errors}"
-    assert len(FONT_REGISTRY) == 1
-    assert ("ThreadFont", 12) in FONT_REGISTRY
+    reg = get_font_registry()
+    assert len(reg) == 1
+    assert ("ThreadFont", 12) in reg

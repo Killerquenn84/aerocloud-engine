@@ -14,7 +14,7 @@ import psutil
 import torch
 
 from aerocloud.renderer import DifferentiableRenderer
-from aerocloud.renderer._sprites import FONT_REGISTRY, SPRITE_CACHE, register_glyph
+from aerocloud.renderer._sprites import get_font_registry, get_sprite_cache_size, register_glyph
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -77,12 +77,12 @@ def test_rss_stability_100_iters() -> None:
 
 
 def test_font_registry_stable_100_renders() -> None:
-    """FONT_REGISTRY count must not grow across 100 forward passes (REND-04)."""
+    """Font registry count must not grow across 100 forward passes (REND-04)."""
     device = torch.device("cpu")
     renderer = _make_renderer_for_memory(device)
 
     # Count registered fonts after setup
-    font_count_before = len(FONT_REGISTRY)
+    font_count_before = len(get_font_registry())
     assert font_count_before > 0, "No fonts registered — test setup error"
 
     # Run 100 forward passes
@@ -90,21 +90,21 @@ def test_font_registry_stable_100_renders() -> None:
         out = renderer(8, 8)
         _ = out.detach()
 
-    font_count_after = len(FONT_REGISTRY)
+    font_count_after = len(get_font_registry())
 
     assert font_count_after == font_count_before, (
-        f"FONT_REGISTRY grew from {font_count_before} to {font_count_after} "
+        f"Font registry grew from {font_count_before} to {font_count_after} "
         f"across 100 forward passes — font leak detected (REND-04)."
     )
 
 
 def test_sprite_cache_stable_100_renders() -> None:
-    """SPRITE_CACHE count must not grow across 100 forward passes."""
+    """Sprite cache count must not grow across 100 forward passes."""
     device = torch.device("cpu")
     renderer = _make_renderer_for_memory(device)
 
     # Count cached sprites after setup
-    cache_count_before = len(SPRITE_CACHE)
+    cache_count_before = get_sprite_cache_size()
     assert cache_count_before > 0, "No sprites cached — test setup error"
 
     # Run 100 forward passes
@@ -112,9 +112,9 @@ def test_sprite_cache_stable_100_renders() -> None:
         out = renderer(8, 8)
         _ = out.detach()
 
-    cache_count_after = len(SPRITE_CACHE)
+    cache_count_after = get_sprite_cache_size()
 
     assert cache_count_after == cache_count_before, (
-        f"SPRITE_CACHE grew from {cache_count_before} to {cache_count_after} "
+        f"Sprite cache grew from {cache_count_before} to {cache_count_after} "
         f"across 100 forward passes — sprite cache leak detected."
     )

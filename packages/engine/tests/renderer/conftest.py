@@ -48,10 +48,8 @@ def clear_caches() -> None:  # type: ignore[return]
     module-level caches.  Imported lazily so that this conftest can be
     parsed even before _sprites.py exists (import happens at test-run time).
     """
-    from aerocloud.renderer._sprites import FONT_REGISTRY, SPRITE_CACHE  # noqa: PLC0415
+    from aerocloud.renderer._sprites import clear_caches as _clear  # noqa: PLC0415
 
-    FONT_REGISTRY.clear()
-    SPRITE_CACHE.clear()
+    _clear()
     yield  # type: ignore[misc]
-    FONT_REGISTRY.clear()
-    SPRITE_CACHE.clear()
+    _clear()
