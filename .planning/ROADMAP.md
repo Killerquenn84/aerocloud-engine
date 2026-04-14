@@ -159,14 +159,13 @@ Plans:
 
 **Requirements covered:** INNER-01 to INNER-10 (10)
 
-**Plans:**
-- Implement `L_wmse`, `L_overlap`, `L_fidelity`, `L_temporal`
-- Combined loss `L_total = α·L_wmse + β·L_overlap + γ·L_fidelity + λ·L_temporal`
-- Adam optimizer with Blueprint params (α=0.001, β1=0.9, β2=0.999, ε=10⁻⁸)
-- Gradient clipping
-- Coarse-to-Fine: 8 → 32 → 128 → target
-- Convergence detection (loss plateau)
-- Memory hygiene: `.detach()` for metrics, `empty_cache()` per stage
+**Plans:** 4 plans in 4 waves
+
+Plans:
+- [ ] 06-01-PLAN.md — Scaffolding + Pydantic models + 4 loss functions + convergence detection + unit tests [Wave 1]
+- [ ] 06-02-PLAN.md — InnerLoop class + Coarse-to-Fine pipeline + Adam optimizer + integration tests [Wave 2]
+- [ ] 06-03-PLAN.md — Test pyramid: hypothesis property + determinism + RSS memory stability [Wave 3]
+- [ ] 06-04-PLAN.md — 3-KI Review (Claude + Codex + Gemini) + Wiki Update + phase exit gates [Wave 4]
 
 **Success criteria:**
 1. Loss converges from random init within 100 epochs at 8px
