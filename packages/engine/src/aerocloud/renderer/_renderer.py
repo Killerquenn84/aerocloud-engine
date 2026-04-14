@@ -67,8 +67,9 @@ class DifferentiableRenderer(nn.Module):
             # Clamp rotation to [-pi, pi] (D-09)
             theta_i = torch.remainder(theta_i + math.pi, 2 * math.pi) - math.pi
 
-            # Clamp scale to prevent div-by-zero (Codex review: validate, don't mask)
-            s_i = torch.clamp(s_i, min=0.01)
+            # Soft-clamp scale: gradient-friendly floor via softplus (Codex post-fix review)
+            # softplus(s_i - 0.01) + 0.01 ensures s_i >= 0.01 with non-zero gradient
+            s_i = torch.nn.functional.softplus(s_i - 0.01) + 0.01
 
             # Normalize pixel coords to NDC [-1, 1] for affine_grid (D-07)
             # align_corners=False: pixel center p maps to ((2p+1)/size) - 1 (Codex Fix 2)
