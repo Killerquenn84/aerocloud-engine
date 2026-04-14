@@ -1,11 +1,11 @@
 """Inner Loop optimizer package (Phase 6).
 
-Exports loss functions, convergence detection, and Pydantic models.
-The InnerLoop class itself will be added in Plan 02.
+Exports loss functions, convergence detection, Pydantic models, and InnerLoop.
 """
 
 from aerocloud.models.optimizer import InnerLoopConfig, LossWeights, OptimizationResult
 from aerocloud.optimizer.convergence import check_convergence
+from aerocloud.optimizer.inner_loop import InnerLoop
 from aerocloud.optimizer.loss import (
     compute_additive_density,
     compute_l_fidelity,
@@ -16,6 +16,7 @@ from aerocloud.optimizer.loss import (
 )
 
 __all__ = [
+    "InnerLoop",
     "InnerLoopConfig",
     "LossWeights",
     "OptimizationResult",
