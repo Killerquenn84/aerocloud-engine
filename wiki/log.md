@@ -308,3 +308,11 @@ Issues resolved during execution:
 - Requirements satisfied: INNER-01..INNER-10 (all)
 - Total optimizer tests: 56 (>= 35 D-22 requirement)
 - ROADMAP success criteria: 1 (8px convergence), 3 (NaN-freedom), 4 (RSS stable), 5 (determinism) — all satisfied
+
+## [2026-04-15] nightly-research | 5 topics
+- BOP-Elites Bayesian Optimization
+- POT Python Optimal Transport Library
+- SAT Separating Axis Theorem
+- Medial Axis Transform scikit-fmm
+- 4-Part Loss Function Word Placement
+- Failures: 2
