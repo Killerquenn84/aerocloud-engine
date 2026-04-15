@@ -182,16 +182,16 @@ Plans:
 
 **Requirements covered:** GEO2-01 to GEO2-09 (9)
 
-**Plans:**
-- `scikit-fmm` Fast Marching Method for MAT
-- Chordal Axis Transform pruning
-- Multi-Centric Wordle: spiral origin per MAT branch
-- Stage 2 collision: Two-Level Box (BVH)
-- Stage 3 collision: Quadtree
-- Stage 4 collision: SAT for rotated rectangles
-- Stage 5 collision: Bitmap + 32-bit INT pixel-exact
-- BVH tree with LRU cache
-- Bezier path representation
+**Plans:** 7 plans in 6 waves
+
+Plans:
+- [ ] 07-01-PLAN.md — MAT skeleton extraction + pruning + mat_cache (TDD) [Wave 1] — GEO2-01, GEO2-02
+- [ ] 07-02-PLAN.md — BVH + Quadtree + BVH LRU cache (TDD) [Wave 2 parallel] — GEO2-04, GEO2-05, GEO2-08
+- [ ] 07-03-PLAN.md — SAT + Bitmap collision stages (TDD) [Wave 3] — GEO2-06, GEO2-07
+- [ ] 07-04-PLAN.md — Multi-Centric placement pre-pass (TDD) [Wave 4] — GEO2-03
+- [ ] 07-05-PLAN.md — BezierGlyph + glyph_to_bezier via cv2 (TDD) [Wave 2 parallel] — GEO2-09
+- [ ] 07-06-PLAN.md — Renderer dual-mode + delete compute_additive_density (TDD) [Wave 5] — D-20/D-21
+- [ ] 07-07-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 6]
 
 **Success criteria:**
 1. Star mask produces > 1 MAT branch (multi-centric verified)
@@ -380,3 +380,4 @@ All other phases are strictly sequential due to hard data dependencies.
 *Roadmap created: 2026-04-07 after research synthesis (Gemini + Codex consensus)*
 *Granularity: Fine (12 phases as decided by Jens)*
 *Strategy: Bottom-up build order + iterative reification*
+*Phase 7 plans added: 2026-04-15*
