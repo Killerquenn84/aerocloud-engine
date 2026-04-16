@@ -225,9 +225,7 @@ def _fix_rounding_drift(
     return targets
 
 
-def _build_sub_sdf(
-    sdf: np.ndarray, branch_map: np.ndarray, branch_id: int
-) -> np.ndarray:
+def _build_sub_sdf(sdf: np.ndarray, branch_map: np.ndarray, branch_id: int) -> np.ndarray:
     """Build a sub-SDF for one branch (D-12).
 
     sub_sdf = np.where(branch_map == branch_id, sdf, 0.0)
@@ -246,9 +244,7 @@ def _build_sub_sdf(
     return np.asarray(np.where(branch_map == branch_id, sdf, np.float32(0.0)), dtype=np.float32)
 
 
-def _build_sub_mask(
-    branch_map: np.ndarray, mask: np.ndarray, branch_id: int
-) -> np.ndarray:
+def _build_sub_mask(branch_map: np.ndarray, mask: np.ndarray, branch_id: int) -> np.ndarray:
     """Build a sub-mask for one branch (D-12).
 
     sub_mask = (branch_map == branch_id) & original_mask
@@ -310,8 +306,10 @@ def _place_words_on_arrays(
         if found is not None:
             y_min, x_min, y_max, x_max = found
             bbox = AABB(
-                y_min=int(y_min), x_min=int(x_min),
-                y_max=int(y_max), x_max=int(x_max),
+                y_min=int(y_min),
+                x_min=int(x_min),
+                y_max=int(y_max),
+                x_max=int(x_max),
             )
             placements.append(
                 PlacedWord(
@@ -384,8 +382,7 @@ def place_words_multi_centric(
         if n_branches == 0 or not mask.any():
             # Degenerate: drop all words
             dropped_all = [
-                DroppedWord(word=w, reason=DropReason.NO_FEASIBLE_ANCHOR)
-                for w, h, ww in words
+                DroppedWord(word=w, reason=DropReason.NO_FEASIBLE_ANCHOR) for w, h, ww in words
             ]
             wall_ms = (time.perf_counter() - t_start) * 1000.0
             stats = PlacementStats(
@@ -470,9 +467,7 @@ def place_words_multi_centric(
             continue
 
         # Run placement on sub-SDF
-        b_placed, b_dropped, b_iters = _place_words_on_arrays(
-            sub_sdf, sub_mask, branch_words, seed
-        )
+        b_placed, b_dropped, b_iters = _place_words_on_arrays(sub_sdf, sub_mask, branch_words, seed)
 
         if len(b_placed) == 0 and len(branch_words) > 0:
             branch_log.warning(

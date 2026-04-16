@@ -41,18 +41,12 @@ class DifferentiableRenderer(nn.Module):
     ) -> None:
         super().__init__()
         if params_n4.ndim != 2 or params_n4.shape[1] != 4:
-            raise ValueError(
-                f"params_n4 must be (N, 4), got {params_n4.shape}"
-            )
+            raise ValueError(f"params_n4 must be (N, 4), got {params_n4.shape}")
         if len(sprites) != params_n4.shape[0]:
-            raise ValueError(
-                f"Expected {params_n4.shape[0]} sprites, got {len(sprites)}"
-            )
+            raise ValueError(f"Expected {params_n4.shape[0]} sprites, got {len(sprites)}")
         self.params = nn.Parameter(params_n4.to(device, dtype=torch.float32))
         # Sprites are data, not learned -- store as plain tensors (D-10, D-11)
-        self._sprites: list[torch.Tensor] = [
-            s.to(device, dtype=torch.float32) for s in sprites
-        ]
+        self._sprites: list[torch.Tensor] = [s.to(device, dtype=torch.float32) for s in sprites]
         self._device = device
 
     def forward(
@@ -85,18 +79,18 @@ class DifferentiableRenderer(nn.Module):
             ValueError: If ``mode`` is not ``'alpha_over'`` or ``'both'``.
         """
         if mode not in ("alpha_over", "both"):
-            raise ValueError(
-                f"Unknown mode {mode!r}; expected 'alpha_over' or 'both'"
-            )
+            raise ValueError(f"Unknown mode {mode!r}; expected 'alpha_over' or 'both'")
 
         density = torch.zeros(
-            1, 1, canvas_h, canvas_w,
-            device=self._device, dtype=torch.float32,
+            1,
+            1,
+            canvas_h,
+            canvas_w,
+            device=self._device,
+            dtype=torch.float32,
         )
         # Only allocate additive tensor when requested (avoids memory overhead)
-        additive: torch.Tensor | None = (
-            torch.zeros_like(density) if mode == "both" else None
-        )
+        additive: torch.Tensor | None = torch.zeros_like(density) if mode == "both" else None
 
         for i, sprite in enumerate(self._sprites):
             y_i, x_i, s_i, theta_i = self.params[i]
@@ -130,19 +124,30 @@ class DifferentiableRenderer(nn.Module):
             tx = -(a11 * x_n + a12 * y_n)
             ty = -(a21 * x_n + a22 * y_n)
 
-            theta_mat = torch.stack([
-                a11, a12, tx,
-                a21, a22, ty,
-            ]).reshape(1, 2, 3)
+            theta_mat = torch.stack(
+                [
+                    a11,
+                    a12,
+                    tx,
+                    a21,
+                    a22,
+                    ty,
+                ]
+            ).reshape(1, 2, 3)
 
             # affine_grid + grid_sample (D-02)
             # align_corners=False for pixel-edge semantics (Pitfall 2)
             grid = F.affine_grid(
-                theta_mat, [1, 1, canvas_h, canvas_w], align_corners=False,
+                theta_mat,
+                [1, 1, canvas_h, canvas_w],
+                align_corners=False,
             )
             warped = F.grid_sample(
-                sprite, grid,
-                mode="bilinear", padding_mode="zeros", align_corners=False,
+                sprite,
+                grid,
+                mode="bilinear",
+                padding_mode="zeros",
+                align_corners=False,
             )
 
             # Alpha-over compositing (D-04): density = 1 - prod(1 - alpha_i)

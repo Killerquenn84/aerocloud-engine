@@ -88,6 +88,7 @@ _SAMPLES_PER_TURN: Final[int] = 16
 # Feasibility field (D-39 / 04-RESEARCH.md §6)
 # ---------------------------------------------------------------------------
 
+
 def feasibility_field(
     sdf: np.ndarray,
     occupied: np.ndarray,
@@ -117,14 +118,13 @@ def feasibility_field(
         sdf, footprint=struct, mode="constant", cval=-np.inf
     )
     forbidden: np.ndarray = ndimage.binary_dilation(occupied, structure=struct)
-    return np.where(
-        forbidden, np.float32(-np.inf), min_sdf.astype(np.float32, copy=False)
-    )
+    return np.where(forbidden, np.float32(-np.inf), min_sdf.astype(np.float32, copy=False))
 
 
 # ---------------------------------------------------------------------------
 # Origin selection (D-39 / 04-RESEARCH.md §6 Open Question 2)
 # ---------------------------------------------------------------------------
+
 
 def select_origin(
     feasible_sdf: np.ndarray,
@@ -170,6 +170,7 @@ def select_origin(
 # ---------------------------------------------------------------------------
 # Archimedean spiral offset generator (D-40 / 04-RESEARCH.md §7)
 # ---------------------------------------------------------------------------
+
 
 def archimedean_offsets(step: int, max_iters: int) -> list[tuple[int, int]]:
     """Generate deduplicated integer (dy, dx) spiral offsets.
@@ -223,6 +224,7 @@ def archimedean_offsets(step: int, max_iters: int) -> list[tuple[int, int]]:
 # Step clamping helper (D-41)
 # ---------------------------------------------------------------------------
 
+
 def _clamp_step(aabb_w: int, aabb_h: int, sdf_at_pos: float) -> int:
     """Compute the adaptive spiral step for the current AABB and SDF value.
 
@@ -240,6 +242,7 @@ def _clamp_step(aabb_w: int, aabb_h: int, sdf_at_pos: float) -> int:
 # Mask centroid helper
 # ---------------------------------------------------------------------------
 
+
 def _compute_centroid(mask: np.ndarray) -> tuple[int, int]:
     """Return (y, x) centroid of the mask's True pixels."""
     ys, xs = np.nonzero(mask)
@@ -251,6 +254,7 @@ def _compute_centroid(mask: np.ndarray) -> tuple[int, int]:
 # ---------------------------------------------------------------------------
 # Inner spiral search for one seed (extracted to reduce place_words complexity)
 # ---------------------------------------------------------------------------
+
 
 def _spiral_search(
     oy: int,
@@ -314,6 +318,7 @@ def _spiral_search(
 # Per-word placement loop (extracted to reduce place_words complexity)
 # ---------------------------------------------------------------------------
 
+
 def _place_one_word(
     h: int,
     w: int,
@@ -365,6 +370,7 @@ def _place_one_word(
 # ---------------------------------------------------------------------------
 # Main entry point (D-38..D-46)
 # ---------------------------------------------------------------------------
+
 
 def place_words(request: PlacementRequest) -> PlacementResult:
     """Place words into the silhouette mask using per-word adaptive POI spiral.
@@ -430,8 +436,10 @@ def place_words(request: PlacementRequest) -> PlacementResult:
         if found is not None:
             y_min, x_min, y_max, x_max = found
             bbox = AABB(
-                y_min=int(y_min), x_min=int(x_min),
-                y_max=int(y_max), x_max=int(x_max),
+                y_min=int(y_min),
+                x_min=int(x_min),
+                y_max=int(y_max),
+                x_max=int(x_max),
             )
             placements.append(
                 PlacedWord(

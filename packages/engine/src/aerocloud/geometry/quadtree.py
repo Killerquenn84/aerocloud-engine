@@ -66,8 +66,14 @@ def build_quadtree(
 
 
 def _bounds_overlap(
-    ay0: int, ax0: int, ay1: int, ax1: int,
-    by0: int, bx0: int, by1: int, bx1: int,
+    ay0: int,
+    ax0: int,
+    ay1: int,
+    ax1: int,
+    by0: int,
+    bx0: int,
+    by1: int,
+    bx1: int,
 ) -> bool:
     """Return True iff two half-open rectangles overlap."""
     return ay0 < by1 and by0 < ay1 and ax0 < bx1 and bx0 < ax1

@@ -107,9 +107,7 @@ def extract_ridge_points(sdf: np.ndarray, min_branch_radius: float) -> np.ndarra
     return ridge
 
 
-def extract_mat_branches(
-    sdf: np.ndarray, min_branch_radius: float
-) -> tuple[np.ndarray, int]:
+def extract_mat_branches(sdf: np.ndarray, min_branch_radius: float) -> tuple[np.ndarray, int]:
     """Connect ridge pixels via binary dilation and label connected components.
 
     Steps:
@@ -332,9 +330,7 @@ def extract_mat(sdf: np.ndarray, min_branch_radius: float = 3.0) -> MATResult:
         max_val = float(np.max(sdf_in_component))
         candidates = np.argwhere(sdf_in_component == max_val)
         # Lexicographic tiebreak (D-15): sort by (y, x) ascending
-        candidates_sorted = sorted(
-            [(int(r[0]), int(r[1])) for r in candidates]
-        )
+        candidates_sorted = sorted([(int(r[0]), int(r[1])) for r in candidates])
         origins_yx.append(candidates_sorted[0])
 
     # --- Step 4: Travel time from mask centroid ---

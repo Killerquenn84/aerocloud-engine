@@ -93,20 +93,23 @@ def yx_to_xy(point: tuple[int, int]) -> tuple[int, int]:
 # this raises GeometryEnvironmentError immediately.
 _assert_freetype()
 
-__all__ = [
+__all__ = [  # noqa: RUF022
+    # Private / internal exports (underscore-prefixed, kept first by convention)
     "_EXPECTED_FREETYPE",
+    "_assert_freetype",
+    # Error types
     "EmptyMaskError",
     "GeometryEnvironmentError",
     "GeometryError",
     "MaskFormatError",
     "PlacementFailedError",
-    "_assert_freetype",
+    # Coordinate adapters
     "xy_to_yx",
     "yx_to_xy",
-    # Phase 7 MAT exports
-    "extract_mat",
-    "MATResult",
+    # Phase 7 MAT exports (GEO2-01, GEO2-02)
     "MATBranch",
+    "MATResult",
+    "extract_mat",
     "get_or_build_mat",
     # Phase 7 BVH exports (GEO2-04, GEO2-08)
     "BVHNode",
@@ -119,24 +122,21 @@ __all__ = [
     "insert_aabb",
     "query_region",
     # Phase 7 SAT + Bitmap exports (GEO2-06, GEO2-07)
-    "sat_overlap_rotated_rect",
-    "pack_bitmap_uint32",
     "bitmap_collision",
+    "pack_bitmap_uint32",
+    "sat_overlap_rotated_rect",
     # Phase 7 Bezier exports (GEO2-09)
     "BezierCurve",
     "BezierGlyph",
     "glyph_to_bezier",
     # Phase 7 Multi-Centric placement (GEO2-03)
-    "place_words_multi_centric",
     "MultiCentricResult",
+    "place_words_multi_centric",
 ]
 
 
-# Phase 7: MAT skeleton extraction + cache
-from aerocloud.geometry.mat import MATBranch, MATResult, extract_mat  # noqa: E402
-from aerocloud.geometry.mat_cache import get_or_build_mat  # noqa: E402
-
-# Phase 7: BVH broadphase collision + SAT + Bitmap (GEO2-04, GEO2-06, GEO2-07, GEO2-08)
+# Phase 7 imports — post-init to allow _assert_freetype() to run first
+from aerocloud.geometry.bezier import BezierCurve, BezierGlyph, glyph_to_bezier  # noqa: E402
 from aerocloud.geometry.collision import (  # noqa: E402
     BVHNode,
     bitmap_collision,
@@ -146,17 +146,15 @@ from aerocloud.geometry.collision import (  # noqa: E402
     pack_bitmap_uint32,
     sat_overlap_rotated_rect,
 )
-
-# Phase 7: Quadtree spatial index (GEO2-05)
+from aerocloud.geometry.mat import MATBranch, MATResult, extract_mat  # noqa: E402
+from aerocloud.geometry.mat_cache import get_or_build_mat  # noqa: E402
+from aerocloud.geometry.multi_centric import (  # noqa: E402
+    MultiCentricResult,
+    place_words_multi_centric,
+)
 from aerocloud.geometry.quadtree import (  # noqa: E402
     QuadtreeNode,
     build_quadtree,
     insert_aabb,
     query_region,
 )
-
-# Phase 7: Bezier path representation (GEO2-09)
-from aerocloud.geometry.bezier import BezierCurve, BezierGlyph, glyph_to_bezier  # noqa: E402
-
-# Phase 7: Multi-Centric placement (GEO2-03)
-from aerocloud.geometry.multi_centric import MultiCentricResult, place_words_multi_centric  # noqa: E402

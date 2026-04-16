@@ -94,6 +94,7 @@ def dump_geometry_debug(
     # -----------------------------------------------------------------------
     try:
         import matplotlib  # noqa: PLC0415  (deliberate lazy import — R-7)
+
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt  # noqa: PLC0415
 
@@ -104,9 +105,7 @@ def dump_geometry_debug(
         fig.savefig(out / "sdf_heatmap.png", dpi=72, bbox_inches="tight")
         plt.close(fig)
     except ImportError:
-        (out / "sdf_heatmap.MISSING").write_text(
-            "matplotlib not installed; SDF heatmap omitted"
-        )
+        (out / "sdf_heatmap.MISSING").write_text("matplotlib not installed; SDF heatmap omitted")
 
     # -----------------------------------------------------------------------
     # spiral_trace.png — overlay of spiral positions on SDF (lazy matplotlib)
@@ -114,6 +113,7 @@ def dump_geometry_debug(
     if spiral_trace:
         try:
             import matplotlib  # noqa: PLC0415
+
             matplotlib.use("Agg")
             import matplotlib.pyplot as plt  # noqa: PLC0415
 
@@ -132,21 +132,21 @@ def dump_geometry_debug(
     # -----------------------------------------------------------------------
     # placement.json — full placement result
     # -----------------------------------------------------------------------
-    (out / "placement.json").write_text(
-        json.dumps(placement_json, indent=2, default=str)
-    )
+    (out / "placement.json").write_text(json.dumps(placement_json, indent=2, default=str))
 
     # -----------------------------------------------------------------------
     # env.json — runtime snapshot
     # -----------------------------------------------------------------------
     try:
         import PIL  # noqa: PLC0415
+
         pillow_version: str = getattr(PIL, "__version__", "unknown")
     except ImportError:
         pillow_version = "unknown"
 
     try:
         import scipy  # noqa: PLC0415
+
         scipy_version: str = getattr(scipy, "__version__", "unknown")
     except ImportError:
         scipy_version = "unknown"

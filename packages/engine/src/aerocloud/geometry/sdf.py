@@ -58,9 +58,9 @@ def compute_sdf(mask: np.ndarray) -> np.ndarray:
     # is allocated. This is the minimal-RSS variant: peak = 1xf64 + 1xf32 instead
     # of 2xf64. Gemini Wave 5 finding: the original pattern kept edt_in (f64) live
     # across gc.collect(), making the gc call a no-op for that allocation.
-    edt_in_f32: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (
-        ndimage.distance_transform_edt(mask).astype(np.float32, copy=False)
-    )
+    edt_in_f32: np.ndarray[tuple[int, int], np.dtype[np.float32]] = ndimage.distance_transform_edt(
+        mask
+    ).astype(np.float32, copy=False)
     # The f64 intermediate from distance_transform_edt is now unreferenced; gc
     # can reclaim it before the second (larger) f64 edt_out allocation.
     gc.collect()
@@ -70,8 +70,8 @@ def compute_sdf(mask: np.ndarray) -> np.ndarray:
     )
 
     # Cast to float32 at the public boundary per D-10
-    sdf: np.ndarray[tuple[int, int], np.dtype[np.float32]] = (
-        edt_in_f32 - edt_out.astype(np.float32, copy=False)
+    sdf: np.ndarray[tuple[int, int], np.dtype[np.float32]] = edt_in_f32 - edt_out.astype(
+        np.float32, copy=False
     )
 
     # Validate contract (D-09 + D-10 runtime assertion)

@@ -88,17 +88,11 @@ class GlyphBBox(AeroCloudBase):
     @classmethod
     def _check_buffer(cls, v: Any) -> np.ndarray:
         if not isinstance(v, np.ndarray):
-            raise TypeError(
-                f"pixel_buffer must be np.ndarray, got {type(v).__name__}"
-            )
+            raise TypeError(f"pixel_buffer must be np.ndarray, got {type(v).__name__}")
         if v.dtype != np.uint8:
-            raise TypeError(
-                f"pixel_buffer must be dtype=uint8, got {v.dtype}"
-            )
+            raise TypeError(f"pixel_buffer must be dtype=uint8, got {v.dtype}")
         if v.ndim != 2:
-            raise TypeError(
-                f"pixel_buffer must be 2-D (H, W), got ndim={v.ndim}"
-            )
+            raise TypeError(f"pixel_buffer must be 2-D (H, W), got ndim={v.ndim}")
         return v
 
 
