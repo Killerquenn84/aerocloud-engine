@@ -21,7 +21,6 @@ from torch.nn.utils import clip_grad_norm_
 from aerocloud.models.optimizer import InnerLoopConfig, OptimizationResult
 from aerocloud.optimizer.convergence import check_convergence
 from aerocloud.optimizer.loss import (
-    compute_additive_density,
     compute_l_fidelity,
     compute_l_overlap,
     compute_l_temporal,
@@ -204,11 +203,9 @@ class InnerLoop:
             for epoch in range(config.max_epochs):
                 optimizer.zero_grad(set_to_none=True)
 
-                # Forward pass: alpha-over density
-                density = renderer.forward(stage_h, stage_w)
-
-                # Additive density for overlap detection (D-03)
-                additive = compute_additive_density(renderer, stage_h, stage_w)
+                # Single forward pass returns both alpha-over density and
+                # additive density (D-20 / F-3 fix — no double forward pass)
+                density, additive = renderer.forward(stage_h, stage_w, mode="both")
 
                 # Compute all 4 losses
                 l_wmse = compute_l_wmse(density, sdf_stage)

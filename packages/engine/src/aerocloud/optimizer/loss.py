@@ -4,20 +4,16 @@ Implements the 4-part composite loss per D-01..D-06 of the AeroCloud Blueprint:
 
     L_total = alpha * L_wmse + beta * L_overlap + gamma * L_fidelity + lambda_ * L_temporal
 
-Also provides compute_additive_density, the SUM-based compositing helper
-needed by L_overlap that allows per-pixel density to exceed 1.0.
+Phase 7 / D-21: ``compute_additive_density`` has been removed.  The renderer
+now produces both alpha-over density and additive density in a single forward
+pass via ``DifferentiableRenderer.forward(h, w, mode='both')`` (fixes F-3
+and F-10).  InnerLoop.optimize() unpacks the tuple directly.
 """
 
 from __future__ import annotations
 
-import math
-from typing import TYPE_CHECKING
-
 import torch
 import torch.nn.functional as F  # noqa: N812
-
-if TYPE_CHECKING:
-    from aerocloud.renderer._renderer import DifferentiableRenderer
 
 from aerocloud.models.optimizer import LossWeights
 
@@ -156,96 +152,3 @@ def compute_total_loss(
         + weights.gamma * l_fidelity
         + weights.lambda_ * l_temporal
     )
-
-
-def compute_additive_density(
-    renderer: DifferentiableRenderer,
-    canvas_h: int,
-    canvas_w: int,
-) -> torch.Tensor:
-    """SUM-based sprite compositing for overlap detection (D-03 helper).
-
-    Replicates the renderer's per-sprite warp logic (affine_grid +
-    grid_sample with the same rotation clamping and scale softplus) but
-    **sums** warped sprite contributions instead of using alpha-over.
-    This means the output can exceed 1.0 wherever sprites overlap,
-    which is exactly what L_overlap needs to detect.
-
-    Accesses renderer private state:
-        - renderer._sprites  (list of (1, 1, H_i, W_i) tensors)
-        - renderer.params    (nn.Parameter, shape (N, 4))
-        - renderer._device   (torch.device)
-
-    Args:
-        renderer: A DifferentiableRenderer instance (must have at least
-            one sprite).
-        canvas_h: Target canvas height in pixels.
-        canvas_w: Target canvas width in pixels.
-
-    Returns:
-        (1, 1, canvas_h, canvas_w) float32 tensor. Values may exceed 1.0
-        at pixels covered by more than one sprite.
-    """
-    n_sprites = len(renderer._sprites)
-    n_params = renderer.params.shape[0]
-    if n_sprites != n_params:
-        msg = (
-            f"Sprite/params count mismatch: {n_sprites} sprites "
-            f"but params has {n_params} rows. "
-            "Each sprite must have exactly one parameter row."
-        )
-        raise ValueError(msg)
-
-    additive = torch.zeros(
-        1,
-        1,
-        canvas_h,
-        canvas_w,
-        device=renderer._device,
-        dtype=torch.float32,
-    )
-
-    for i, sprite in enumerate(renderer._sprites):
-        y_i, x_i, s_i, theta_i = renderer.params[i]
-
-        # Same rotation clamping as DifferentiableRenderer.forward() (D-09)
-        theta_i = torch.remainder(theta_i + math.pi, 2 * math.pi) - math.pi
-
-        # Same scale soft-clamp: softplus(s - 0.01) + 0.01 (Codex post-fix)
-        s_i = torch.nn.functional.softplus(s_i - 0.01) + 0.01
-
-        # NDC normalisation (align_corners=False convention, Codex Fix 2)
-        x_n = ((2.0 * x_i + 1.0) / canvas_w) - 1.0
-        y_n = ((2.0 * y_i + 1.0) / canvas_h) - 1.0
-
-        cos_t = torch.cos(theta_i)
-        sin_t = torch.sin(theta_i)
-        inv_s = 1.0 / s_i
-
-        # Target-to-source affine matrix (same as renderer forward, D-16)
-        a11 = inv_s * cos_t
-        a12 = inv_s * sin_t
-        a21 = -inv_s * sin_t
-        a22 = inv_s * cos_t
-        tx = -(a11 * x_n + a12 * y_n)
-        ty = -(a21 * x_n + a22 * y_n)
-
-        theta_mat = torch.stack([a11, a12, tx, a21, a22, ty]).reshape(1, 2, 3)
-
-        grid = F.affine_grid(
-            theta_mat,
-            [1, 1, canvas_h, canvas_w],
-            align_corners=False,
-        )
-        warped = F.grid_sample(
-            sprite,
-            grid,
-            mode="bilinear",
-            padding_mode="zeros",
-            align_corners=False,
-        )
-
-        # SUM instead of alpha-over — allows values to exceed 1.0
-        additive = additive + warped
-
-    return additive

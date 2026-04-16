@@ -16,7 +16,6 @@ from hypothesis import strategies as st
 
 from aerocloud.models.optimizer import LossWeights
 from aerocloud.optimizer.loss import (
-    compute_additive_density,
     compute_l_fidelity,
     compute_l_overlap,
     compute_l_temporal,
@@ -149,8 +148,8 @@ def test_random_params_produce_finite_loss_through_renderer(n: int) -> None:
     sdf = torch.randn(1, 1, canvas_h, canvas_w)
     s_ref = torch.rand(n)
 
-    density = renderer.forward(canvas_h, canvas_w)
-    additive = compute_additive_density(renderer, canvas_h, canvas_w)
+    # Phase 7 / D-21: use renderer.forward(mode='both') — single forward pass
+    density, additive = renderer.forward(canvas_h, canvas_w, mode="both")
 
     l_wmse = compute_l_wmse(density, sdf)
     l_overlap = compute_l_overlap(additive)

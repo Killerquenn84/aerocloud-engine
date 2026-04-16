@@ -12,15 +12,19 @@ When: compute_l_overlap is called.
 Then: loss > 0 (overlap detected and penalized).
 
 Given: additive density from 2 overlapping sprites.
-When: compute_additive_density is called on tiny_renderer.
+When: renderer.forward(mode='both') is called on tiny_renderer.
 Then: max(additive_density) > 1.0.
+
+Phase 7 / D-21: compute_additive_density was deleted from loss.py.
+Additive density is now obtained via renderer.forward(h, w, mode='both').
 """
 
 from __future__ import annotations
 
 import torch
 
-from aerocloud.optimizer.loss import compute_additive_density, compute_l_overlap
+from aerocloud.optimizer.loss import compute_l_overlap
+from aerocloud.renderer._renderer import DifferentiableRenderer
 
 
 class TestLOverlapNoOverlap:
@@ -58,11 +62,13 @@ class TestLOverlapWithOverlap:
 
 
 class TestLOverlapAdditiveHelper:
-    """compute_additive_density should produce values > 1.0 for overlapping sprites."""
+    """renderer.forward(mode='both') should produce additive values > 1.0 for overlapping sprites."""
 
-    def test_overlapping_sprites_exceed_one(self, tiny_renderer: object) -> None:
-        """Two overlapping sprites => max(additive_density) > 1.0."""
-        additive = compute_additive_density(tiny_renderer, canvas_h=8, canvas_w=8)
+    def test_overlapping_sprites_exceed_one(self, tiny_renderer: DifferentiableRenderer) -> None:
+        """Two overlapping sprites => max(additive_density) > 1.0 via mode='both'."""
+        # Phase 7 / D-21: use renderer.forward(mode='both') instead of
+        # the deleted compute_additive_density() function.
+        _, additive = tiny_renderer.forward(8, 8, mode="both")
         assert additive.shape == (1, 1, 8, 8), f"Expected (1,1,8,8), got {additive.shape}"
         assert additive.max().item() > 1.0, (
             f"Expected additive density > 1.0 for overlapping sprites, "
