@@ -108,6 +108,16 @@ __all__ = [
     "MATResult",
     "MATBranch",
     "get_or_build_mat",
+    # Phase 7 BVH exports (GEO2-04, GEO2-08)
+    "BVHNode",
+    "build_bvh",
+    "bvh_query_overlap",
+    "get_or_build_bvh",
+    # Phase 7 Quadtree exports (GEO2-05)
+    "QuadtreeNode",
+    "build_quadtree",
+    "insert_aabb",
+    "query_region",
     # Phase 7 Bezier exports (GEO2-09)
     "BezierCurve",
     "BezierGlyph",
@@ -118,6 +128,22 @@ __all__ = [
 # Phase 7: MAT skeleton extraction + cache
 from aerocloud.geometry.mat import MATBranch, MATResult, extract_mat  # noqa: E402
 from aerocloud.geometry.mat_cache import get_or_build_mat  # noqa: E402
+
+# Phase 7: BVH broadphase collision (GEO2-04, GEO2-08)
+from aerocloud.geometry.collision import (  # noqa: E402
+    BVHNode,
+    build_bvh,
+    bvh_query_overlap,
+    get_or_build_bvh,
+)
+
+# Phase 7: Quadtree spatial index (GEO2-05)
+from aerocloud.geometry.quadtree import (  # noqa: E402
+    QuadtreeNode,
+    build_quadtree,
+    insert_aabb,
+    query_region,
+)
 
 # Phase 7: Bezier path representation (GEO2-09)
 from aerocloud.geometry.bezier import BezierCurve, BezierGlyph, glyph_to_bezier  # noqa: E402
