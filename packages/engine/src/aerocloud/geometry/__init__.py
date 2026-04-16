@@ -103,4 +103,14 @@ __all__ = [
     "_assert_freetype",
     "xy_to_yx",
     "yx_to_xy",
+    # Phase 7 MAT exports
+    "extract_mat",
+    "MATResult",
+    "MATBranch",
+    "get_or_build_mat",
 ]
+
+
+# Phase 7: MAT skeleton extraction + cache
+from aerocloud.geometry.mat import MATBranch, MATResult, extract_mat  # noqa: E402
+from aerocloud.geometry.mat_cache import get_or_build_mat  # noqa: E402

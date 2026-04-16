@@ -15,6 +15,7 @@ import numpy as np
 import pytest
 from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
+from hypothesis.extra import numpy as nst
 from scipy import ndimage
 
 from aerocloud.geometry.mat import MATResult, extract_mat  # type: ignore[import-not-found]
@@ -50,9 +51,9 @@ def valid_sdf_strategy(draw: st.DrawFn) -> np.ndarray:
     h = draw(st.integers(min_value=20, max_value=80))
     w = draw(st.integers(min_value=20, max_value=80))
 
-    # Draw a random bool mask as integer array, then convert
+    # Draw a random bool mask using hypothesis.extra.numpy
     raw = draw(
-        st.arrays(
+        nst.arrays(
             dtype=np.bool_,
             shape=(h, w),
             elements=st.booleans(),

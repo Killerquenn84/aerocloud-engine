@@ -186,11 +186,14 @@ def test_travel_time_zero_contour_required() -> None:
 
 def test_mat_result_pydantic_valid() -> None:
     """M8: MATResult model validates and is immutable (frozen=True)."""
+    from pydantic import ValidationError
+
     sdf = _circle_sdf(size=64, radius=24)
     result = extract_mat(sdf, min_branch_radius=3.0)
     assert isinstance(result, MATResult)
     # Test frozen: attempting to set an attribute must raise
-    with pytest.raises((TypeError, AttributeError)):
+    # Pydantic v2 raises ValidationError for frozen model attribute assignment
+    with pytest.raises((TypeError, AttributeError, ValidationError)):
         result.branches = ()  # type: ignore[misc]
 
 

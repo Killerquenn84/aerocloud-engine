@@ -64,6 +64,17 @@ class Settings(BaseSettings):
         description="Per-worker bytes budget for the SDF LRU cache (D-18).",
         ge=1_048_576,  # minimum 1 MiB sanity floor
     )
+    # MAT settings (Phase 7 D-01).
+    mat_min_branch_radius: float = Field(
+        default=3.0,
+        description="Minimum inscribed-circle radius for MAT branch inclusion (Phase 7).",
+        gt=0.0,
+    )
+    mat_cache_max_bytes: int = Field(
+        default=128 * 1024 * 1024,  # 128 MiB
+        description="Per-worker bytes budget for the MAT LRU cache (Phase 7).",
+        ge=1_048_576,  # minimum 1 MiB sanity floor
+    )
 
 
 def load_settings() -> Settings:
