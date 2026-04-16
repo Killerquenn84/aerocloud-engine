@@ -65,6 +65,7 @@ Lebendiges Wissen und Versions-Referenzen.
 - [knowledge/phase-03-plan.md](knowledge/phase-03-plan.md) — Phase 3 NLP-v1 Plan (4 waves, Wave 1 complete)
 - [knowledge/phase-04-validation.md](knowledge/phase-04-validation.md) — Phase 4 Nyquist Validation Strategy (8 dimensions, per-task map, nyquist_compliant=true)
 - [knowledge/phase-4-known-limits.md](knowledge/phase-4-known-limits.md) — Phase 4 v1 known limits: place_words VPS performance (24.85s vs 5s gate, retired to 60s, Phase 7/12 carry-forward)
+- [knowledge/phase-07-geometry-v2-modules.md](knowledge/phase-07-geometry-v2-modules.md) — Phase 7 module docs: mat.py, mat_cache.py, quadtree.py, bezier.py, multi_centric.py, collision.py extensions
 
 ## 🔧 Corrections (wiki/corrections/)
 Korrigierte Fehler, Halluzinationen, Fehlannahmen — mit Datum.
@@ -85,6 +86,7 @@ Protokolle der 3-KI Diskussionen (Claude + Gemini + Codex).
 - [discussions/2026-04-09-phase-04-discussion-log.md](discussions/2026-04-09-phase-04-discussion-log.md) — Phase 4 Audit Trail (Codex BLOCKED findings, hallucination catch, anti-sycophancy self-check)
 - [discussions/2026-04-09-phase-04-wave5-codereview.md](discussions/2026-04-09-phase-04-wave5-codereview.md) — Phase 4 Wave 5 3-KI Code Review (Claude/Codex/Gemini verdicts, 2 deviations, Jens close-out approval)
 - [discussions/2026-04-09-phase-04-summary.md](discussions/2026-04-09-phase-04-summary.md) — Phase 4 Close-Out Summary (7 plans, 22 tasks, 595 tests, GEO-01..07, known limits, next phase)
+- [discussions/2026-04-15-phase-07-3ki-review.md](discussions/2026-04-15-phase-07-3ki-review.md) — Phase 7 3-KI Review: Claude APPROVED-WITH-NOTES (S-1..S-8, L-1..L-8, A-1..A-5), Codex/Gemini pending
 
 ## 🧭 Decisions (wiki/decisions/)
 Alle architektonischen und designrelevanten Entscheidungen — mit Datum.
@@ -94,6 +96,7 @@ Alle architektonischen und designrelevanten Entscheidungen — mit Datum.
 - [decisions/2026-04-09-phase-4-sdf-sign-convention.md](decisions/2026-04-09-phase-4-sdf-sign-convention.md) — ADR-0004: SDF positive=inside, UNCHANGEABLE, float32 only (D-09, D-10)
 - [decisions/2026-04-09-phase-4-coordinate-system-yx.md](decisions/2026-04-09-phase-4-coordinate-system-yx.md) — ADR-0005: (y, x) canonical internally, (x, y) only at Pydantic boundary (D-14..D-16)
 - [decisions/2026-04-09-phase-4-freetype-pinning.md](decisions/2026-04-09-phase-4-freetype-pinning.md) — ADR-0006: FreeType 2.13.2 pin + server reality (2.14.3) + bypass mechanism (D-28..D-30)
+- [decisions/2026-04-15-phase-07-geometry-v2-final.md](decisions/2026-04-15-phase-07-geometry-v2-final.md) — Phase 7 final decisions: 3 accepted deviations, 9 known limits, exit gate status, GEO2-01..09 coverage
 
 ## 💻 Code (wiki/code/)
 Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
@@ -116,6 +119,10 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 
 - [code/optimizer-inner-loop.md](code/optimizer-inner-loop.md) — InnerLoop class: Coarse-to-Fine pipeline, Adam optimizer, convergence detection, OptimizationResult API
 - [code/optimizer-loss-functions.md](code/optimizer-loss-functions.md) — L_wmse, L_overlap, L_fidelity, L_temporal, L_total formulas + compute_additive_density + check_convergence
+
+### Phase 7 Geometry-v2
+
+- [knowledge/phase-07-geometry-v2-modules.md](knowledge/phase-07-geometry-v2-modules.md) — Full API + algorithm docs: mat.py (MAT extraction), mat_cache.py (LRU), quadtree.py (Stage 3), bezier.py (glyph paths), multi_centric.py (branch placement), collision.py extensions (BVH/SAT/Bitmap)
 
 ## 🧠 Knowledge (wiki/knowledge/) — additions
 

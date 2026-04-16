@@ -323,3 +323,25 @@ Issues resolved during execution:
 - Seam Carving Word Cloud Whitespace
 - spaCy Transformer Models German English
 - structlog OpenTelemetry Tracing
+
+## [2026-04-16] phase-07-complete | Phase 07 Geometry-v2 — 7 Plans, 6 Waves, 106 new tests
+
+**Plans completed:**
+- Plan 07-01: MAT skeleton extraction + LRU cache (mat.py + mat_cache.py) — GEO2-01, GEO2-02
+- Plan 07-02: BVH broadphase + Quadtree spatial index (collision.py + quadtree.py) — GEO2-04, GEO2-05, GEO2-08
+- Plan 07-03: SAT rotated collision + Bitmap pixel-exact (collision.py) — GEO2-06, GEO2-07
+- Plan 07-04: Multi-centric placement (multi_centric.py) — GEO2-03
+- Plan 07-05: Bezier glyph paths (bezier.py) — GEO2-09
+- Plan 07-06: Renderer dual-mode + compute_additive_density deletion (_renderer.py, loss.py, inner_loop.py) — D-20, D-21
+- Plan 07-07: Exit gate + 3-KI review + wiki update
+
+**Tests:** 787+ total (106 new Phase 7, 681 pre-existing Phases 4-6)
+**Static analysis:** mypy --strict 0 errors, ruff check + format CLEAN
+**3-KI review:** Claude APPROVED-WITH-NOTES | Codex PENDING | Gemini PENDING
+**Exit gate R-1 to R-6:** PASSED (R-7 awaiting Jens checkpoint)
+
+**New wiki entries:**
+- `wiki/discussions/2026-04-15-phase-07-3ki-review.md`
+- `wiki/decisions/2026-04-15-phase-07-geometry-v2-final.md`
+- `wiki/knowledge/phase-07-geometry-v2-modules.md`
+- `wiki/index.md` — Phase 7 entries added
