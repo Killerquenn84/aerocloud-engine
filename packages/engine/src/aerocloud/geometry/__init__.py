@@ -108,9 +108,16 @@ __all__ = [
     "MATResult",
     "MATBranch",
     "get_or_build_mat",
+    # Phase 7 Bezier exports (GEO2-09)
+    "BezierCurve",
+    "BezierGlyph",
+    "glyph_to_bezier",
 ]
 
 
 # Phase 7: MAT skeleton extraction + cache
 from aerocloud.geometry.mat import MATBranch, MATResult, extract_mat  # noqa: E402
 from aerocloud.geometry.mat_cache import get_or_build_mat  # noqa: E402
+
+# Phase 7: Bezier path representation (GEO2-09)
+from aerocloud.geometry.bezier import BezierCurve, BezierGlyph, glyph_to_bezier  # noqa: E402

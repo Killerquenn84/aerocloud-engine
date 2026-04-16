@@ -83,18 +83,22 @@ def _empty_buffer() -> GlyphBBox:
 
 def test_bezier_curve_model_frozen() -> None:
     """BezierCurve is immutable (Pydantic frozen=True)."""
+    from pydantic import ValidationError
+
     curve = BezierCurve(
         p0=(0.0, 0.0),
         p1=(1.0, 2.0),
         p2=(3.0, 4.0),
         p3=(5.0, 6.0),
     )
-    with pytest.raises((TypeError, Exception)):
-        object.__setattr__(curve, "p0", (99.0, 99.0))  # type: ignore[misc]
+    with pytest.raises((ValidationError, TypeError)):
+        curve.p0 = (99.0, 99.0)  # type: ignore[misc]
 
 
 def test_bezier_glyph_model_frozen() -> None:
     """BezierGlyph is immutable."""
+    from pydantic import ValidationError
+
     glyph = BezierGlyph(
         font_family="TestFont",
         size_pt=12,
@@ -102,8 +106,8 @@ def test_bezier_glyph_model_frozen() -> None:
         contours=(),
         tolerance=1.0,
     )
-    with pytest.raises((TypeError, Exception)):
-        object.__setattr__(glyph, "font_family", "Other")  # type: ignore[misc]
+    with pytest.raises((ValidationError, TypeError)):
+        glyph.font_family = "Other"  # type: ignore[misc]
 
 
 def test_bezier_glyph_not_subclass_of_glyphbbox() -> None:
