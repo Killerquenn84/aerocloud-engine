@@ -126,6 +126,9 @@ __all__ = [
     "BezierCurve",
     "BezierGlyph",
     "glyph_to_bezier",
+    # Phase 7 Multi-Centric placement (GEO2-03)
+    "place_words_multi_centric",
+    "MultiCentricResult",
 ]
 
 
@@ -154,3 +157,6 @@ from aerocloud.geometry.quadtree import (  # noqa: E402
 
 # Phase 7: Bezier path representation (GEO2-09)
 from aerocloud.geometry.bezier import BezierCurve, BezierGlyph, glyph_to_bezier  # noqa: E402
+
+# Phase 7: Multi-Centric placement (GEO2-03)
+from aerocloud.geometry.multi_centric import MultiCentricResult, place_words_multi_centric  # noqa: E402
