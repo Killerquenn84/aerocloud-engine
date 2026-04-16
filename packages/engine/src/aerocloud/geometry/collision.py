@@ -11,14 +11,17 @@ References:
     - D-14: (y, x) ordering; columns are (y_min, x_min, y_max, x_max).
     - D-16: Half-open intervals — adjacent boxes do NOT overlap.
 
-Phase 7 extensions (D-05, D-07, D-11):
+Phase 7 extensions (D-05, D-07, D-09, D-10, D-11):
     - Stage 2 BVH broadphase: build_bvh, bvh_query_overlap, get_or_build_bvh
     - BVH LRU cache: blake3 key + cachetools.LRUCache + RLock (mirrors sdf_cache.py)
+    - Stage 4 SAT: sat_overlap_rotated_rect (D-09 — hard reject, not differentiable)
+    - Stage 5 Bitmap: pack_bitmap_uint32, bitmap_collision (D-10 — uint32 packing)
 """
 
 from __future__ import annotations
 
 import contextlib
+import math
 import threading
 from typing import Any, Final, TypedDict
 
@@ -319,3 +322,281 @@ def get_or_build_bvh(aabbs: np.ndarray) -> BVHNode:
             _BVH_CACHE[key] = tree
 
     return tree
+
+
+# ---------------------------------------------------------------------------
+# Phase 7: Stage 4 SAT — Separating Axis Theorem for rotated rectangles (D-09)
+# ---------------------------------------------------------------------------
+
+
+def sat_overlap_rotated_rect(
+    cy1: float,
+    cx1: float,
+    h1: float,
+    w1: float,
+    theta1: float,
+    cy2: float,
+    cx2: float,
+    h2: float,
+    w2: float,
+    theta2: float,
+) -> bool:
+    """Return True iff two rotated rectangles overlap (SAT — Stage 4 collision).
+
+    Coordinate convention: (y, x) per D-14. ``theta`` in radians, measured from
+    the y-axis (rotation is counter-clockwise in image space). This function is
+    purely a hard-reject predicate — it is NOT differentiable (D-09).
+
+    The algorithm:
+    1. Compute 4 corners for each rectangle by rotating local half-extents.
+    2. Collect edge-normal axes from both rectangles (up to 4 unique axes total).
+       Skip degenerate edges with length < 1e-10 (T-07-03-01 DoS mitigation).
+    3. For each axis, project all 8 corners onto it and check if the intervals
+       [min(proj_A), max(proj_A)] and [min(proj_B), max(proj_B)] have a gap.
+    4. Any separating axis found → return False.
+    5. No separating axis on any of the 4 axes → return True (overlap).
+
+    Args:
+        cy1: Y-center of rectangle 1.
+        cx1: X-center of rectangle 1.
+        h1: Height of rectangle 1 (extent along y-axis before rotation).
+        w1: Width of rectangle 1 (extent along x-axis before rotation).
+        theta1: Rotation angle of rectangle 1 in radians (counter-clockwise).
+        cy2: Y-center of rectangle 2.
+        cx2: X-center of rectangle 2.
+        h2: Height of rectangle 2.
+        w2: Width of rectangle 2.
+        theta2: Rotation angle of rectangle 2 in radians.
+
+    Returns:
+        Python ``bool`` — ``True`` if the rectangles overlap or touch,
+        ``False`` if a separating axis exists.
+    """
+
+    def _corners(cy: float, cx: float, h: float, w: float, theta: float) -> np.ndarray:
+        """Compute the 4 corners of a rotated rectangle as a (4, 2) float64 array.
+
+        Local coordinate frame: (y, x) with half-extents (h/2, w/2).
+        Four local corners (before rotation):
+            (-hh, -hw), (-hh, +hw), (+hh, +hw), (+hh, -hw)
+        Rotation matrix (row-major, right-hand (y,x) space):
+            [[cos, -sin], [sin, cos]]
+        """
+        cos_t = math.cos(theta)
+        sin_t = math.sin(theta)
+        hh = h / 2.0
+        hw = w / 2.0
+        # Local corners: shape (4, 2) in (y, x) order
+        local = np.array(
+            [[-hh, -hw], [-hh, hw], [hh, hw], [hh, -hw]],
+            dtype=np.float64,
+        )
+        # 2D rotation matrix in (y, x) convention
+        rot = np.array([[cos_t, -sin_t], [sin_t, cos_t]], dtype=np.float64)
+        # Apply rotation and translate to world coords
+        return local @ rot.T + np.array([cy, cx], dtype=np.float64)
+
+    def _edge_normal_axes(c: np.ndarray) -> list[np.ndarray]:
+        """Return normalised edge-normal axes for a rectangle given its 4 corners.
+
+        For a rectangle, only 2 unique edge directions exist (the other two are
+        parallel). We compute all 4 edges and skip near-zero-length ones
+        (degenerate case guard — T-07-03-01).
+
+        Args:
+            c: Shape (4, 2) array of corners.
+
+        Returns:
+            List of normalised (2,) float64 axis vectors (0-4 entries).
+        """
+        axes: list[np.ndarray] = []
+        for i in range(4):
+            edge = c[(i + 1) % 4] - c[i]
+            n = float(np.linalg.norm(edge))
+            if n > 1e-10:
+                # Perpendicular to edge = normal axis
+                axes.append(np.array([-edge[1], edge[0]], dtype=np.float64) / n)
+        return axes
+
+    c1 = _corners(cy1, cx1, h1, w1, theta1)
+    c2 = _corners(cy2, cx2, h2, w2, theta2)
+
+    for ax in _edge_normal_axes(c1) + _edge_normal_axes(c2):
+        proj1: np.ndarray = c1 @ ax
+        proj2: np.ndarray = c2 @ ax
+        # Separating axis found if the projections don't overlap
+        # Use strict inequality: if they merely touch (max(A) == min(B)),
+        # we consider it a collision (touching = True per plan spec).
+        if float(proj1.max()) < float(proj2.min()) or float(proj2.max()) < float(proj1.min()):
+            return False  # separating axis found → no collision
+
+    return True  # no separating axis found → overlap
+
+
+# ---------------------------------------------------------------------------
+# Phase 7: Stage 5 Bitmap — uint32 pixel-exact collision (D-10)
+# ---------------------------------------------------------------------------
+
+
+def pack_bitmap_uint32(pixel_buffer: np.ndarray) -> np.ndarray:
+    """Pack a (H, W) uint8 pixel buffer into a (H, ceil(W/32)) uint32 bitmask.
+
+    Encoding: pixel column ``col`` is placed in word ``col // 32``, at bit
+    position ``31 - (col % 32)`` — i.e., MSB-first (leftmost pixel = highest bit).
+    This convention ensures that two packed rows can be compared with bitwise AND
+    after alignment-correcting bit shifts.
+
+    Args:
+        pixel_buffer: Shape ``(H, W)`` uint8 array. Any pixel ``> 0`` is treated
+            as ink; zero pixels are transparent.
+
+    Returns:
+        Shape ``(H, ceil(W/32))`` uint32 ndarray where each bit represents one pixel.
+    """
+    h, w = pixel_buffer.shape
+    w32 = (w + 31) // 32
+    packed = np.zeros((h, w32), dtype=np.uint32)
+    ink = (pixel_buffer > 0).astype(np.uint32)
+
+    for col in range(w):
+        word_idx = col // 32
+        bit_idx = 31 - (col % 32)
+        packed[:, word_idx] |= ink[:, col] << np.uint32(bit_idx)
+
+    return packed
+
+
+def bitmap_collision(
+    packed_a: np.ndarray,
+    ay_min: int,
+    ax_min: int,
+    a_h: int,
+    a_w: int,
+    packed_b: np.ndarray,
+    by_min: int,
+    bx_min: int,
+    b_h: int,
+    b_w: int,
+) -> bool:
+    """Return True iff two packed-bitmap glyphs have any pixel-exact overlap.
+
+    Computes the intersection region in pixel space, then checks for overlapping
+    ink using uint32 bitwise AND with bit-shift alignment correction.
+
+    The CRITICAL implementation detail (RESEARCH.md Pitfall 3 / D-10):
+    When two glyphs have different ``ax_min % 32`` values, their uint32 word
+    boundaries do not align. A naive AND without shifting produces false
+    negatives. This implementation computes:
+
+        ``bit_shift = (ax_min % 32) - (bx_min % 32)``
+
+    and shifts the appropriate packed row before the AND:
+    - ``bit_shift > 0``: shift B's extracted words RIGHT by ``bit_shift``
+    - ``bit_shift < 0``: shift A's extracted words RIGHT by ``-bit_shift``
+    - ``bit_shift == 0``: no shift needed (32-pixel-aligned pair)
+
+    Args:
+        packed_a: Shape ``(H_a, ceil(W_a/32))`` uint32 — glyph A's packed bitmap.
+        ay_min: Top pixel row of glyph A in canvas coordinates.
+        ax_min: Left pixel column of glyph A in canvas coordinates.
+        a_h: Height of glyph A in pixels.
+        a_w: Width of glyph A in pixels.
+        packed_b: Shape ``(H_b, ceil(W_b/32))`` uint32 — glyph B's packed bitmap.
+        by_min: Top pixel row of glyph B in canvas coordinates.
+        bx_min: Left pixel column of glyph B in canvas coordinates.
+        b_h: Height of glyph B in pixels.
+        b_w: Width of glyph B in pixels.
+
+    Returns:
+        Python ``bool`` — ``True`` if at least one pixel position has ink in
+        both glyphs simultaneously (pixel-exact overlap).
+    """
+    # Compute intersection rectangle in global pixel coordinates
+    oy0 = max(ay_min, by_min)
+    ox0 = max(ax_min, bx_min)
+    oy1 = min(ay_min + a_h, by_min + b_h)
+    ox1 = min(ax_min + a_w, bx_min + b_w)
+
+    if oy0 >= oy1 or ox0 >= ox1:
+        return False  # no geometric overlap
+
+    # Bit-shift alignment (Pitfall 3 / D-10):
+    # shift_a = which bit in A's first word corresponds to global pixel ox0
+    # shift_b = which bit in B's first word corresponds to global pixel ox0
+    # net bit_shift corrects for misaligned 32-pixel word boundaries
+    bit_shift = (ax_min % 32) - (bx_min % 32)
+
+    # Width of overlap region in pixels
+    overlap_w = ox1 - ox0
+
+    # Overlap region local coordinates within each glyph's packed array
+    # For glyph A: local x range = [ox0 - ax_min, ox1 - ax_min)
+    a_local_x0 = ox0 - ax_min
+    a_local_x1 = ox1 - ax_min
+    # For glyph B: local x range = [ox0 - bx_min, ox1 - bx_min)
+    b_local_x0 = ox0 - bx_min
+    b_local_x1 = ox1 - bx_min  # noqa: F841 — kept for documentation clarity
+
+    # Word-index ranges (inclusive start, exclusive end rounded up)
+    a_word0 = a_local_x0 // 32
+    a_word1 = (a_local_x1 + 31) // 32
+    b_word0 = b_local_x0 // 32
+    b_word1 = (b_local_x0 + overlap_w + 31) // 32
+
+    for y in range(oy0, oy1):
+        row_a = packed_a[y - ay_min, a_word0:a_word1].astype(np.uint64)
+        row_b = packed_b[y - by_min, b_word0:b_word1].astype(np.uint64)
+
+        # Align B's bits to match A's bit positions by applying the net shift
+        if bit_shift > 0:
+            # A starts at a higher bit position → shift B right to align with A
+            row_b_aligned = _shift_packed_row_right(row_b, bit_shift)
+            # Truncate to A's length for AND
+            min_len = min(len(row_a), len(row_b_aligned))
+            if min_len > 0 and int(np.any(row_a[:min_len] & row_b_aligned[:min_len])):
+                return True
+        elif bit_shift < 0:
+            # B starts at a higher bit position → shift A right to align with B
+            row_a_aligned = _shift_packed_row_right(row_a, -bit_shift)
+            min_len = min(len(row_a_aligned), len(row_b))
+            if min_len > 0 and int(np.any(row_a_aligned[:min_len] & row_b[:min_len])):
+                return True
+        else:
+            # No shift needed — directly AND the overlap words
+            min_len = min(len(row_a), len(row_b))
+            if min_len > 0 and int(np.any(row_a[:min_len] & row_b[:min_len])):
+                return True
+
+    return False
+
+
+def _shift_packed_row_right(row: np.ndarray, shift: int) -> np.ndarray:
+    """Shift a packed uint64 row right by ``shift`` bits across word boundaries.
+
+    This implements a multi-word right shift: bits shifted out of the LSB of
+    word[i] flow into the MSB of word[i+1]. This is required when two glyphs'
+    uint32 word boundaries do not align (D-10 / Pitfall 3).
+
+    Args:
+        row: 1D uint64 array representing consecutive packed words.
+        shift: Number of bits to shift right (0 ≤ shift < 64).
+
+    Returns:
+        1D uint64 array of the same length with bits shifted right by ``shift``.
+    """
+    if shift == 0 or len(row) == 0:
+        return row.copy()
+
+    result = np.zeros_like(row, dtype=np.uint64)
+    carry_mask = np.uint64((1 << shift) - 1)
+    shift_u64 = np.uint64(shift)
+    carry_shift = np.uint64(64 - shift)
+
+    for i in range(len(row)):
+        result[i] = row[i] >> shift_u64
+        if i > 0:
+            # Carry bits from the previous word into the MSB of this word
+            carry = (row[i - 1] & carry_mask) << carry_shift
+            result[i] |= carry
+
+    return result
