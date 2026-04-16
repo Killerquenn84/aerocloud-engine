@@ -76,15 +76,15 @@ The Blueprint is the source of truth. Every requirement maps directly to a Bluep
 
 ### Geometry-v2 (Phase 7)
 
-- [ ] **GEO2-01**: Medial Axis Transform via `scikit-fmm` Fast Marching Method
-- [ ] **GEO2-02**: MAT pruning (Chordal Axis Transform style) for clean topology on noisy edges
-- [ ] **GEO2-03**: Multi-Centric Wordle: separate spiral origin per MAT branch
-- [ ] **GEO2-04**: Stage 2 collision: Two-Level Box (EdWordle BVH)
-- [ ] **GEO2-05**: Stage 3 collision: Quadtree spatial index
-- [ ] **GEO2-06**: Stage 4 collision: SAT (Separating Axis Theorem) for rotated rectangles
-- [ ] **GEO2-07**: Stage 5 collision: Bitmap + 32-bit INT pixel-exact
-- [ ] **GEO2-08**: BVH tree with LRU cache for collision queries
-- [ ] **GEO2-09**: Bezier path representation for word boundaries
+- [x] **GEO2-01**: Medial Axis Transform via `scikit-fmm` Fast Marching Method
+- [x] **GEO2-02**: MAT pruning (Chordal Axis Transform style) for clean topology on noisy edges
+- [x] **GEO2-03**: Multi-Centric Wordle: separate spiral origin per MAT branch
+- [x] **GEO2-04**: Stage 2 collision: Two-Level Box (EdWordle BVH)
+- [x] **GEO2-05**: Stage 3 collision: Quadtree spatial index
+- [x] **GEO2-06**: Stage 4 collision: SAT (Separating Axis Theorem) for rotated rectangles
+- [x] **GEO2-07**: Stage 5 collision: Bitmap + 32-bit INT pixel-exact
+- [x] **GEO2-08**: BVH tree with LRU cache for collision queries
+- [x] **GEO2-09**: Bezier path representation for word boundaries
 
 ### Semantic Vector Space (Phase 8)
 
