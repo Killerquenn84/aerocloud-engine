@@ -345,3 +345,10 @@ Issues resolved during execution:
 - `wiki/decisions/2026-04-15-phase-07-geometry-v2-final.md`
 - `wiki/knowledge/phase-07-geometry-v2-modules.md`
 - `wiki/index.md` — Phase 7 entries added
+
+## [2026-04-17] nightly-research | 5 topics
+- spaCy Transformer Models German English
+- Medial Axis Transform scikit-fmm
+- Bitmap Pixel-Exact Collision
+- safetensors Model Checkpoints Security
+- PyTorch3D Soft-Rasterization
