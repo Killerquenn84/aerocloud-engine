@@ -233,14 +233,15 @@ Plans:
 
 **Requirements covered:** OUTER-01 to OUTER-07 (7)
 
-**Plans:**
-- pyribs MAP-Elites integration
-- Behavioral descriptors (shape fidelity, rotation, symmetry, semantics)
-- Quality metrics: LC, LU, SS, Compactness, Aspect Ratio
-- Semantic metrics: Realized Adjacencies, Distortion
-- pgvector archive persistence with `ON CONFLICT DO UPDATE WHERE EXCLUDED.fitness > archive.fitness`
-- Archive saturation monitor + novelty search
-- Periodic re-evaluation of elites
+**Plans:** 6 plans in 5 waves
+
+Plans:
+- [ ] 09-01-PLAN.md — Scaffolding + pyribs GridArchive wrapper + GaussianEmitter + behavioral descriptors (TDD) [Wave 1] — OUTER-01, OUTER-02
+- [ ] 09-02-PLAN.md — Quality metrics: LC, LU, SS, Compactness, Aspect Ratio + semantic metrics (TDD) [Wave 2] — OUTER-03, OUTER-04
+- [ ] 09-03-PLAN.md — Alembic migration 0003 + asyncpg archive persistence with upsert (TDD) [Wave 2 parallel] — OUTER-05
+- [ ] 09-04-PLAN.md — Novelty search emitter + saturation monitor + elite re-evaluation (TDD) [Wave 3] — OUTER-06, OUTER-07
+- [ ] 09-05-PLAN.md — OuterLoop orchestrator: full MAP-Elites evaluation loop + determinism + hypothesis tests [Wave 4] — OUTER-01..07
+- [ ] 09-06-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 5]
 
 **Success criteria:**
 1. After 1000 evaluations, archive coverage > 30% of behavior grid
@@ -382,3 +383,4 @@ All other phases are strictly sequential due to hard data dependencies.
 *Strategy: Bottom-up build order + iterative reification*
 *Phase 7 plans added: 2026-04-15*
 *Phase 8 plans added: 2026-04-16*
+*Phase 9 plans added: 2026-04-18*
