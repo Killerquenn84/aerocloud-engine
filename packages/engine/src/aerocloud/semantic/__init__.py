@@ -23,6 +23,10 @@ Public API:
     SEM-04 — 2D projection:
         project_to_2d(embeddings, method, seed) -> np.ndarray
 
+    SEM-07 — pgvector persistence (D-13, D-14, D-15):
+        store_embeddings(surfaces, embeddings) -> int
+        load_cached_embeddings(surfaces) -> dict[str, np.ndarray]
+
 Error hierarchy:
     SemanticError
     ├── EmbeddingError          (encode failures, DoS guards)
@@ -32,6 +36,7 @@ Error hierarchy:
 References:
     - .planning/phases/08-semantic-vector-space/08-01-PLAN.md
     - .planning/phases/08-semantic-vector-space/08-02-PLAN.md
+    - .planning/phases/08-semantic-vector-space/08-05-PLAN.md
     - AeroCloud Blueprint Teil II §2.1 (BERT), §2.2 (Sinkhorn)
 """
 
@@ -45,6 +50,7 @@ from aerocloud.semantic.errors import (
     SemanticError,
     SinkhornNonConvergenceError,
 )
+from aerocloud.semantic.persistence import load_cached_embeddings, store_embeddings
 from aerocloud.semantic.projection import project_to_2d
 
 __all__ = [  # noqa: RUF022
@@ -56,6 +62,9 @@ __all__ = [  # noqa: RUF022
     "cosine_similarity_matrix",
     # 2D projection (SEM-04)
     "project_to_2d",
+    # pgvector persistence cache (SEM-07, D-13, D-14)
+    "load_cached_embeddings",
+    "store_embeddings",
     # Error hierarchy — alphabetical within group
     "EmbeddingError",
     "ProjectionError",
