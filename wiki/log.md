@@ -352,3 +352,10 @@ Issues resolved during execution:
 - Bitmap Pixel-Exact Collision
 - safetensors Model Checkpoints Security
 - PyTorch3D Soft-Rasterization
+
+## [2026-04-18] nightly-research | 5 topics
+- Seam Carving Word Cloud Whitespace
+- CQD Quality-Diversity Metric Kent 2022
+- CUDA 12 PyTorch Compatibility Matrix
+- Signed Distance Field Meijster EDT
+- SVG Sanitization Security CVE
