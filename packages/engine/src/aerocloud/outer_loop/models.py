@@ -4,14 +4,19 @@ Models follow the AeroCloudBase pattern: frozen, strict, extra="forbid".
 
 References:
     - .planning/phases/09-outer-loop-v1/09-01-PLAN.md (Task 1)
+    - .planning/phases/09-outer-loop-v1/09-03-PLAN.md (Task 2 — ArchiveFlushEntry)
     - D-07: Combined fitness = weighted sum (unnormalized, like LossWeights)
-    - OUTER-01, OUTER-02
+    - D-08: ArchiveFlushEntry carries BD scalars + params_blob + quality_metrics
+    - OUTER-01, OUTER-02, OUTER-05
 """
 
 from __future__ import annotations
 
-from pydantic import Field
+from typing import Any
 
+from pydantic import ConfigDict, Field
+
+from aerocloud.models.archive import BehaviorDescriptor
 from aerocloud.models.base import AeroCloudBase
 
 # ---------------------------------------------------------------------------
@@ -183,4 +188,59 @@ class ReEvalResult(AeroCloudBase):
     drift_pct: float = Field(
         ...,
         description="Percentage change in fitness: 100 * (before - after) / before",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Archive flush entry (Plan 09-03, Task 2 — D-08, D-10)
+# ---------------------------------------------------------------------------
+
+
+class ArchiveFlushEntry(AeroCloudBase):
+    """One archive entry to flush to PostgreSQL via archive_v1 upsert.
+
+    Carries everything needed for the ON CONFLICT upsert (D-10):
+        - bin_id: conflict key (UNIQUE NOT NULL)
+        - descriptor_vec: 384-dim BERT embedding as float32 ndarray
+        - fitness: scalar quality score (higher is better)
+        - metadata: arbitrary JSON-serializable dict
+        - behavior_descriptor: 4 BD scalars (stored in dedicated columns for D-09)
+        - params_bytes: safetensors-serialized (N, 4) params tensor (NOT pickle)
+        - quality_metrics_json: serialized QualityMetrics dict for audit trail
+
+    Security (T-09-05): All fields are passed as parameterized SQL arguments.
+    No string interpolation of user-derived data is performed in persistence.py.
+
+    Security (T-09-06): params_bytes must be produced by params_to_bytes()
+    (safetensors format). pickle is forbidden per CLAUDE.md constraint.
+    """
+
+    bin_id: str = Field(..., description="Unique archive bin identifier")
+    descriptor_vec: Any = Field(
+        ...,
+        description="384-dim float32 numpy array — layout BERT embedding for pgvector column",
+    )
+    fitness: float = Field(..., description="Combined quality score (higher is better)")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Arbitrary JSON-serializable metadata dict",
+    )
+    behavior_descriptor: BehaviorDescriptor = Field(
+        ...,
+        description="4D behavioral descriptor (stored in dedicated REAL columns for D-09)",
+    )
+    params_bytes: bytes = Field(
+        ...,
+        description="safetensors-serialized (N, 4) params tensor — NOT pickle",
+    )
+    quality_metrics_json: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Serialized QualityMetrics dict for audit trail (JSONB column)",
+    )
+
+    model_config = ConfigDict(
+        frozen=True,
+        strict=False,
+        extra="forbid",
+        arbitrary_types_allowed=True,
     )
