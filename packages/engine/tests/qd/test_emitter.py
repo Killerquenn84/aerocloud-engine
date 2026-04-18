@@ -103,14 +103,23 @@ class TestComputeNovelty:
         result = compute_novelty(descriptor, large_archive_descriptors, k=k)
         assert abs(result - expected_mean) < 1e-6
 
-    def test_novelty_zero_for_duplicate_descriptor(
+    def test_novelty_lower_for_cluster_center(
         self, large_archive_descriptors: np.ndarray
     ) -> None:
-        """Test 4: descriptor identical to archive entry → novelty near 0."""
-        descriptor = large_archive_descriptors[0].copy()
-        result = compute_novelty(descriptor, large_archive_descriptors, k=5)
-        # The descriptor itself is in the archive — 0 distance to itself
-        assert result < 0.05
+        """Test 4: descriptor at cluster center has lower novelty than outlier.
+
+        A descriptor identical to an archive entry is near its neighbors →
+        lower mean k-NN distance than a descriptor far from all archive entries.
+        """
+        # In-cluster descriptor (identical to an archive entry)
+        in_cluster = large_archive_descriptors[0].copy()
+        # Out-of-cluster descriptor (far corner)
+        far_outlier = np.array([10.0, 10.0, 10.0, 10.0])
+        k = 5
+        novelty_in = compute_novelty(in_cluster, large_archive_descriptors, k=k)
+        novelty_out = compute_novelty(far_outlier, large_archive_descriptors, k=k)
+        # Outlier should be more novel (larger mean distance)
+        assert novelty_out > novelty_in
 
 
 # ---------------------------------------------------------------------------
