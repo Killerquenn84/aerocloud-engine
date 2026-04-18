@@ -693,27 +693,15 @@ All test files are new — none exist yet:
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Fixed solution_dim: What is N_max?**
-   - What we know: InnerLoop works for arbitrary N words; pyribs requires fixed solution_dim
-   - What's unclear: The project doesn't specify a maximum word count per layout
-   - Recommendation: Set N_max=200 as configurable `AeroCloudSettings.archive_max_words: int = 200`; pad shorter layouts in flush, unpad on load
+1. **Fixed solution_dim: What is N_max?** — RESOLVED: `archive_max_words=200` configurable in Settings (Plan 09-01 T1). Pad shorter layouts with zeros on flush, unpad on load.
 
-2. **Warm-start initial solution for GaussianEmitter**
-   - What we know: `semantic_warm_start()` produces a (N,4) tensor; GaussianEmitter needs an x0 flat numpy array
-   - What's unclear: Should x0 be a fixed zero vector (pure exploration) or a specific warm-start run?
-   - Recommendation: Use zero vector as x0; actual warm-starts come from archive.sample_elites() after iteration 0
+2. **Warm-start initial solution for GaussianEmitter** — RESOLVED: Zero vector as x0 for pure exploration; `archive.sample_elites()` provides warm-starts after iteration 0 (Plan 09-05 T1).
 
-3. **Scheduler choice: Scheduler vs. custom loop**
-   - What we know: pyribs offers `Scheduler` (wraps archive + emitters); alternatively, the ask/tell interface can be called manually
-   - What's unclear: CONTEXT.md mentions "RoundRobinScheduler" which may be an older class name
-   - Recommendation: Use `ribs.schedulers.Scheduler` (current name in 0.10.0)
+3. **Scheduler choice: Scheduler vs. custom loop** — RESOLVED: `ribs.schedulers.Scheduler` (current name in pyribs 0.10.0) with single GaussianEmitter (Plan 09-01 T2).
 
-4. **Distortion metric normalization**
-   - What we know: Raw distortion is an unbounded positive real; needs to be mapped to [0,1] for fitness
-   - What's unclear: What is a reasonable max_distortion value?
-   - Recommendation: Use empirical max from first 100 evaluations, then clip; or use `1 / (1 + distortion)` monotone transform
+4. **Distortion metric normalization** — RESOLVED: `1 - clamp(raw_distortion / max_distortion, 0, 1)` with empirical max from observed ratios (Plan 09-02 T2).
 
 ---
 
