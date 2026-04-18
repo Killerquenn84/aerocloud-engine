@@ -44,8 +44,6 @@ from __future__ import annotations
 
 from aerocloud.semantic.cosine import cosine_similarity_matrix
 from aerocloud.semantic.embeddings import encode_surfaces, get_model, reset_model
-from aerocloud.semantic.transport import compute_transport
-from aerocloud.semantic.warm_start import semantic_warm_start
 from aerocloud.semantic.errors import (
     EmbeddingError,
     ProjectionError,
@@ -54,6 +52,8 @@ from aerocloud.semantic.errors import (
 )
 from aerocloud.semantic.persistence import load_cached_embeddings, store_embeddings
 from aerocloud.semantic.projection import project_to_2d
+from aerocloud.semantic.transport import compute_transport
+from aerocloud.semantic.warm_start import semantic_warm_start
 
 __all__ = [  # noqa: RUF022
     # Core inference (SEM-01, SEM-02)

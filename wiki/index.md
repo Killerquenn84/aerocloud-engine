@@ -97,6 +97,7 @@ Alle architektonischen und designrelevanten Entscheidungen — mit Datum.
 - [decisions/2026-04-09-phase-4-coordinate-system-yx.md](decisions/2026-04-09-phase-4-coordinate-system-yx.md) — ADR-0005: (y, x) canonical internally, (x, y) only at Pydantic boundary (D-14..D-16)
 - [decisions/2026-04-09-phase-4-freetype-pinning.md](decisions/2026-04-09-phase-4-freetype-pinning.md) — ADR-0006: FreeType 2.13.2 pin + server reality (2.14.3) + bypass mechanism (D-28..D-30)
 - [decisions/2026-04-15-phase-07-geometry-v2-final.md](decisions/2026-04-15-phase-07-geometry-v2-final.md) — Phase 7 final decisions: 3 accepted deviations, 9 known limits, exit gate status, GEO2-01..09 coverage
+- [decisions/2026-04-18-phase-08-semantic-decisions.md](decisions/2026-04-18-phase-08-semantic-decisions.md) — Phase 8 all 15 decisions D-01..D-15: BERT surface encoding, warm-up, cosine, UMAP, Sinkhorn, adaptive epsilon, pgvector schema, HNSW index, archive_v1 isolation
 
 ## 💻 Code (wiki/code/)
 Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
@@ -124,6 +125,13 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 
 - [knowledge/phase-07-geometry-v2-modules.md](knowledge/phase-07-geometry-v2-modules.md) — Full API + algorithm docs: mat.py (MAT extraction), mat_cache.py (LRU), quadtree.py (Stage 3), bezier.py (glyph paths), multi_centric.py (branch placement), collision.py extensions (BVH/SAT/Bitmap)
 
+### Phase 8 Semantic Vector Space
+
+- [code/semantic-embeddings.md](code/semantic-embeddings.md) — encode_surfaces(), get_model(), DoS guards (SEM-01, SEM-02), all-MiniLM-L6-v2 singleton warm-up
+- [code/semantic-transport.md](code/semantic-transport.md) — compute_transport(), Sinkhorn-Knopp log-space, adaptive epsilon D-09, convergence proof O(log(1/ε)) D-10 (SEM-05, SEM-06)
+- [code/semantic-warm-start.md](code/semantic-warm-start.md) — semantic_warm_start() full pipeline diagram, MAT branch anchors, UMAP-scaled fill, SDF snap (SEM-08)
+- [code/semantic-persistence.md](code/semantic-persistence.md) — store_embeddings(), load_cached_embeddings(), word_embeddings schema, HNSW cosine index, archive_v1 isolation D-15 (SEM-07)
+
 ## 🧠 Knowledge (wiki/knowledge/) — additions
 
 - [knowledge/phase-5-renderer-design.md](knowledge/phase-5-renderer-design.md) — D-01 nvdiffrast supersession rationale, grid_sample architecture, alpha-over compositing, Phase 5 design decisions (D-01..D-21)
@@ -139,6 +147,7 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 Test-Coverage und Test-Strategien pro Modul.
 
 - [tests/geometry.md](tests/geometry.md) — Phase 4 Nyquist 8-dimension coverage (unit/integration/contract/state/concurrency/determinism/security/performance)
+- [tests/phase-08-semantic-tests.md](tests/phase-08-semantic-tests.md) — Phase 8 Semantic test suite: 54 tests across unit/integration/property/determinism categories, SEM-01..SEM-08 coverage table
 
 ## 🐛 Bugs (wiki/bugs/)
 Gefundene Bugs und ihre Fixes — mit Datum.

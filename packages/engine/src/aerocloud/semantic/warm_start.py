@@ -92,30 +92,46 @@ def semantic_warm_start(
         >>> params[0, 2].item()
         1.0
     """
-    N = len(candidates)
+    n_words = len(candidates)
     _seed_val = config.get("seed", settings.seed) if config else settings.seed
-    seed: int = int(_seed_val) if isinstance(_seed_val, (int, float, str)) else settings.seed
-    _method_val = config.get("projection_method", settings.projection_method) if config else settings.projection_method
+    seed: int = (
+        int(_seed_val) if isinstance(_seed_val, (int, float, str)) else settings.seed
+    )
+    _method_val = (
+        config.get("projection_method", settings.projection_method)
+        if config
+        else settings.projection_method
+    )
     _method_str = str(_method_val) if _method_val is not None else settings.projection_method
     method: Literal["umap", "tsne"] = "tsne" if _method_str == "tsne" else "umap"
-    _eps_val = config.get("eps_init", settings.sinkhorn_eps_init) if config else settings.sinkhorn_eps_init
-    eps_init: float = float(_eps_val) if isinstance(_eps_val, (int, float, str)) else settings.sinkhorn_eps_init
+    _eps_val = (
+        config.get("eps_init", settings.sinkhorn_eps_init)
+        if config
+        else settings.sinkhorn_eps_init
+    )
+    eps_init: float = (
+        float(_eps_val)
+        if isinstance(_eps_val, (int, float, str))
+        else settings.sinkhorn_eps_init
+    )
 
     surfaces = [c.surface for c in candidates]
-    logger.info("semantic.warm_start.start", n=N, method=method, seed=seed)
+    logger.info("semantic.warm_start.start", n=n_words, method=method, seed=seed)
 
     # Step 1: BERT encode → (N, 384) float32
     embeddings = encode_surfaces(surfaces)
 
-    # Step 2: Cosine similarity → distance cost matrix (N, N)
-    sim_matrix = cosine_similarity_matrix(embeddings)
-    cost_matrix = (1.0 - sim_matrix).astype(np.float64)  # cosine distance
+    # Step 2: Cosine similarity → distance cost matrix (N, N) — used implicitly via
+    # transport_cost which is Euclidean distance between projected 2D coords.
+    # The cosine matrix is computed and discarded; Sinkhorn uses Euclidean distance
+    # between UMAP-projected positions and canvas target positions (D-08).
+    cosine_similarity_matrix(embeddings)  # validate embeddings shape early
 
     # Step 3: UMAP/t-SNE project embeddings → (N, 2) semantic 2D positions
     coords_2d = project_to_2d(embeddings, method=method, seed=seed)  # (N, 2) float32
 
     # Step 4: Build N target positions on the SDF canvas (D-12)
-    target_positions = _build_target_positions(coords_2d, sdf, mat_result, N)
+    target_positions = _build_target_positions(coords_2d, sdf, mat_result, n_words)
 
     # Step 5: Sinkhorn transport
     # Cost: Euclidean distance between UMAP word positions and canvas target positions
@@ -127,12 +143,12 @@ def semantic_warm_start(
     plan = compute_transport(transport_cost, eps_init=eps_init)
 
     # Step 6: Assign canvas positions via transport matrix argmax per word
-    T = plan.transport_matrix  # (N, N) float64
-    assignments = T.argmax(axis=1)  # each word → best target position index
+    transport_mat = plan.transport_matrix  # (N, N) float64
+    assignments = transport_mat.argmax(axis=1)  # each word → best target position index
     assigned_positions = target_positions[assignments]  # (N, 2) float32
 
     # Step 7: Build (N, 4) params tensor [y, x, scale=1.0, theta=0.0]
-    params = np.zeros((N, 4), dtype=np.float32)
+    params = np.zeros((n_words, 4), dtype=np.float32)
     params[:, 0] = assigned_positions[:, 0]  # y
     params[:, 1] = assigned_positions[:, 1]  # x
     params[:, 2] = 1.0  # scale — D-11
@@ -141,7 +157,7 @@ def semantic_warm_start(
     result = torch.from_numpy(params)  # requires_grad=False by default
     logger.info(
         "semantic.warm_start.complete",
-        n=N,
+        n=n_words,
         eps=plan.eps_used,
         iterations=plan.iterations,
     )
@@ -172,7 +188,7 @@ def _build_target_positions(
     Returns:
         (N, 2) float32 array of (y, x) canvas positions, all inside SDF > 0.
     """
-    H, W = sdf.shape
+    h, w = sdf.shape
 
     # Collect MAT branch origins as primary anchor positions
     positions: list[np.ndarray] = []
@@ -183,8 +199,8 @@ def _build_target_positions(
     inside_yx = np.argwhere(sdf > 0)
     if len(inside_yx) == 0:
         # Pathological: no inside pixels — use canvas centre
-        inside_min = np.array([H / 4.0, W / 4.0], dtype=np.float32)
-        inside_max = np.array([3.0 * H / 4.0, 3.0 * W / 4.0], dtype=np.float32)
+        inside_min = np.array([h / 4.0, w / 4.0], dtype=np.float32)
+        inside_max = np.array([3.0 * h / 4.0, 3.0 * w / 4.0], dtype=np.float32)
     else:
         inside_min = inside_yx.min(axis=0).astype(np.float32)
         inside_max = inside_yx.max(axis=0).astype(np.float32)
@@ -211,17 +227,17 @@ def _build_target_positions(
     result = np.array(positions, dtype=np.float32)  # (N, 2)
 
     # Clamp to canvas bounds
-    result[:, 0] = np.clip(result[:, 0], 0, H - 1)
-    result[:, 1] = np.clip(result[:, 1], 0, W - 1)
+    result[:, 0] = np.clip(result[:, 0], 0, h - 1)
+    result[:, 1] = np.clip(result[:, 1], 0, w - 1)
 
     # Snap any position outside the SDF positive region to the nearest inside pixel
     if len(inside_yx) > 0:
         for i in range(n_positions):
-            y_idx = int(round(float(result[i, 0])))
-            x_idx = int(round(float(result[i, 1])))
+            y_idx = round(float(result[i, 0]))
+            x_idx = round(float(result[i, 1]))
             # Clamp indices to valid canvas range
-            y_idx = max(0, min(y_idx, H - 1))
-            x_idx = max(0, min(x_idx, W - 1))
+            y_idx = max(0, min(y_idx, h - 1))
+            x_idx = max(0, min(x_idx, w - 1))
             if float(sdf[y_idx, x_idx]) <= 0.0:
                 # T-08-07: O(P) search over inside pixels — bounded by SDF canvas size
                 dists = np.sqrt(

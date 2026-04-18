@@ -100,23 +100,23 @@ def compute_transport(
         raise SemanticError(
             f"cost_matrix must be square 2D (N, N), got shape {cost_matrix.shape}"
         )
-    N = cost_matrix.shape[0]
-    if N == 0:
+    n = cost_matrix.shape[0]
+    if n == 0:
         raise SemanticError("cost_matrix must have N > 0, got empty matrix")
 
     # D-09: Clamp initial epsilon to valid range before any computation.
     eps = float(np.clip(eps, _EPS_MIN, _EPS_MAX))
 
     # D-08: Uniform marginals — each word and each canvas position has equal prior mass.
-    a = np.ones(N, dtype=np.float64) / N
-    b = np.ones(N, dtype=np.float64) / N
-    M = cost_matrix.astype(np.float64)
+    a = np.ones(n, dtype=np.float64) / n
+    b = np.ones(n, dtype=np.float64) / n
+    m = cost_matrix.astype(np.float64)  # cost matrix (conventional M notation)
 
     # D-07: Log-space Sinkhorn avoids underflow on degenerate distributions.
-    T, log_dict = ot.sinkhorn(
+    transport_mat, log_dict = ot.sinkhorn(
         a,
         b,
-        M,
+        m,
         reg=eps,
         method="sinkhorn_log",
         numItermax=max_iter,
@@ -126,7 +126,7 @@ def compute_transport(
     niter: int = int(log_dict.get("niter", max_iter))
 
     # T-08-06: Error message contains eps + niter only, not cost_matrix values.
-    if np.any(np.isnan(T)):
+    if np.any(np.isnan(transport_mat)):
         raise SinkhornNonConvergenceError(
             f"Sinkhorn produced NaN after {niter} iterations with eps={eps:.2e}"
         )
@@ -142,14 +142,14 @@ def compute_transport(
 
     logger.info(
         "semantic.transport.complete",
-        n=N,
+        n=n,
         eps_init=eps,
         eps_adapted=eps_adapted,
         niter=niter,
     )
 
     return TransportPlan(
-        transport_matrix=T,
+        transport_matrix=transport_mat,
         eps_used=eps_adapted,
         iterations=niter,
     )
