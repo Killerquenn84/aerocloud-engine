@@ -33,6 +33,28 @@ def stub_embeddings_5x384() -> np.ndarray:
 
 
 @pytest.fixture
+def stub_embeddings_10x384() -> np.ndarray:
+    """Return a (10, 384) float32 array with deterministic random values (seed=7).
+
+    Uses numpy default_rng for reproducibility. 10 rows are needed for UMAP
+    tests because default n_neighbors=15 requires at least n_neighbors+1 samples;
+    the projection.py implementation auto-clamps n_neighbors to min(15, n-1).
+    """
+    rng = np.random.default_rng(7)
+    return rng.standard_normal((10, 384)).astype(np.float32)
+
+
+@pytest.fixture
+def stub_embeddings_3x384() -> np.ndarray:
+    """Return a (3, 384) float32 array for small-N edge-case tests (seed=99).
+
+    Used to verify that UMAP does not crash when N < default n_neighbors (15).
+    """
+    rng = np.random.default_rng(99)
+    return rng.standard_normal((3, 384)).astype(np.float32)
+
+
+@pytest.fixture
 def sample_surfaces() -> list[str]:
     """Five diverse English weather words for semantic test fixtures."""
     return ["cloud", "rain", "sun", "wind", "storm"]

@@ -53,7 +53,7 @@ def cosine_similarity_matrix(embeddings: np.ndarray) -> np.ndarray:
             f"embeddings must be a 2D array with N>0 rows, got shape {embeddings.shape}"
         )
 
-    sim = cosine_similarity(embeddings).astype(np.float32)
+    sim: np.ndarray = np.asarray(cosine_similarity(embeddings), dtype=np.float32)
     logger.debug(
         "semantic.cosine.computed",
         n=embeddings.shape[0],
