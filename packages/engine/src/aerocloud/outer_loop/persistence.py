@@ -214,16 +214,16 @@ class ArchivePersistence:
                     # T-09-05: all values bound as $N — no interpolation
                     await conn.execute(
                         _UPSERT_SQL,
-                        entry.bin_id,       # $1 bin_id
-                        vec_str,            # $2 descriptor (cast ::vector)
-                        entry.fitness,      # $3 fitness
-                        metadata_json,      # $4 metadata (cast ::jsonb)
+                        entry.bin_id,  # $1 bin_id
+                        vec_str,  # $2 descriptor (cast ::vector)
+                        entry.fitness,  # $3 fitness
+                        metadata_json,  # $4 metadata (cast ::jsonb)
                         bd.shape_fidelity,  # $5 shape_fidelity
                         bd.rotation_ratio,  # $6 rotation_ratio
-                        bd.symmetry,        # $7 symmetry
+                        bd.symmetry,  # $7 symmetry
                         bd.semantic_clustering,  # $8 semantic_clustering
-                        entry.params_bytes, # $9 params_blob (BYTEA)
-                        quality_json,       # $10 quality_metrics (cast ::jsonb)
+                        entry.params_bytes,  # $9 params_blob (BYTEA)
+                        quality_json,  # $10 quality_metrics (cast ::jsonb)
                     )
 
             logger.info(

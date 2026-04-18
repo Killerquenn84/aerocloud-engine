@@ -132,16 +132,25 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 - [code/semantic-warm-start.md](code/semantic-warm-start.md) — semantic_warm_start() full pipeline diagram, MAT branch anchors, UMAP-scaled fill, SDF snap (SEM-08)
 - [code/semantic-persistence.md](code/semantic-persistence.md) — store_embeddings(), load_cached_embeddings(), word_embeddings schema, HNSW cosine index, archive_v1 isolation D-15 (SEM-07)
 
+### Phase 9 Outer Loop-v1
+
+- [code/outer-loop-archive.md](code/outer-loop-archive.md) — ArchiveWrapper: pyribs GridArchive + GaussianEmitter, ask/tell, coverage, capacity (D-01..D-03, D-16)
+- [code/outer-loop-metrics.md](code/outer-loop-metrics.md) — 7 quality metric functions (LC, LU, SS, Compactness, AR, RA, Distortion), formulas, input/output, NaN guards (D-05..D-07)
+- [code/outer-loop-persistence.md](code/outer-loop-persistence.md) — ArchivePersistence flush_batch + load_all, ON CONFLICT fitness guard, safetensors BYTEA, Alembic 0003 (D-10, D-11)
+- [code/outer-loop-scheduler.md](code/outer-loop-scheduler.md) — OuterLoop orchestrator: single_iteration, run, flush, reeval, evaluate_fn injection, asyncio.run boundary (D-15)
+
 ## 🧠 Knowledge (wiki/knowledge/) — additions
 
 - [knowledge/phase-5-renderer-design.md](knowledge/phase-5-renderer-design.md) — D-01 nvdiffrast supersession rationale, grid_sample architecture, alpha-over compositing, Phase 5 design decisions (D-01..D-21)
 - [knowledge/phase-6-inner-loop-design.md](knowledge/phase-6-inner-loop-design.md) — Additive vs alpha-over for L_overlap, rolling-window convergence rationale, Coarse-to-Fine stage design, memory hygiene, Phase 12 known gaps
+- [knowledge/phase-9-outer-loop-design.md](knowledge/phase-9-outer-loop-design.md) — GaussianEmitter correction, pyribs 0.10.0 API, Distortion CV formula fix, evaluate_fn injection, asyncio.run boundary, params_bytes placeholder, phase exit gate results
 
 ## 🗣️ Discussions — additions
 
 - [discussions/2026-04-12-phase-5-codereview.md](discussions/2026-04-12-phase-5-codereview.md) — Phase 5 Wave 4 3-KI Code Review (Claude APPROVED; Codex + Gemini pending)
 - [discussions/2026-04-12-phase-5-summary.md](discussions/2026-04-12-phase-5-summary.md) — Phase 5 Close-Out Summary (4 plans, 48 tests, REND-01..06 satisfied)
 - [discussions/2026-04-14-phase-6-codereview.md](discussions/2026-04-14-phase-6-codereview.md) — Phase 6 Inner Loop-v1 3-KI Code Review (Claude APPROVED; Codex + Gemini pending)
+- [discussions/2026-04-18-phase-09-codereview.md](discussions/2026-04-18-phase-09-codereview.md) — Phase 9 Outer Loop-v1 3-KI Code Review: Claude APPROVED (S-1..S-8, L-1..L-8, A-1..A-5); 4 minor findings, all non-blocking
 
 ## 🧪 Tests (wiki/tests/)
 Test-Coverage und Test-Strategien pro Modul.

@@ -2,6 +2,24 @@
 
 > Chronologische Aufzeichnung aller Wiki-Aktivitaeten.
 
+## [2026-04-18] Phase 9 Outer Loop-v1 | Code Review + Wiki Update
+
+- **Neue Seiten:**
+  - `wiki/code/outer-loop-archive.md` — ArchiveWrapper: pyribs GridArchive + GaussianEmitter, ask/tell API, ArchiveConfig, design decisions D-01..D-03
+  - `wiki/code/outer-loop-metrics.md` — 7 quality metric functions (LC, LU, SS, Compactness, AR, RA, Distortion) with formulas, NaN guards (T-09-03, T-09-04)
+  - `wiki/code/outer-loop-persistence.md` — ArchivePersistence flush_batch + load_all, ON CONFLICT fitness guard, safetensors BYTEA, Alembic 0003 schema
+  - `wiki/code/outer-loop-scheduler.md` — OuterLoop orchestrator: full D-15 pipeline, evaluate_fn injection, asyncio.run boundary, OuterLoopResult
+  - `wiki/knowledge/phase-9-outer-loop-design.md` — All design decisions: GaussianEmitter correction, pyribs 0.10.0 API, Distortion CV fix, params_bytes placeholder, phase exit gate results
+  - `wiki/discussions/2026-04-18-phase-09-codereview.md` — Claude self-review: S-1..S-8, L-1..L-8, A-1..A-5 checklists; APPROVED with 4 non-blocking findings
+- **Aktualisierte Seiten:** wiki/index.md (7 neue Eintraege: 4 code/, 1 knowledge/, 1 discussions/)
+- **Phase 9 Status:** COMPLETE — 149 tests, mypy --strict clean, ruff clean
+- **Phase Exit Gates:** pytest PASS | mypy PASS | ruff PASS | Wiki PASS | Claude Review PASS
+- **Erkenntnisse:**
+  - GaussianEmitter ist der korrekte Baseline-Emitter in pyribs 0.10.0 (nicht MapElitesBaselineEmitter)
+  - Distortion-Formel erfordert Coefficient of Variation, nicht mean/max (semantisch invertiert)
+  - asyncio.run() ist korrekt an der Celery-Task-Grenze (kein aktiver Event-Loop)
+  - params_bytes=b"\x00" Placeholder muss in Phase 12 durch echte safetensors-Serialisierung ersetzt werden
+
 ## [2026-04-06] ingest | AeroCloud-Blueprint.md
 - Neue Seiten: overview, zipf-law, tf-idf-ap, np-hard-packing, bert-embeddings, optimal-transport, sdf-geometry, medial-axis, collision-detection, differentiable-rendering, adam-optimizer, cqd-metric, map-elites, seam-carving, bezier-export, quality-metrics, source-blueprint
 - Aktualisierte Seiten: index.md (erstellt)
