@@ -208,15 +208,15 @@ Plans:
 
 **Requirements covered:** SEM-01 to SEM-08 (8)
 
-**Plans:**
-- `sentence-transformers` `all-MiniLM-L6-v2` integration
-- Model warm-up at process startup
-- Cosine similarity matrix
-- t-SNE / UMAP 2D projection
-- POT 0.9.6.post1 Sinkhorn-Knopp in log-space
-- Adaptive ε regularization
-- pgvector persistence with HNSW
-- Sinkhorn output replaces Force-Directed init in Inner Loop
+**Plans:** 6 plans in 5 waves
+
+Plans:
+- [ ] 08-01-PLAN.md — Scaffolding + BERT embeddings + Pydantic models + config + test infra (TDD) [Wave 1] — SEM-01, SEM-02
+- [ ] 08-02-PLAN.md — Cosine similarity matrix + UMAP/t-SNE 2D projection (TDD) [Wave 2] — SEM-03, SEM-04
+- [ ] 08-03-PLAN.md — Sinkhorn-Knopp transport + adaptive epsilon + hypothesis tests (TDD) [Wave 3] — SEM-05, SEM-06
+- [ ] 08-04-PLAN.md — semantic_warm_start glue function + integration/determinism tests (TDD) [Wave 4] — SEM-08
+- [ ] 08-05-PLAN.md — Alembic migration word_embeddings + pgvector persistence (TDD) [Wave 2 parallel] — SEM-07
+- [ ] 08-06-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 5]
 
 **Success criteria:**
 1. BERT model loads in < 10s on first call (warmed cache thereafter)
@@ -381,3 +381,4 @@ All other phases are strictly sequential due to hard data dependencies.
 *Granularity: Fine (12 phases as decided by Jens)*
 *Strategy: Bottom-up build order + iterative reification*
 *Phase 7 plans added: 2026-04-15*
+*Phase 8 plans added: 2026-04-16*
