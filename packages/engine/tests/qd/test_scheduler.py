@@ -153,8 +153,13 @@ class TestSingleIteration:
 
         archive.tell.assert_called_once()
         call_args = archive.tell.call_args
-        objectives = call_args.kwargs.get("objectives") or call_args.args[0]
-        measures = call_args.kwargs.get("measures") or call_args.args[1]
+        # Prefer kwargs, fall back to positional args
+        if "objectives" in call_args.kwargs:
+            objectives = call_args.kwargs["objectives"]
+            measures = call_args.kwargs["measures"]
+        else:
+            objectives = call_args.args[0]
+            measures = call_args.args[1]
 
         assert objectives.shape == (4,)
         assert measures.shape == (4, 4)  # 4 BD dimensions
