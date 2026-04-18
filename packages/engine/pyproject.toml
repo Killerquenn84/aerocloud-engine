@@ -41,16 +41,18 @@ geometry = [
 ]
 # NLP: Phase 3 (NLP-v1)
 nlp = [
-    "POT>=0.9.5",
     "spacy>=3.7.0,<4.0",
     # lingua 2.2+ ships only cp312+ wheels; engine pins python<3.12 so use 2.1.x.
     # Upgrade tracked for whenever the engine moves to Python 3.12.
     "lingua-language-detector>=2.1,<2.2",
 ]
-# Embeddings: Phase 8 (Semantic Vector Space)
+# Embeddings: Phase 8 (Semantic Vector Space) — D-07: POT moved from nlp group here
 embeddings = [
     "sentence-transformers>=3.0.0",
     "transformers>=4.40.0",
+    "umap-learn>=0.5.0",
+    "POT>=0.9.5",
+    "pgvector>=0.4.0",
 ]
 # GPU / Differentiable Rendering: Phase 5 (Renderer-v1)
 # nvdiffrast installed via tool.uv.sources (git) — see root pyproject.toml when Phase 5 begins

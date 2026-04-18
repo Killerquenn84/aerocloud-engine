@@ -11,8 +11,14 @@ Usage:
 
 from __future__ import annotations
 
+import os
+
 import numpy as np
 import pytest
+
+# Override model cache dir for tests — /var/cache/aerocloud may not be
+# writable in CI; /tmp/aerocloud-models is always available.
+os.environ.setdefault("MODEL_CACHE_DIR", "/tmp/aerocloud-models")
 
 
 @pytest.fixture

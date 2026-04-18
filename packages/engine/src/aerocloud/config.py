@@ -75,6 +75,26 @@ class Settings(BaseSettings):
         description="Per-worker bytes budget for the MAT LRU cache (Phase 7).",
         ge=1_048_576,  # minimum 1 MiB sanity floor
     )
+    # Semantic Vector Space settings (Phase 8).
+    projection_method: str = Field(
+        default="umap",
+        description="2D projection method for semantic warm-start: 'umap' or 'tsne' (D-06)",
+    )
+    sinkhorn_eps_init: float = Field(
+        default=0.1,
+        description="Sinkhorn-Knopp initial epsilon for Optimal Transport (D-09)",
+        gt=0.0,
+    )
+    sinkhorn_max_iter: int = Field(
+        default=1000,
+        description="Sinkhorn-Knopp maximum iterations before convergence failure",
+        ge=1,
+    )
+    embedding_batch_size: int = Field(
+        default=32,
+        description="BERT encode batch size for sentence-transformers (D-03)",
+        ge=1,
+    )
 
 
 def load_settings() -> Settings:
