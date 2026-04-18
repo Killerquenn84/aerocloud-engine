@@ -211,12 +211,12 @@ Plans:
 **Plans:** 6 plans in 5 waves
 
 Plans:
-- [ ] 08-01-PLAN.md — Scaffolding + BERT embeddings + Pydantic models + config + test infra (TDD) [Wave 1] — SEM-01, SEM-02
-- [ ] 08-02-PLAN.md — Cosine similarity matrix + UMAP/t-SNE 2D projection (TDD) [Wave 2] — SEM-03, SEM-04
-- [ ] 08-03-PLAN.md — Sinkhorn-Knopp transport + adaptive epsilon + hypothesis tests (TDD) [Wave 3] — SEM-05, SEM-06
-- [ ] 08-04-PLAN.md — semantic_warm_start glue function + integration/determinism tests (TDD) [Wave 4] — SEM-08
-- [ ] 08-05-PLAN.md — Alembic migration word_embeddings + pgvector persistence (TDD) [Wave 2 parallel] — SEM-07
-- [ ] 08-06-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 5]
+- [x] 08-01-PLAN.md — Scaffolding + BERT embeddings + Pydantic models + config + test infra (TDD) [Wave 1] — SEM-01, SEM-02
+- [x] 08-02-PLAN.md — Cosine similarity matrix + UMAP/t-SNE 2D projection (TDD) [Wave 2] — SEM-03, SEM-04
+- [x] 08-03-PLAN.md — Sinkhorn-Knopp transport + adaptive epsilon + hypothesis tests (TDD) [Wave 3] — SEM-05, SEM-06
+- [x] 08-04-PLAN.md — semantic_warm_start glue function + integration/determinism tests (TDD) [Wave 4] — SEM-08
+- [x] 08-05-PLAN.md — Alembic migration word_embeddings + pgvector persistence (TDD) [Wave 2 parallel] — SEM-07
+- [x] 08-06-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 5]
 
 **Success criteria:**
 1. BERT model loads in < 10s on first call (warmed cache thereafter)
