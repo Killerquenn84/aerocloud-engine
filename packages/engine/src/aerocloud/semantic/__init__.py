@@ -45,6 +45,7 @@ from __future__ import annotations
 from aerocloud.semantic.cosine import cosine_similarity_matrix
 from aerocloud.semantic.embeddings import encode_surfaces, get_model, reset_model
 from aerocloud.semantic.transport import compute_transport
+from aerocloud.semantic.warm_start import semantic_warm_start
 from aerocloud.semantic.errors import (
     EmbeddingError,
     ProjectionError,
@@ -65,6 +66,8 @@ __all__ = [  # noqa: RUF022
     "project_to_2d",
     # Sinkhorn-Knopp Optimal Transport (SEM-05, SEM-06)
     "compute_transport",
+    # Semantic warm-start glue function (SEM-08)
+    "semantic_warm_start",
     # pgvector persistence cache (SEM-07, D-13, D-14)
     "load_cached_embeddings",
     "store_embeddings",
