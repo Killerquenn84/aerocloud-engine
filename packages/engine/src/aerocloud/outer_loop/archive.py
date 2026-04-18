@@ -12,13 +12,12 @@ References:
 
 from __future__ import annotations
 
-import structlog
 import numpy as np
+import structlog
 from ribs.archives import GridArchive
 from ribs.emitters import GaussianEmitter
 from ribs.schedulers import Scheduler
 
-from aerocloud.outer_loop.errors import SolutionDimMismatchError
 from aerocloud.outer_loop.models import ArchiveConfig
 
 logger = structlog.get_logger(__name__)
@@ -167,7 +166,7 @@ class ArchiveWrapper:
         Returns:
             Dict with 'solution', 'objective', 'measures' etc.
         """
-        return self._archive.data()  # type: ignore[return-value]
+        return self._archive.data()
 
     def best_elite(self) -> dict:  # type: ignore[type-arg]
         """Return the elite with the highest fitness.
@@ -178,4 +177,4 @@ class ArchiveWrapper:
         Raises:
             IndexError: if the archive is empty.
         """
-        return self._archive.best_elite  # type: ignore[return-value]
+        return self._archive.best_elite

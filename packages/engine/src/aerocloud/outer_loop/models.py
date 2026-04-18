@@ -86,7 +86,7 @@ class QualityMetrics(AeroCloudBase):
       silhouette area.
     - layout_uniformity (LU): 1 - normalized std dev of local density.
     - space_saving (SS): 1 - (whitespace inside silhouette / silhouette area).
-    - compactness: 4π × area / perimeter² (isoperimetric quotient).
+    - compactness: 4*pi * area / perimeter^2 (isoperimetric quotient).
     - aspect_ratio: 1 - |actual_ratio - φ| / φ where φ = 1.618.
     - realized_adjacencies (RA): fraction of semantically-similar word pairs
       that are spatially adjacent.

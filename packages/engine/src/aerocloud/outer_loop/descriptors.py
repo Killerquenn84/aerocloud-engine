@@ -80,11 +80,9 @@ def compute_descriptors(
     symmetry = _compute_symmetry(positions_yx, sdf_mask)
     symmetry = _clamp(symmetry)
 
-    # ------------------------------------------------------------------
-    # 4. semantic_clustering: spatial-semantic alignment score
-    #    1 - clamp(mean_spatial_dist / (mean_embedding_dist * max_spatial))
-    #    Captures how well semantically similar words are spatially close.
-    # ------------------------------------------------------------------
+    # 4. semantic_clustering: 1 - normalized distortion ratio between
+    # spatial proximity and embedding similarity.
+    # Captures how well semantically similar words are spatially close.
     semantic_clustering = _compute_semantic_clustering(positions_yx, embeddings)
     semantic_clustering = _clamp(semantic_clustering)
 
@@ -133,8 +131,7 @@ def _compute_symmetry(positions_yx: np.ndarray, sdf_mask: np.ndarray) -> float:
         return 0.5
 
     # 1 - normalized |mirrored_mean - right_mean| / canvas_w
-    score = 1.0 - abs(mean_mirrored - mean_right) / float(canvas_w)
-    return score
+    return 1.0 - abs(mean_mirrored - mean_right) / float(canvas_w)
 
 
 def _compute_semantic_clustering(positions_yx: np.ndarray, embeddings: np.ndarray) -> float:
@@ -188,5 +185,4 @@ def _compute_semantic_clustering(positions_yx: np.ndarray, embeddings: np.ndarra
     distortion = (mean_s / max_spatial) * (1.0 - mean_e)
 
     # Invert: high distortion → low clustering
-    score = 1.0 - _clamp(distortion)
-    return score
+    return 1.0 - _clamp(distortion)
