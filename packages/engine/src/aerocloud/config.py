@@ -95,6 +95,43 @@ class Settings(BaseSettings):
         description="BERT encode batch size for sentence-transformers (D-03)",
         ge=1,
     )
+    # Outer Loop / MAP-Elites settings (Phase 9 D-02, D-03, D-12, D-11, D-14).
+    archive_bins_per_dim: int = Field(
+        default=10,
+        ge=2,
+        le=50,
+        description="Bins per behavioral dimension for MAP-Elites GridArchive (D-02)",
+    )
+    archive_sigma: float = Field(
+        default=0.1,
+        gt=0.0,
+        description="GaussianEmitter perturbation std dev",
+    )
+    archive_batch_size: int = Field(
+        default=16,
+        ge=1,
+        description="Solutions per ask() call",
+    )
+    archive_max_words: int = Field(
+        default=200,
+        ge=10,
+        description="Max word count for fixed solution_dim",
+    )
+    novelty_k: int = Field(
+        default=15,
+        ge=1,
+        description="k-NN neighbors for novelty search (D-12)",
+    )
+    flush_every_n: int = Field(
+        default=100,
+        ge=1,
+        description="Batch flush interval to PostgreSQL (D-11)",
+    )
+    reeval_every_n: int = Field(
+        default=200,
+        ge=1,
+        description="Re-evaluation interval for elites (D-14)",
+    )
 
 
 def load_settings() -> Settings:
