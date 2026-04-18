@@ -34,6 +34,7 @@ dev = [
     "hypothesis>=6.120.0",
     "testcontainers>=4.9.0",
     "pytest-benchmark>=4.0.0",  # Phase 4 D-50: geometry performance tests (2048² SDF <1s)
+    "pytest-asyncio>=1.3.0",
 ]
 
 [tool.ruff]
