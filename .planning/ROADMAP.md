@@ -282,14 +282,14 @@ Plans:
 
 **Requirements covered:** OUTER2-01 to OUTER2-09 (9)
 
-**Plans:** 5 plans in 4 waves
+**Plans:** 5/5 plans complete
 
 Plans:
-- [ ] 11-01-PLAN.md — CappedBOPEmitter + ArchiveWrapper BOP upgrade + extra_fields + OuterLoop tell() update (TDD) [Wave 1] — OUTER2-01, OUTER2-02
-- [ ] 11-02-PLAN.md — CQD quality-diversity metric with vectorized Monte-Carlo + theta-sweep (TDD) [Wave 1 parallel] — OUTER2-03, OUTER2-04, OUTER2-05, OUTER2-06
-- [ ] 11-03-PLAN.md — Pareto-Front extraction + CQD_HV aggregate + Pareto-Slider function (TDD) [Wave 2] — OUTER2-07, OUTER2-08, OUTER2-09
-- [ ] 11-04-PLAN.md — Integration tests + determinism tests + __init__.py exports [Wave 3] — OUTER2-01..09
-- [ ] 11-05-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 4]
+- [x] 11-01-PLAN.md — CappedBOPEmitter + ArchiveWrapper BOP upgrade + extra_fields + OuterLoop tell() update (TDD) [Wave 1] — OUTER2-01, OUTER2-02
+- [x] 11-02-PLAN.md — CQD quality-diversity metric with vectorized Monte-Carlo + theta-sweep (TDD) [Wave 1 parallel] — OUTER2-03, OUTER2-04, OUTER2-05, OUTER2-06
+- [x] 11-03-PLAN.md — Pareto-Front extraction + CQD_HV aggregate + Pareto-Slider function (TDD) [Wave 2] — OUTER2-07, OUTER2-08, OUTER2-09
+- [x] 11-04-PLAN.md — Integration tests + determinism tests + __init__.py exports [Wave 3] — OUTER2-01..09
+- [x] 11-05-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 4]
 
 **Success criteria:**
 1. BOP-Elites at 700 evaluations matches MAP-Elites at 90 000 evaluations on test problem (Blueprint claim verified)
