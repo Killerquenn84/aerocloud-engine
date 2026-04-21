@@ -162,6 +162,8 @@ class OuterLoop:
 
         objectives_list: list[float] = []
         measures_list: list[list[float]] = []
+        layout_coverage_list: list[float] = []
+        space_saving_list: list[float] = []
 
         # Steps 2-4: evaluate each solution
         for i in range(batch_size):
@@ -182,15 +184,26 @@ class OuterLoop:
                 ]
             )
 
+            # Extra fields for Pareto-Slider (Plan 11-01, OUTER2-09)
+            layout_coverage_list.append(float(metrics.layout_coverage))
+            space_saving_list.append(float(metrics.space_saving))
+
             # Track best fitness
             if objective > self._best_fitness:
                 self._best_fitness = float(objective)
 
         objectives = np.array(objectives_list, dtype=np.float64)
         measures = np.array(measures_list, dtype=np.float64)  # (batch_size, 4)
+        layout_coverage_arr = np.array(layout_coverage_list, dtype=np.float64)
+        space_saving_arr = np.array(space_saving_list, dtype=np.float64)
 
-        # Step 5: tell archive
-        self._archive.tell(objectives=objectives, measures=measures)
+        # Step 5: tell archive (with layout_coverage + space_saving for Pareto-Slider, Plan 11-01)
+        self._archive.tell(
+            objectives=objectives,
+            measures=measures,
+            layout_coverage=layout_coverage_arr,
+            space_saving=space_saving_arr,
+        )
 
         # Step 6: record saturation
         self._saturation_monitor.record(self._archive.coverage)

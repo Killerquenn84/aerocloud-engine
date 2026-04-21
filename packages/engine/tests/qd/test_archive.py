@@ -263,10 +263,10 @@ class TestOuterLoopExtraFieldsIntegration:
         from aerocloud.outer_loop.scheduler import OuterLoop
 
         cfg = ArchiveConfig(
-            solution_dim=32,
+            solution_dim=40,
             bins_per_dim=3,
             batch_size=4,
-            max_words=8,
+            max_words=10,
             emitter_type="gaussian",  # gaussian for speed in this integration test
         )
         archive = ArchiveWrapper(config=cfg, seed=0)
@@ -293,7 +293,7 @@ class TestOuterLoopExtraFieldsIntegration:
             return metrics, bd, embedding
 
         novelty_emitter = NoveltyGaussianEmitter(archive_wrapper=archive, sigma_boost=0.2, novelty_k=3)
-        saturation_monitor = SaturationMonitor(window=5, plateau_threshold=0.01)
+        saturation_monitor = SaturationMonitor(window=5)
         quality_weights = QualityWeights()
 
         outer_loop = OuterLoop(
