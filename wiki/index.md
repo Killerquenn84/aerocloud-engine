@@ -148,11 +148,18 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 - [code/self-play-monitoring.md](code/self-play-monitoring.md) — compute_kl_divergence (4 marginal 1D histograms, NOT joint 4D), check_distribution_shift (D-13, D-14, SP-07)
 - [code/self-play-replay.md](code/self-play-replay.md) — ReplayLogger: insert_run/event, finalize_run, descriptor_histogram persistence; asyncpg $N params (D-15, D-16, D-17)
 
+### Phase 11 Outer Loop-v2
+
+- [code/outer-loop-v2-bop-emitter.md](code/outer-loop-v2-bop-emitter.md) — CappedBOPEmitter: BOP-Elites EJIE with sklearn GP history-capping; D-01, D-02, T-11-02 (OUTER2-01, OUTER2-02)
+- [code/outer-loop-v2-cqd.md](code/outer-loop-v2-cqd.md) — compute_cqd(): vectorized Monte-Carlo CQD, NearestNeighbors ball_tree, theta-sweep, delta_max=2.0; D-05..D-08 (OUTER2-03..06)
+- [code/outer-loop-v2-pareto.md](code/outer-loop-v2-pareto.md) — extract_pareto_front(), compute_cqd_hv(), pareto_slider(); pymoo NDS + HV, D-10..D-14, Pitfall 6 (OUTER2-07..09)
+
 ## 🧠 Knowledge (wiki/knowledge/) — additions
 
 - [knowledge/phase-5-renderer-design.md](knowledge/phase-5-renderer-design.md) — D-01 nvdiffrast supersession rationale, grid_sample architecture, alpha-over compositing, Phase 5 design decisions (D-01..D-21)
 - [knowledge/phase-6-inner-loop-design.md](knowledge/phase-6-inner-loop-design.md) — Additive vs alpha-over for L_overlap, rolling-window convergence rationale, Coarse-to-Fine stage design, memory hygiene, Phase 12 known gaps
 - [knowledge/phase-9-outer-loop-design.md](knowledge/phase-9-outer-loop-design.md) — GaussianEmitter correction, pyribs 0.10.0 API, Distortion CV formula fix, evaluate_fn injection, asyncio.run boundary, params_bytes placeholder, phase exit gate results
+- [knowledge/phase-11-decisions.md](knowledge/phase-11-decisions.md) — Phase 11 all 14 decisions D-01..D-14: GPyTorch fallback, history_cap, CQD equation, Monte-Carlo, theta-sweep, pymoo HV framing, Pareto objectives, Pareto-Slider; full threat model T-11-01..T-11-09
 
 ## 🗣️ Discussions — additions
 
@@ -160,6 +167,7 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 - [discussions/2026-04-12-phase-5-summary.md](discussions/2026-04-12-phase-5-summary.md) — Phase 5 Close-Out Summary (4 plans, 48 tests, REND-01..06 satisfied)
 - [discussions/2026-04-14-phase-6-codereview.md](discussions/2026-04-14-phase-6-codereview.md) — Phase 6 Inner Loop-v1 3-KI Code Review (Claude APPROVED; Codex + Gemini pending)
 - [discussions/2026-04-18-phase-09-codereview.md](discussions/2026-04-18-phase-09-codereview.md) — Phase 9 Outer Loop-v1 3-KI Code Review: Claude APPROVED (S-1..S-8, L-1..L-8, A-1..A-5); 4 minor findings, all non-blocking
+- [discussions/2026-04-21-phase-11-review.md](discussions/2026-04-21-phase-11-review.md) — Phase 11 Outer Loop-v2 3-KI Review: all 3 APPROVED; 9 ruff violations fixed; 4 weaknesses documented (3 deferred, 1 resolved)
 
 ## 🧪 Tests (wiki/tests/)
 Test-Coverage und Test-Strategien pro Modul.
