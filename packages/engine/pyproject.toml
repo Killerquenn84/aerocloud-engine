@@ -66,6 +66,10 @@ qd = [
     "ribs>=0.10.0",
     "pymoo>=0.6.1",
 ]
+# Production: Phase 12 (Export modules — seam carving, PNG export, boolean union)
+production = [
+    "shapely>=2.1.2",
+]
 
 [project.scripts]
 aerocloud-gpu-smoke = "aerocloud.scripts.gpu_smoke:main"
