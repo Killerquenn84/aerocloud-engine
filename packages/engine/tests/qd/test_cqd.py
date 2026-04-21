@@ -355,10 +355,11 @@ def test_compute_cqd_from_archive_matches_raw(
     from aerocloud.outer_loop.models import ArchiveConfig
 
     config = ArchiveConfig(
+        solution_dim=40,  # max_words=10 * 4 params per word
         bins_per_dim=5,
         sigma=0.1,
         batch_size=4,
-        max_words=10,  # solution_dim = 40
+        max_words=10,
     )
     wrapper = ArchiveWrapper(config=config, seed=42)
 
