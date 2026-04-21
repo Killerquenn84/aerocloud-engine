@@ -306,28 +306,18 @@ Plans:
 
 **Requirements covered:** PROD-01 to PROD-23 (23)
 
-**Plans:**
-- Seam Carving energy function + DP optimal seam
-- `svgelements` SVG export
-- ReportLab PDF export with sub-millimeter precision
-- `Pillow` PNG export from rendered tensors
-- Boolean union on Bezier paths
-- FastAPI `POST /render` with Pydantic validation
-- SSE progress endpoint
-- Celery worker config (`prefork`, `concurrency=1`, `max-tasks-per-child=50`)
-- Two queues: `realtime` + `background`
-- GPU resource isolation
-- Hard task timeouts
-- SVG color + font allow-lists
-- Path traversal prevention
-- Rate limiting
-- `/health` + `/health/internal`
-- OpenTelemetry tracing
-- Prometheus + DCGM Exporter
-- Graceful shutdown
-- Golden-image regression tests
-- Load test (100 concurrent renders)
-- Release gate
+**Plans:** 9 plans in 6 waves
+
+Plans:
+- [ ] 12-01-PLAN.md — Dependencies + seam carving + PNG export + boolean union (TDD) [Wave 1] — PROD-01, PROD-02, PROD-05, PROD-06
+- [ ] 12-02-PLAN.md — SVG + PDF export + security validators (TDD) [Wave 1 parallel] — PROD-03, PROD-04, PROD-13, PROD-14, PROD-15
+- [ ] 12-03-PLAN.md — Celery worker hardening: queues, render task, shutdown, entrypoint (TDD) [Wave 2] — PROD-09, PROD-10, PROD-11, PROD-12, PROD-20
+- [ ] 12-04-PLAN.md — Observability: OTLP upgrade + Prometheus metrics (TDD) [Wave 2 parallel] — PROD-18, PROD-19
+- [ ] 12-05-PLAN.md — FastAPI HTTP surface: render, SSE, health, rate limiting, metrics wiring (TDD) [Wave 3] — PROD-07, PROD-08, PROD-16, PROD-17
+- [ ] 12-06-PLAN.md — Docker hardening: DCGM Exporter sidecar + Dockerfile STOPSIGNAL + HEALTHCHECK [Wave 3 parallel] — PROD-19
+- [ ] 12-07-PLAN.md — Golden-image regression tests with SSIM (TDD) [Wave 4] — PROD-21
+- [ ] 12-08-PLAN.md — Load test: 100 concurrent renders with P99 measurement [Wave 5] — PROD-22
+- [ ] 12-09-PLAN.md — Release gate + 3-KI review + wiki documentation [Wave 6] — PROD-23
 
 **Success criteria:**
 1. P99 render latency within agreed budget for 200 words
@@ -384,3 +374,4 @@ All other phases are strictly sequential due to hard data dependencies.
 *Phase 9 plans added: 2026-04-18*
 *Phase 10 plans added: 2026-04-21*
 *Phase 11 plans added: 2026-04-16*
+*Phase 12 plans added: 2026-04-16*
