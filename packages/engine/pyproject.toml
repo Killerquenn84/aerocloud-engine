@@ -66,9 +66,10 @@ qd = [
     "ribs>=0.10.0",
     "pymoo>=0.6.1",
 ]
-# Production: Phase 12 (Export modules — seam carving, PNG export, boolean union)
+# Production: Phase 12 (Export modules — seam carving, PNG export, boolean union, SVG/PDF export)
 production = [
     "shapely>=2.1.2",
+    "lxml>=5.0.0",
 ]
 
 [project.scripts]
