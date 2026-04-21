@@ -5,15 +5,17 @@ Models follow the AeroCloudBase pattern: frozen, strict, extra="forbid".
 References:
     - .planning/phases/09-outer-loop-v1/09-01-PLAN.md (Task 1)
     - .planning/phases/09-outer-loop-v1/09-03-PLAN.md (Task 2 — ArchiveFlushEntry)
+    - .planning/phases/11-outer-loop-v2/11-01-PLAN.md (Task 1 — BOP fields)
     - D-07: Combined fitness = weighted sum (unnormalized, like LossWeights)
     - D-08: ArchiveFlushEntry carries BD scalars + params_blob + quality_metrics
-    - OUTER-01, OUTER-02, OUTER-05
+    - OUTER-01, OUTER-02, OUTER-05, OUTER2-01, OUTER2-02
 """
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
+import numpy as np
 from pydantic import ConfigDict, Field
 
 from aerocloud.models.archive import BehaviorDescriptor
@@ -133,10 +135,20 @@ class QualityMetrics(AeroCloudBase):
 
 
 class ArchiveConfig(AeroCloudBase):
-    """Configuration for the MAP-Elites GridArchive + GaussianEmitter.
+    """Configuration for the MAP-Elites GridArchive + emitter.
 
     solution_dim is required because it depends on the word count at runtime.
     All other fields have sensible defaults.
+
+    Phase 11 additions (11-01-PLAN.md, OUTER2-01, OUTER2-02):
+        - lower_bounds / upper_bounds: required by BayesianOptimizationEmitter.
+          Defaults to None (backwards compat) — ArchiveWrapper auto-fills with
+          zeros/ones when emitter_type="bop".
+        - num_initial_samples: Sobol random samples before GP takes over.
+        - history_cap: Maximum GP training set size (T-11-02 DoS mitigation).
+          Must be >= 10.
+        - emitter_type: "gaussian" keeps Phase 9 behaviour; "bop" uses
+          CappedBOPEmitter + BayesianOptimizationScheduler.
     """
 
     solution_dim: int = Field(
@@ -164,6 +176,53 @@ class ArchiveConfig(AeroCloudBase):
         default=200,
         ge=10,
         description="Maximum word count for fixed solution_dim allocation",
+    )
+    # --- Phase 11 BOP-Elites fields ---
+    lower_bounds: np.ndarray | None = Field(
+        default=None,
+        description=(
+            "Lower bounds for BayesianOptimizationEmitter solution space. "
+            "None → ArchiveWrapper auto-fills np.zeros(solution_dim). "
+            "Required when emitter_type='bop'."
+        ),
+    )
+    upper_bounds: np.ndarray | None = Field(
+        default=None,
+        description=(
+            "Upper bounds for BayesianOptimizationEmitter solution space. "
+            "None → ArchiveWrapper auto-fills np.ones(solution_dim). "
+            "Required when emitter_type='bop'."
+        ),
+    )
+    num_initial_samples: int = Field(
+        default=20,
+        ge=1,
+        description=(
+            "Number of Sobol random samples before GP-driven acquisition starts "
+            "(passed to BayesianOptimizationEmitter.num_initial_samples)."
+        ),
+    )
+    history_cap: int = Field(
+        default=200,
+        ge=10,
+        description=(
+            "Maximum number of data points kept in the GP training set "
+            "(T-11-02 DoS mitigation). ge=10 prevents trivial cap values."
+        ),
+    )
+    emitter_type: Literal["gaussian", "bop"] = Field(
+        default="gaussian",
+        description=(
+            "'gaussian' → GaussianEmitter + Scheduler (Phase 9 behaviour, backwards compat). "
+            "'bop' → CappedBOPEmitter + BayesianOptimizationScheduler (Phase 11 BOP-Elites)."
+        ),
+    )
+
+    model_config = ConfigDict(
+        frozen=True,
+        strict=False,
+        extra="forbid",
+        arbitrary_types_allowed=True,
     )
 
 
