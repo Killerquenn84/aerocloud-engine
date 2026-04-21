@@ -25,8 +25,8 @@ import numpy as np
 from aerocloud.self_play.config import SelfPlayConfig
 
 # Column indices in the (N, 4) reshaped layout
-_COL_X: int = 0      # x position  → sigma_xy
-_COL_Y: int = 1      # y position  → sigma_xy
+_COL_X: int = 0  # x position  → sigma_xy
+_COL_Y: int = 1  # y position  → sigma_xy
 _COL_SCALE: int = 2  # word scale  → sigma_scale
 _COL_THETA: int = 3  # rotation    → sigma_theta
 

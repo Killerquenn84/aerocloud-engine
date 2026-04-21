@@ -39,10 +39,10 @@ _METRIC_FIELDS: list[str] = [
     "distortion_score",
 ]
 
-_DEGENERATE_LC_THRESHOLD: float = 0.1    # Rule 3: strict < 0.1
-_OOD_ZSCORE_THRESHOLD: float = 3.0       # Rule 2: |z| > 3.0
-_GAMING_SHARE_THRESHOLD: float = 0.5     # Rule 4: > 50% of combined fitness
-_REWARD_HACK_MIN_DECREASES: int = 2      # Rule 1: >= 2 metrics must decrease
+_DEGENERATE_LC_THRESHOLD: float = 0.1  # Rule 3: strict < 0.1
+_OOD_ZSCORE_THRESHOLD: float = 3.0  # Rule 2: |z| > 3.0
+_GAMING_SHARE_THRESHOLD: float = 0.5  # Rule 4: > 50% of combined fitness
+_REWARD_HACK_MIN_DECREASES: int = 2  # Rule 1: >= 2 metrics must decrease
 
 
 class AdversarialReviewer:

@@ -172,9 +172,7 @@ class SelfPlayLoop:
         else:
             # Crossover path: sample 2 parents, apply uniform crossover
             parent_a, parent_b = sample_parents(archive_data, self._rng)
-            candidate = uniform_crossover(
-                parent_a, parent_b, self._rng, p=self._config.crossover_p
-            )
+            candidate = uniform_crossover(parent_a, parent_b, self._rng, p=self._config.crossover_p)
             mutation_type = "crossover"
             parent_bin_ids = [
                 self._get_bin_id(parent_a, solutions),
@@ -217,8 +215,7 @@ class SelfPlayLoop:
             if not (fitness_new > threshold):
                 self._n_rejected += 1
                 margin_str = (
-                    f"{fitness_new:.6f} <= {baseline_fitness:.6f}"
-                    f" + {self._config.dominance_margin}"
+                    f"{fitness_new:.6f} <= {baseline_fitness:.6f} + {self._config.dominance_margin}"
                 )
                 return SelfPlayEvent(
                     iteration=iteration,
@@ -307,9 +304,7 @@ class SelfPlayLoop:
                 asyncio.run(self._replay_logger.insert_event(self._run_id, event))
 
         # Compute KL and finalize
-        kl_divergence = self._compute_kl_and_finalize(
-            n_done=n_iterations, exit_reason="completed"
-        )
+        kl_divergence = self._compute_kl_and_finalize(n_done=n_iterations, exit_reason="completed")
 
         ended_at = datetime.now(tz=UTC).isoformat()
         return SelfPlayRunResult(
@@ -493,9 +488,7 @@ class SelfPlayLoop:
         ):
             histogram_data = current_measures.tolist()
             asyncio.run(
-                self._replay_logger.store_descriptor_histogram(
-                    self._run_id, histogram_data
-                )
+                self._replay_logger.store_descriptor_histogram(self._run_id, histogram_data)
             )
 
         # Finalize run record
