@@ -258,15 +258,14 @@ Plans:
 
 **Requirements covered:** SP-01 to SP-08 (8)
 
-**Plans:**
-- Celery Beat scheduled job (`queue='background'`)
-- Monte-Carlo sampling from archive
-- Mutation operators
-- Evaluation against frozen baseline
-- Stricter dominance check on archive update
-- Adversarial reviewer model
-- Distribution-shift monitoring
-- Replay logging
+**Plans:** 5 plans in 5 waves
+
+Plans:
+- [ ] 10-01-PLAN.md — Scaffolding: Celery app + Beat schedule + SelfPlayConfig + models + Alembic migration 0004 + ReplayLogger (TDD) [Wave 1] — SP-01, SP-08
+- [ ] 10-02-PLAN.md — Mutation operators (Gaussian + crossover) + Adversarial reviewer (TDD) [Wave 2] — SP-02, SP-03, SP-06
+- [ ] 10-03-PLAN.md — SelfPlayLoop orchestrator + KL monitoring + Celery task wiring (TDD) [Wave 3] — SP-04, SP-05, SP-07
+- [ ] 10-04-PLAN.md — Integration tests + determinism tests + hypothesis property tests [Wave 4] — SP-01..08
+- [ ] 10-05-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 5]
 
 **Success criteria:**
 1. Nightly job runs for 8 hours then exits cleanly
@@ -384,3 +383,4 @@ All other phases are strictly sequential due to hard data dependencies.
 *Phase 7 plans added: 2026-04-15*
 *Phase 8 plans added: 2026-04-16*
 *Phase 9 plans added: 2026-04-18*
+*Phase 10 plans added: 2026-04-21*
