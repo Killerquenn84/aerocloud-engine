@@ -15,31 +15,18 @@ Phase 11 exports:
     compute_cqd_hv, compute_cqd_hv_from_archive, pareto_slider
 """
 
-# ---------------------------------------------------------------------------
+import numpy as np
+
 # Phase 9: Archive + Emitter + Scheduler
-# ---------------------------------------------------------------------------
-
 from aerocloud.outer_loop.archive import ArchiveWrapper
-from aerocloud.outer_loop.emitter import NoveltyGaussianEmitter, SaturationMonitor
-from aerocloud.outer_loop.models import ArchiveConfig, QualityMetrics, QualityWeights
-from aerocloud.outer_loop.scheduler import OuterLoop, OuterLoopResult
-
-# ---------------------------------------------------------------------------
-# Phase 11: BOP-Elites emitter
-# ---------------------------------------------------------------------------
-
 from aerocloud.outer_loop.bop_emitter import CappedBOPEmitter
 
-# ---------------------------------------------------------------------------
 # Phase 11: CQD metric
-# ---------------------------------------------------------------------------
-
 from aerocloud.outer_loop.cqd import CQDResult, compute_cqd, compute_cqd_from_archive
+from aerocloud.outer_loop.emitter import NoveltyGaussianEmitter, SaturationMonitor
+from aerocloud.outer_loop.models import ArchiveConfig, QualityMetrics, QualityWeights
 
-# ---------------------------------------------------------------------------
 # Phase 11: Pareto-Front + CQD_HV + Pareto-Slider
-# ---------------------------------------------------------------------------
-
 from aerocloud.outer_loop.pareto import (
     ParetoFront,
     compute_cqd_hv,
@@ -47,6 +34,7 @@ from aerocloud.outer_loop.pareto import (
     extract_pareto_front_from_archive,
     pareto_slider,
 )
+from aerocloud.outer_loop.scheduler import OuterLoop, OuterLoopResult
 
 # ---------------------------------------------------------------------------
 # Phase 11: compute_cqd_hv_from_archive thin wrapper
@@ -71,8 +59,6 @@ def compute_cqd_hv_from_archive(
     Returns:
         CQD_HV hypervolume sum (float >= 0.0).
     """
-    import numpy as np
-
     data = archive.data()
     objectives = np.asarray(data["objective"], dtype=np.float64)
     measures = np.asarray(data["measures"], dtype=np.float64)
@@ -85,26 +71,22 @@ def compute_cqd_hv_from_archive(
 
 
 __all__ = [
-    # Phase 9
-    "ArchiveWrapper",
     "ArchiveConfig",
-    "QualityMetrics",
-    "QualityWeights",
+    "ArchiveWrapper",
+    "CQDResult",
+    "CappedBOPEmitter",
     "NoveltyGaussianEmitter",
-    "SaturationMonitor",
     "OuterLoop",
     "OuterLoopResult",
-    # Phase 11 — BOP
-    "CappedBOPEmitter",
-    # Phase 11 — CQD
-    "CQDResult",
+    "ParetoFront",
+    "QualityMetrics",
+    "QualityWeights",
+    "SaturationMonitor",
     "compute_cqd",
     "compute_cqd_from_archive",
-    # Phase 11 — Pareto
-    "ParetoFront",
-    "extract_pareto_front",
-    "extract_pareto_front_from_archive",
     "compute_cqd_hv",
     "compute_cqd_hv_from_archive",
+    "extract_pareto_front",
+    "extract_pareto_front_from_archive",
     "pareto_slider",
 ]

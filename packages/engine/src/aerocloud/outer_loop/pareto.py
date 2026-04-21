@@ -191,13 +191,13 @@ def extract_pareto_front(
     obj1, obj2 = _compute_objectives(measures, layout_coverage, space_saving)
 
     # Stack into (n, 2) objective matrix
-    F = np.column_stack([obj1, obj2])  # shape (n, 2)
+    f_mat = np.column_stack([obj1, obj2])  # shape (n, 2)
 
     # Negate for pymoo minimization framing (Pitfall 6)
-    F_neg = -F
+    f_neg = -f_mat
 
     # Non-dominated sorting — fronts[0] is the Pareto-optimal front
-    fronts = NonDominatedSorting().do(F_neg)
+    fronts = NonDominatedSorting().do(f_neg)
     pareto_indices: np.ndarray = fronts[0]
 
     return ParetoFront(
@@ -317,7 +317,7 @@ def pareto_slider(
     # Interpolate target point between extremes
     max_df = float(df_sorted[0])
     min_df = float(df_sorted[-1])
-    min_pd = float(pd_sorted[0])   # pd at max df position (min pd)
+    min_pd = float(pd_sorted[0])  # pd at max df position (min pd)
     max_pd = float(pd_sorted[-1])  # pd at min df position (max pd)
 
     target_df = max_df * (1.0 - clipped_pos) + min_df * clipped_pos
@@ -338,7 +338,7 @@ def pareto_slider(
 # ---------------------------------------------------------------------------
 
 
-def extract_pareto_front_from_archive(archive: "ArchiveWrapper") -> ParetoFront:
+def extract_pareto_front_from_archive(archive: ArchiveWrapper) -> ParetoFront:
     """Extract Pareto front from an ArchiveWrapper instance.
 
     Thin wrapper that calls archive.data() and delegates to the pure

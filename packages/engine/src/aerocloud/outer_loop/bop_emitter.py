@@ -94,14 +94,18 @@ class CappedBOPEmitter(BayesianOptimizationEmitter):
         if not hasattr(self, "_dataset") or self._dataset is None:
             return  # pragma: no cover
 
-        n = len(self._dataset.get("solution", []))
-        if n <= self._history_cap:
+        # Cast to typed dict for mypy — parent class stores np.ndarray values
+        dataset: dict[str, np.ndarray] = self._dataset  # type: ignore[assignment]
+
+        solution_arr = dataset.get("solution")
+        if solution_arr is None or len(solution_arr) <= self._history_cap:
             return  # already within cap — no trimming needed
 
+        n = len(solution_arr)
         for key in ("solution", "objective", "measures"):
-            arr = self._dataset.get(key)
+            arr = dataset.get(key)
             if arr is not None and len(arr) > self._history_cap:
-                self._dataset[key] = arr[-self._history_cap :]
+                dataset[key] = arr[-self._history_cap :]
 
         logger.debug(
             "CappedBOPEmitter._trim_dataset",

@@ -31,6 +31,7 @@ from ribs.archives import GridArchive
 from ribs.emitters import GaussianEmitter
 from ribs.schedulers import BayesianOptimizationScheduler, Scheduler
 
+from aerocloud.outer_loop.bop_emitter import CappedBOPEmitter
 from aerocloud.outer_loop.models import ArchiveConfig
 
 logger = structlog.get_logger(__name__)
@@ -122,17 +123,11 @@ class ArchiveWrapper:
 
         Bounds default to [0, 1]^solution_dim when not supplied in config.
         """
-        from aerocloud.outer_loop.bop_emitter import CappedBOPEmitter
-
         lower_bounds: np.ndarray = (
-            config.lower_bounds
-            if config.lower_bounds is not None
-            else np.zeros(self._solution_dim)
+            config.lower_bounds if config.lower_bounds is not None else np.zeros(self._solution_dim)
         )
         upper_bounds: np.ndarray = (
-            config.upper_bounds
-            if config.upper_bounds is not None
-            else np.ones(self._solution_dim)
+            config.upper_bounds if config.upper_bounds is not None else np.ones(self._solution_dim)
         )
 
         emitter = CappedBOPEmitter(

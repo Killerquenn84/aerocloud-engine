@@ -165,17 +165,16 @@ def compute_cqd(
     distances, indices = nn.kneighbors(ref_points)  # both shape (n_samples, 1)
 
     nearest_distances: np.ndarray = distances[:, 0]  # shape (n_samples,)
-    nearest_indices: np.ndarray = indices[:, 0]      # shape (n_samples,)
+    nearest_indices: np.ndarray = indices[:, 0]  # shape (n_samples,)
 
     # ---- Normalized fitness and distance for each ref point's nearest elite ----
     nearest_objectives: np.ndarray = objectives[nearest_indices]  # (n_samples,)
-    f_norm: np.ndarray = (nearest_objectives - f_min) / f_range   # (n_samples,)
-    delta_norm: np.ndarray = nearest_distances / _DELTA_MAX        # (n_samples,)
+    f_norm: np.ndarray = (nearest_objectives - f_min) / f_range  # (n_samples,)
+    delta_norm: np.ndarray = nearest_distances / _DELTA_MAX  # (n_samples,)
 
     # ---- Vectorized omega matrix [n_samples, n_theta] ----
     # omega(x, G, theta) = f_norm(x) - theta * delta_norm(x)
-    thetas: np.ndarray = np.linspace(0.0, 1.0, n_theta)          # shape (n_theta,)
-    # Broadcasting: f_norm[:, None] - thetas[None, :] * delta_norm[:, None]
+    thetas: np.ndarray = np.linspace(0.0, 1.0, n_theta)  # shape (n_theta,)
     omega: np.ndarray = (
         f_norm[:, None] - thetas[None, :] * delta_norm[:, None]
     )  # shape (n_samples, n_theta)
@@ -199,7 +198,7 @@ def compute_cqd(
 
 
 def compute_cqd_from_archive(
-    archive: "ArchiveWrapper",
+    archive: ArchiveWrapper,
     n_samples: int = _DEFAULT_N_SAMPLES,
     n_theta: int = _DEFAULT_N_THETA,
     seed: int = _DEFAULT_SEED,
