@@ -216,7 +216,7 @@ class TestExtractParetoFront:
                     continue
                 # a dominates b if a.df >= b.df AND a.pd >= b.pd (and at least one strict)
                 a_dom_b = (
-                    pareto_df[a] >= pareto_pd[b]
+                    pareto_df[a] >= pareto_df[b]
                     and pareto_pd[a] >= pareto_pd[b]
                     and (pareto_df[a] > pareto_df[b] or pareto_pd[a] > pareto_pd[b])
                 )
