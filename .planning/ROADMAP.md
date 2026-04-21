@@ -258,14 +258,14 @@ Plans:
 
 **Requirements covered:** SP-01 to SP-08 (8)
 
-**Plans:** 5 plans in 5 waves
+**Plans:** 5/5 plans complete
 
 Plans:
-- [ ] 10-01-PLAN.md — Scaffolding: Celery app + Beat schedule + SelfPlayConfig + models + Alembic migration 0004 + ReplayLogger (TDD) [Wave 1] — SP-01, SP-08
-- [ ] 10-02-PLAN.md — Mutation operators (Gaussian + crossover) + Adversarial reviewer (TDD) [Wave 2] — SP-02, SP-03, SP-06
-- [ ] 10-03-PLAN.md — SelfPlayLoop orchestrator + KL monitoring + Celery task wiring (TDD) [Wave 3] — SP-04, SP-05, SP-07
-- [ ] 10-04-PLAN.md — Integration tests + determinism tests + hypothesis property tests [Wave 4] — SP-01..08
-- [ ] 10-05-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 5]
+- [x] 10-01-PLAN.md — Scaffolding: Celery app + Beat schedule + SelfPlayConfig + models + Alembic migration 0004 + ReplayLogger (TDD) [Wave 1] — SP-01, SP-08
+- [x] 10-02-PLAN.md — Mutation operators (Gaussian + crossover) + Adversarial reviewer (TDD) [Wave 2] — SP-02, SP-03, SP-06
+- [x] 10-03-PLAN.md — SelfPlayLoop orchestrator + KL monitoring + Celery task wiring (TDD) [Wave 3] — SP-04, SP-05, SP-07
+- [x] 10-04-PLAN.md — Integration tests + determinism tests + hypothesis property tests [Wave 4] — SP-01..08
+- [x] 10-05-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 5]
 
 **Success criteria:**
 1. Nightly job runs for 8 hours then exits cleanly
