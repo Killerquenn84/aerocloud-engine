@@ -87,6 +87,7 @@ Protokolle der 3-KI Diskussionen (Claude + Gemini + Codex).
 - [discussions/2026-04-09-phase-04-wave5-codereview.md](discussions/2026-04-09-phase-04-wave5-codereview.md) — Phase 4 Wave 5 3-KI Code Review (Claude/Codex/Gemini verdicts, 2 deviations, Jens close-out approval)
 - [discussions/2026-04-09-phase-04-summary.md](discussions/2026-04-09-phase-04-summary.md) — Phase 4 Close-Out Summary (7 plans, 22 tasks, 595 tests, GEO-01..07, known limits, next phase)
 - [discussions/2026-04-15-phase-07-3ki-review.md](discussions/2026-04-15-phase-07-3ki-review.md) — Phase 7 3-KI Review: Claude APPROVED-WITH-NOTES (S-1..S-8, L-1..L-8, A-1..A-5), Codex/Gemini pending
+- [discussions/2026-04-21-phase-10-summary.md](discussions/2026-04-21-phase-10-summary.md) — Phase 10 Self-Play Close-Out: 6 modules + Alembic 0004 + Celery task; 101 tests; D-01..D-17 implemented; Claude APPROVED
 
 ## 🧭 Decisions (wiki/decisions/)
 Alle architektonischen und designrelevanten Entscheidungen — mit Datum.
@@ -138,6 +139,14 @@ Dokumentation pro Modul — Funktionen, Klassen, Interfaces.
 - [code/outer-loop-metrics.md](code/outer-loop-metrics.md) — 7 quality metric functions (LC, LU, SS, Compactness, AR, RA, Distortion), formulas, input/output, NaN guards (D-05..D-07)
 - [code/outer-loop-persistence.md](code/outer-loop-persistence.md) — ArchivePersistence flush_batch + load_all, ON CONFLICT fitness guard, safetensors BYTEA, Alembic 0003 (D-10, D-11)
 - [code/outer-loop-scheduler.md](code/outer-loop-scheduler.md) — OuterLoop orchestrator: single_iteration, run, flush, reeval, evaluate_fn injection, asyncio.run boundary (D-15)
+
+### Phase 10 Self-Play
+
+- [code/self-play-loop.md](code/self-play-loop.md) — SelfPlayLoop orchestrator: build_from_env, single_iteration, run, flush_and_finalize; mutation/review/dominance pipeline (D-03, D-07, D-08)
+- [code/self-play-mutation.md](code/self-play-mutation.md) — structure_aware_mutate (per-column sigma), uniform_crossover, sample_parents; pure functions O(N) (D-04, D-05, D-06)
+- [code/self-play-reviewer.md](code/self-play-reviewer.md) — AdversarialReviewer: 4-rule heuristic (degenerate→OOD→gaming→reward_hacking), priority order, archive z-score OOD (D-10, D-11, D-12)
+- [code/self-play-monitoring.md](code/self-play-monitoring.md) — compute_kl_divergence (4 marginal 1D histograms, NOT joint 4D), check_distribution_shift (D-13, D-14, SP-07)
+- [code/self-play-replay.md](code/self-play-replay.md) — ReplayLogger: insert_run/event, finalize_run, descriptor_histogram persistence; asyncpg $N params (D-15, D-16, D-17)
 
 ## 🧠 Knowledge (wiki/knowledge/) — additions
 

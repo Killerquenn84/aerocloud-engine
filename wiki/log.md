@@ -2,6 +2,26 @@
 
 > Chronologische Aufzeichnung aller Wiki-Aktivitaeten.
 
+## [2026-04-21] Phase 10 Self-Play | Exit Gate + Claude Self-Review + Wiki Documentation
+
+- **Neue Seiten:**
+  - `wiki/code/self-play-loop.md` — SelfPlayLoop: build_from_env, single_iteration, run, flush_and_finalize; D-03, D-07, D-08 pipeline
+  - `wiki/code/self-play-mutation.md` — structure_aware_mutate (per-column sigma), uniform_crossover, sample_parents; pure O(N) functions
+  - `wiki/code/self-play-reviewer.md` — AdversarialReviewer: 4-rule reward-hacking heuristic in priority order; archive z-score OOD
+  - `wiki/code/self-play-monitoring.md` — compute_kl_divergence (4 marginal 1D histograms, NOT joint 4D); check_distribution_shift
+  - `wiki/code/self-play-replay.md` — ReplayLogger: insert_run/event, finalize_run, descriptor_histogram JSONB; asyncpg $N params
+  - `wiki/discussions/2026-04-21-phase-10-summary.md` — Phase 10 close-out: 6 modules, Alembic 0004, 101 tests, D-01..D-17, Claude APPROVED
+- **Aktualisierte Seiten:** `wiki/index.md` (6 neue code/ Eintraege, 1 neuer discussions/ Eintrag)
+- **Phase 10 Status:** COMPLETE — 101 tests (75 unit + 6 integration + 3 determinism + 17 from Plans 01-03), mypy --strict clean, ruff clean
+- **Phase Exit Gates:** pytest PASS (101/101) | mypy PASS (0 errors) | ruff check PASS | ruff format PASS (3 files reformatted) | Wiki PASS | Claude Review APPROVED
+- **Erkenntnisse:**
+  - Marginal 1D histograms (nicht joint 4D histogramdd): Joint 4D auf uniform gibt KL ≈ 11.5 (false alarm); marginal 1D gibt KL ≈ 0.0
+  - UUID in Python (nicht SQL gen_random_uuid()): Kein pg_crypto Dependency, portable und explizit
+  - Strict > Dominanz (D-08): 0.72 > 0.72 = False — Boundary-Test kodiert dieses Invariant permanent
+  - AdversarialReviewer: Instanz-Mock (loop._reviewer = MagicMock()) notwendig, da Klassen-Patch keinen Effekt auf bereits konstruierte Instanz hat
+  - asyncio.run() korrekt an Celery-Task-Grenze (kein aktiver Event-Loop bei solo pool)
+  - ruff format: 3 Dateien mussten im Exit Gate (Plan 05) reformatiert werden (nur Whitespace-Aenderungen, kein Logic-Change)
+
 ## [2026-04-18] Phase 9 Outer Loop-v1 | Code Review + Wiki Update
 
 - **Neue Seiten:**
