@@ -2,7 +2,7 @@
 
 **Created:** 2026-04-07
 **Granularity:** Fine (12 phases)
-**Strategy:** Bottom-up build order (Geometry → NLP → Inner Loop → Outer Loop → Export). Iterative reification per domain (v1 → v2) within v1 milestone. 3-AI consensus (Claude + Gemini + Codex).
+**Strategy:** Bottom-up build order (Geometry -> NLP -> Inner Loop -> Outer Loop -> Export). Iterative reification per domain (v1 -> v2) within v1 milestone. 3-AI consensus (Claude + Gemini + Codex).
 
 ## Milestone
 
@@ -12,13 +12,13 @@
 
 Each phase ends ONLY when ALL of:
 
-1. ✅ All `pytest` + `hypothesis` tests green
-2. ✅ `mypy --strict` clean
-3. ✅ `ruff check` and `ruff format --check` clean
-4. ✅ Wiki updated with phase findings (`wiki/` reflects new modules)
-5. ✅ Stable interfaces (no breaking changes downstream)
-6. ✅ Benchmark vs prior phase (no regression in determinism or quality)
-7. ✅ 3-AI peer review approved (Claude implements, Codex reviews, Gemini checks against research)
+1. All `pytest` + `hypothesis` tests green
+2. `mypy --strict` clean
+3. `ruff check` and `ruff format --check` clean
+4. Wiki updated with phase findings (`wiki/` reflects new modules)
+5. Stable interfaces (no breaking changes downstream)
+6. Benchmark vs prior phase (no regression in determinism or quality)
+7. 3-AI peer review approved (Claude implements, Codex reviews, Gemini checks against research)
 
 ## Phase 1: Foundation
 
@@ -42,7 +42,7 @@ Each phase ends ONLY when ALL of:
 2. `pytest` runs green on a fresh container
 3. `set_seed(42)` produces identical numpy + torch outputs across runs
 4. CI green for `mypy --strict` + `ruff` + `pytest` on PR
-5. GPU smoke test reports CUDA capability ≥ 6.0 (or skips gracefully on CPU-only host)
+5. GPU smoke test reports CUDA capability >= 6.0 (or skips gracefully on CPU-only host)
 
 **Risk addressed:** Determinism (#11), VPS/NVIDIA-Docker (#10), reproducibility (#18)
 
@@ -54,7 +54,7 @@ Each phase ends ONLY when ALL of:
 
 **Plans:**
 - Pydantic v2 models: Token, Shape, WordCandidate, PlacedWord, LayoutScore, MapElitesEntry, RenderRequest, RenderResult
-- Reproducibility ID schema `(input_hash, seed, version) → output_hash`
+- Reproducibility ID schema `(input_hash, seed, version) -> output_hash`
 - Alembic baseline migration: `archive_v1` table with HNSW index on descriptor vector
 - Wiki tooling integration: `wiki:ingest`, `wiki:query`, `wiki:lint` callable from CI
 - `safetensors` enforcement (CI lint rule blocks `pickle.dump/load`)
@@ -70,7 +70,7 @@ Each phase ends ONLY when ALL of:
 
 ## Phase 3: NLP-v1
 
-**Goal:** Raw text input → scored, Zipf-normalized, multilingual word list.
+**Goal:** Raw text input -> scored, Zipf-normalized, multilingual word list.
 
 **Requirements covered:** NLP-01 to NLP-08 (8)
 
@@ -95,11 +95,11 @@ Each phase ends ONLY when ALL of:
 
 ## Phase 4: Geometry-v1
 
-**Goal:** Silhouette mask → exact signed float32 SDF (positive=inside) + bytes-bounded cache with blake3 composite key + vectorized integer AABB collision + per-word adaptive POI spiral placement with structured DropReason contract + pixel-scanned glyph AABBs with cross-platform golden-corpus firewall.
+**Goal:** Silhouette mask -> exact signed float32 SDF (positive=inside) + bytes-bounded cache with blake3 composite key + vectorized integer AABB collision + per-word adaptive POI spiral placement with structured DropReason contract + pixel-scanned glyph AABBs with cross-platform golden-corpus firewall.
 
 **Requirements covered:** GEO-01 to GEO-07 (7)
 
-**Plans:** 7 plans in 6 waves ✅ ALL COMPLETE 2026-04-09
+**Plans:** 7 plans in 6 waves ALL COMPLETE 2026-04-09
 - [x] 04-01-scaffolding-PLAN.md — ADRs (0004/0005/0006), errors.py, deps, config, test subtree [Wave 0]
 - [x] 04-02-mask-sdf-PLAN.md — mask.py + sdf.py + _assert_freetype + property tests [Wave 1]
 - [x] 04-03-sdf-cache-PLAN.md — bytes-bounded LRU + blake3 composite key + RLock + 16-thread test [Wave 2 parallel]
@@ -108,15 +108,15 @@ Each phase ends ONLY when ALL of:
 - [x] 04-06-observability-gates-PLAN.md — debug dump + structlog+OTel + Nyquist dims 6/7/8 + 11 wiki files [Wave 4]
 - [x] 04-07-3ki-review-PLAN.md — Claude self + Codex + Gemini review, Jens-ratified consensus, 2 Gemini bonus fixes applied [Wave 5]
 
-**Phase 4 Status:** ✅ COMPLETE 2026-04-09
+**Phase 4 Status:** COMPLETE 2026-04-09
 - 595/595 tests green (mypy strict clean, ruff clean)
 - 3-KI review: Claude APPROVED-WITH-NOTES, Codex BLOCKED + Gemini BLOCKED (both overridden by Jens with documented rationale)
-- 2 accepted deviations: (A) place_words perf 24.85s vs retired 5.0s gate → 60s VPS ceiling + Phase 12 re-validate, (B) FreeType 2.13.2 → 2.14.3 ADR-0006 update + bypass removed
+- 2 accepted deviations: (A) place_words perf 24.85s vs retired 5.0s gate -> 60s VPS ceiling + Phase 12 re-validate, (B) FreeType 2.13.2 -> 2.14.3 ADR-0006 update + bypass removed
 - 2 Gemini bonus fixes applied inline: del edt_in before gc.collect (sdf.py), float32 promotion audit (placement.py)
 - Known limits carried forward: `wiki/knowledge/phase-4-known-limits.md`
 
 **Success criteria:**
-1. Circle mask: SDF center value equals radius ± 1px
+1. Circle mask: SDF center value equals radius +/- 1px
 2. SDF cache hit observable in metrics
 3. AABB collision detects pixel-perfect overlaps on test fixtures
 4. Centroid spiral places 100 words on circle without collision
@@ -130,7 +130,7 @@ Each phase ends ONLY when ALL of:
 
 **Requirements covered:** REND-01 to REND-06 (6)
 
-**Plans:** 4 plans in 4 waves ✅ ALL COMPLETE 2026-04-14
+**Plans:** 4 plans in 4 waves ALL COMPLETE 2026-04-14
 
 Plans:
 - [x] 05-01-PLAN.md — Scaffolding: psutil dep, renderer package, sprite cache + font registry + unit tests [Wave 1]
@@ -138,7 +138,7 @@ Plans:
 - [x] 05-03-PLAN.md — Test pyramid: hypothesis property, Phase 4 integration, determinism, RSS stability, font leak [Wave 3]
 - [x] 05-04-3ki-review-PLAN.md — 3-KI Review (Claude + Codex + Gemini) + Wiki Update + 6 post-review fixes [Wave 4]
 
-**Phase 5 Status:** ✅ COMPLETE 2026-04-14
+**Phase 5 Status:** COMPLETE 2026-04-14
 - 48/48 tests green (mypy strict clean, ruff clean)
 - 3-KI review: Claude APPROVED, Codex APPROVED (after 6 fixes), Gemini APPROVED (after affine inversion fix)
 - D-01 supersession: nvdiffrast replaced by pure PyTorch grid_sample (zero external deps, CPU fallback)
@@ -169,7 +169,7 @@ Plans:
 
 **Success criteria:**
 1. Loss converges from random init within 100 epochs at 8px
-2. Coarse-to-Fine produces ≥ 10x speedup vs single-resolution baseline
+2. Coarse-to-Fine produces >= 10x speedup vs single-resolution baseline
 3. No NaN losses across 1000 random seeds (hypothesis property test)
 4. RSS does not grow across 100 inner-loop runs
 5. Loss curves identical for same seed (determinism verified)
@@ -222,7 +222,7 @@ Plans:
 1. BERT model loads in < 10s on first call (warmed cache thereafter)
 2. Sinkhorn-Knopp converges on degenerate distributions without NaN
 3. t-SNE/UMAP produces deterministic 2D coordinates with fixed seed
-4. pgvector HNSW recall ≥ 98% on test query set
+4. pgvector HNSW recall >= 98% on test query set
 5. Inner Loop with Sinkhorn warm-start converges faster than random init
 
 **Risk addressed:** BERT inference drift (#3), Sinkhorn underflow (#4)
@@ -282,15 +282,14 @@ Plans:
 
 **Requirements covered:** OUTER2-01 to OUTER2-09 (9)
 
-**Plans:**
-- Custom BOP-Elites wrapper around pyribs `BayesianOptimizationEmitter` (EJIE)
-- Sparse GP for scaling
-- CQD score equation implementation
-- Monte-Carlo CQD computation with fixed seeds
-- Theta-sweep smoothing
-- Pareto-Front computation with hypervolume approximation
-- `CQD_HV = Σ_G HV(S_HV(G))`
-- Pareto-Slider API endpoint
+**Plans:** 5 plans in 4 waves
+
+Plans:
+- [ ] 11-01-PLAN.md — CappedBOPEmitter + ArchiveWrapper BOP upgrade + extra_fields + OuterLoop tell() update (TDD) [Wave 1] — OUTER2-01, OUTER2-02
+- [ ] 11-02-PLAN.md — CQD quality-diversity metric with vectorized Monte-Carlo + theta-sweep (TDD) [Wave 1 parallel] — OUTER2-03, OUTER2-04, OUTER2-05, OUTER2-06
+- [ ] 11-03-PLAN.md — Pareto-Front extraction + CQD_HV aggregate + Pareto-Slider function (TDD) [Wave 2] — OUTER2-07, OUTER2-08, OUTER2-09
+- [ ] 11-04-PLAN.md — Integration tests + determinism tests + __init__.py exports [Wave 3] — OUTER2-01..09
+- [ ] 11-05-PLAN.md — 3-KI Review + Wiki Update + Phase Exit Gate [Wave 4]
 
 **Success criteria:**
 1. BOP-Elites at 700 evaluations matches MAP-Elites at 90 000 evaluations on test problem (Blueprint claim verified)
@@ -360,20 +359,20 @@ Plans:
 | 12 | 23 | Production v1 |
 | **Total** | **109** | **All Blueprint sections** |
 
-**Coverage:** 109/109 v1 requirements mapped. 0 unmapped. ✓
+**Coverage:** 109/109 v1 requirements mapped. 0 unmapped.
 
 ## Parallelization Hints
 
 Phases that can run in parallel (independent data dependencies):
-- **Phase 3 (NLP-v1) ∥ Phase 4 (Geometry-v1)** — both depend only on Phase 2 data model
-- **Phase 7 (Geometry-v2) ∥ Phase 8 (Semantic Vector Space)** — independent extensions of v1 modules
+- **Phase 3 (NLP-v1) || Phase 4 (Geometry-v1)** — both depend only on Phase 2 data model
+- **Phase 7 (Geometry-v2) || Phase 8 (Semantic Vector Space)** — independent extensions of v1 modules
 
 All other phases are strictly sequential due to hard data dependencies.
 
 ## Critical Path
 
 ```
-1 → 2 → (3 ∥ 4) → 5 → 6 → (7 ∥ 8) → 9 → 10 → 11 → 12
+1 -> 2 -> (3 || 4) -> 5 -> 6 -> (7 || 8) -> 9 -> 10 -> 11 -> 12
 ```
 
 ---
@@ -384,3 +383,4 @@ All other phases are strictly sequential due to hard data dependencies.
 *Phase 8 plans added: 2026-04-16*
 *Phase 9 plans added: 2026-04-18*
 *Phase 10 plans added: 2026-04-21*
+*Phase 11 plans added: 2026-04-16*
