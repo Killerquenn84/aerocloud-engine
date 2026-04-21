@@ -90,6 +90,13 @@ disallow_untyped_defs = false
 module = "cachetools.*"
 ignore_missing_imports = true
 
+# Celery does not ship complete mypy stubs; the @app.task decorator is untyped.
+# Worker task modules use Any for self (Celery Task instance) and suppress
+# untyped-decorator errors from third-party Celery code (not our code quality).
+[[tool.mypy.overrides]]
+module = "aerocloud_worker.tasks.*"
+disallow_untyped_decorators = false
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = "-ra -q --strict-markers"
