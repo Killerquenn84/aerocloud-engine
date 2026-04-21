@@ -2,10 +2,15 @@
 
 from __future__ import annotations
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from aerocloud.models.base import AeroCloudBase
 from aerocloud.models.layout import LayoutScore, PlacedWord
+from aerocloud.models.security import (
+    validate_font_name,
+    validate_hex_color,
+    validate_no_path_traversal,
+)
 
 
 class RenderRequest(AeroCloudBase):
@@ -18,6 +23,36 @@ class RenderRequest(AeroCloudBase):
     seed: int = Field(default=42, ge=0)
     max_words: int = Field(default=200, gt=0, le=2000)
     font_family: str = Field(default="Inter")
+    colors: list[str] | None = Field(
+        default=None,
+        description="Optional list of hex fill colors per placed glyph",
+    )
+
+    @field_validator("font_family")
+    @classmethod
+    def _validate_font_family(cls, v: str) -> str:
+        """Validate font_family against the assets/fonts/ allow-list (D-16)."""
+        return validate_font_name(v)
+
+    @field_validator("shape_b64")
+    @classmethod
+    def _validate_shape_b64(cls, v: str) -> str:
+        """Reject path traversal patterns in shape_b64 field (D-17)."""
+        return validate_no_path_traversal(v)
+
+    @field_validator("colors", mode="before")
+    @classmethod
+    def _validate_colors(cls, v: object) -> object:
+        """Validate each color in the colors list against hex allow-list (D-15)."""
+        if v is None:
+            return v
+        if not isinstance(v, list):
+            raise ValueError("colors must be a list of hex color strings")
+        for color in v:
+            if not isinstance(color, str):
+                raise ValueError(f"Each color must be a string, got: {type(color)}")
+            validate_hex_color(color)
+        return v
 
 
 class RenderResult(AeroCloudBase):
