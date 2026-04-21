@@ -57,7 +57,7 @@ if [[ ! -f "$TOPICS_FILE" ]]; then
 fi
 
 # Pick topics (3 for normal run, 1 for dry run)
-NUM_TOPICS=3
+NUM_TOPICS=5
 if [[ "$DRY_RUN" == "true" ]]; then
     NUM_TOPICS=1
 fi

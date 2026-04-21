@@ -63,8 +63,11 @@ dependencies = [
 
 [package.optional-dependencies]
 embeddings = [
+    { name = "pgvector" },
+    { name = "pot" },
     { name = "sentence-transformers" },
     { name = "transformers" },
+    { name = "umap-learn" },
 ]
 geometry = [
     { name = "blake3" },
@@ -80,7 +83,6 @@ gpu = [
 ]
 nlp = [
     { name = "lingua-language-detector" },
-    { name = "pot" },
     { name = "spacy" },
 ]
 qd = [
@@ -99,14 +101,15 @@ requires-dist = [
     { name = "opentelemetry-api", specifier = ">=1.29.0" },
     { name = "opentelemetry-sdk", specifier = ">=1.29.0" },
     { name = "orjson", specifier = ">=3.10.0" },
+    { name = "pgvector", marker = "extra == 'embeddings'", specifier = ">=0.4.0" },
     { name = "pillow", specifier = ">=11.0.0" },
-    { name = "pot", marker = "extra == 'nlp'", specifier = ">=0.9.5" },
+    { name = "pot", marker = "extra == 'embeddings'", specifier = ">=0.9.5" },
     { name = "psutil", marker = "extra == 'gpu'", specifier = ">=5.9.0" },
     { name = "pydantic", specifier = ">=2.10.0" },
     { name = "pydantic-settings", specifier = ">=2.7.0" },
     { name = "pymoo", marker = "extra == 'qd'", specifier = ">=0.6.1" },
     { name = "reportlab", marker = "extra == 'geometry'", specifier = ">=4.2.0" },
-    { name = "ribs", marker = "extra == 'qd'", specifier = ">=0.8.0" },
+    { name = "ribs", marker = "extra == 'qd'", specifier = ">=0.10.0" },
     { name = "safetensors", specifier = ">=0.4.5" },
     { name = "scikit-fmm", marker = "extra == 'geometry'", specifier = ">=2025.6.23" },
     { name = "scikit-learn", marker = "extra == 'geometry'", specifier = ">=1.5.0" },
@@ -118,6 +121,7 @@ requires-dist = [
     { name = "tenacity", specifier = ">=9.0.0" },
     { name = "torch", specifier = ">=2.5.0" },
     { name = "transformers", marker = "extra == 'embeddings'", specifier = ">=4.40.0" },
+    { name = "umap-learn", marker = "extra == 'embeddings'", specifier = ">=0.5.0" },
 ]
 provides-extras = ["geometry", "nlp", "embeddings", "gpu", "qd"]
 
@@ -136,6 +140,7 @@ dev = [
     { name = "hypothesis" },
     { name = "mypy" },
     { name = "pytest" },
+    { name = "pytest-asyncio" },
     { name = "pytest-benchmark" },
     { name = "pytest-env" },
     { name = "ruff" },
@@ -154,6 +159,7 @@ dev = [
     { name = "hypothesis", specifier = ">=6.120.0" },
     { name = "mypy", specifier = ">=1.13.0" },
     { name = "pytest", specifier = ">=8.3.0" },
+    { name = "pytest-asyncio", specifier = ">=1.3.0" },
     { name = "pytest-benchmark", specifier = ">=4.0.0" },
     { name = "pytest-env", specifier = ">=1.1.5" },
     { name = "ruff", specifier = ">=0.8.0" },
@@ -1783,6 +1789,22 @@ wheels = [
 ]
 
 [[package]]
+name = "pynndescent"
+version = "0.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "joblib" },
+    { name = "llvmlite" },
+    { name = "numba" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/4a/fb/7f58c397fb31666756457ee2ac4c0289ef2daad57f4ae4be8dec12f80b03/pynndescent-0.6.0.tar.gz", hash = "sha256:7ffde0fb5b400741e055a9f7d377e3702e02250616834231f6c209e39aac24f5", size = 2992987, upload-time = "2026-01-08T21:29:58.943Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b2/e6/94145d714402fd5ade00b5661f2d0ab981219e07f7db9bfa16786cdb9c04/pynndescent-0.6.0-py3-none-any.whl", hash = "sha256:dc8c74844e4c7f5cbd1e0cd6909da86fdc789e6ff4997336e344779c3d5538ef", size = 73511, upload-time = "2026-01-08T21:29:57.306Z" },
+]
+
+[[package]]
 name = "pyparsing"
 version = "3.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1805,6 +1827,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d1/db/7ef3487e0fb0049ddb5ce41d3a49c235bf9ad299b6a25d5780a89f19230f/pytest-9.0.2.tar.gz", hash = "sha256:75186651a92bd89611d1d9fc20f0b4345fd827c41ccd5c299a868a05d70edf11", size = 1568901, upload-time = "2025-12-06T21:30:51.014Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3b/ab/b3226f0bd7cdcf710fbede2b3548584366da3b19b5021e74f5bde2a8fa3f/pytest-9.0.2-py3-none-any.whl", hash = "sha256:711ffd45bf766d5264d487b917733b453d917afd2b0ad65223959f59089f875b", size = 374801, upload-time = "2025-12-06T21:30:49.154Z" },
+]
+
+[[package]]
+name = "pytest-asyncio"
+version = "1.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/90/2c/8af215c0f776415f3590cac4f9086ccefd6fd463befeae41cd4d3f193e5a/pytest_asyncio-1.3.0.tar.gz", hash = "sha256:d7f52f36d231b80ee124cd216ffb19369aa168fc10095013c6b014a34d3ee9e5", size = 50087, upload-time = "2025-11-10T16:07:47.256Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e5/35/f8b19922b6a25bc0880171a2f1a003eaeb93657475193ab516fd87cac9da/pytest_asyncio-1.3.0-py3-none-any.whl", hash = "sha256:611e26147c7f77640e6d0a92a38ed17c3e9848063698d5c93d5aa7aa11cebff5", size = 15075, upload-time = "2025-11-10T16:07:45.537Z" },
 ]
 
 [[package]]
@@ -1952,7 +1987,7 @@ wheels = [
 
 [[package]]
 name = "ribs"
-version = "0.9.0"
+version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "array-api-compat" },
@@ -1966,9 +2001,9 @@ dependencies = [
     { name = "threadpoolctl" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/57/54/e0b4f662cbda4d50879810dc9ca5d51f558f747b8445d63420a0729f9379/ribs-0.9.0.tar.gz", hash = "sha256:fcca800f72309877e8d46f490729f7522dc61b6a158d81ecf969af9134766c87", size = 181012, upload-time = "2025-12-18T12:07:14.962Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/ea/12554600812a91a7bcd35246f17343842671d2a0522927268d66ed73833b/ribs-0.10.0.tar.gz", hash = "sha256:f0cb51d3cb7c5aac6a3228b7915dc7b8657fb192a1a0a8baf48c7348acbb498c", size = 192608, upload-time = "2026-04-08T00:38:36.275Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/18/89/eab1381a9bbfc7e03188a15e55a3934448fc1aae1ac8f70a6a92091cb23a/ribs-0.9.0-py3-none-any.whl", hash = "sha256:3bbb1ac127eeaea4ba6201b1b6fd396af30a53794ff1fc1c43394d9570b394f9", size = 197943, upload-time = "2025-12-18T12:07:13.484Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/09/9d44568014ca7f017a35a33c065182c447f87aa822c8b4d3f58026642167/ribs-0.10.0-py3-none-any.whl", hash = "sha256:227c70ddd609c5848c02662a49b6704bee067564f0a02bf1b67e04b8830e4d78", size = 213339, upload-time = "2026-04-08T00:38:34.97Z" },
 ]
 
 [[package]]
@@ -2497,6 +2532,23 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8b/2e/c14812d3d4d9cd1773c6be938f89e5735a1f11a9f184ac3639b93cef35d5/tzlocal-5.3.1.tar.gz", hash = "sha256:cceffc7edecefea1f595541dbd6e990cb1ea3d19bf01b2809f362a03dd7921fd", size = 30761, upload-time = "2025-03-05T21:17:41.549Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c2/14/e2a54fabd4f08cd7af1c07030603c3356b74da07f7cc056e600436edfa17/tzlocal-5.3.1-py3-none-any.whl", hash = "sha256:eb1a66c3ef5847adf7a834f1be0800581b683b5608e74f86ecbcef8ab91bb85d", size = 18026, upload-time = "2025-03-05T21:17:39.857Z" },
+]
+
+[[package]]
+name = "umap-learn"
+version = "0.5.12"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numba" },
+    { name = "numpy" },
+    { name = "pynndescent" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/02/ee/af4171241117f85c74b5ca6448ea1033cc28d599c13651d67289bacd4083/umap_learn-0.5.12.tar.gz", hash = "sha256:6aff02ecac5f2aad9f3c65ee518d7ae93e1a985ae38721fdcffceee4232c33c7", size = 96672, upload-time = "2026-04-08T20:03:54.012Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1b/98/f63318ccbe75c810011fe9233884c5d348d94d90005de1b79e5f93bef9c0/umap_learn-0.5.12-py3-none-any.whl", hash = "sha256:f2a85d2a2adcb52b541bed9b27a23ca169b56bb1b23283abeebfb8dfb8a42fe5", size = 91849, upload-time = "2026-04-08T20:03:52.561Z" },
 ]
 
 [[package]]
