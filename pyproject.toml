@@ -111,6 +111,7 @@ markers = [
     "gpu: requires CUDA-capable GPU (skipped on CPU-only hosts)",
     "slow: long-running tests",
     "integration: spins up postgres+redis via testcontainers",
+    "load: load tests (not run by default; run with -m load against a live server)",
 ]
 env = [
     "CUBLAS_WORKSPACE_CONFIG=:4096:8",
