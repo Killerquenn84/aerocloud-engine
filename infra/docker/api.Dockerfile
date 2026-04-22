@@ -27,10 +27,21 @@ FROM python:3.11-slim-bookworm AS runtime
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY --from=builder /app /app
 
 EXPOSE 8000
+
+# D-23: Clean shutdown — SIGTERM triggers uvicorn graceful shutdown.
+STOPSIGNAL SIGTERM
+
+# Health check: probe the public /health endpoint. curl installed in runtime stage above.
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
 
 # Phase 12 will add the actual FastAPI app. For Phase 1 we expose the entrypoint.
 CMD ["python", "-c", "import aerocloud_api; print('aerocloud-api', aerocloud_api.__version__)"]

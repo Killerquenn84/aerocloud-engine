@@ -52,6 +52,10 @@ services:
       context: ../..
       dockerfile: infra/docker/worker.Dockerfile
     container_name: aerocloud-worker
+    runtime: nvidia
+    entrypoint: ["/app/infra/docker/worker-entrypoint.sh"]
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
     depends_on:
       postgres:
         condition: service_healthy
@@ -63,6 +67,25 @@ services:
       LOG_LEVEL: INFO
       SEED: "42"
       CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+      CUDA_VISIBLE_DEVICES: "0"
+
+  # DCGM Exporter sidecar — D-21 (PROD-19 GPU metrics)
+  # Image 3.6.2 includes the k8s_container_name label rename fix and CVE-2026-2184 patch.
+  # SYS_ADMIN capability is required by DCGM to read GPU hardware counters (T-12-06-01: accepted).
+  # GPU utilization/memory/temperature metrics are operational data, not secrets (T-12-06-02: accepted).
+  # Port 9400 is scraped by internal Prometheus only — no external exposure in production.
+  dcgm-exporter:
+    image: nvcr.io/nvidia/k8s/dcgm-exporter:3.6.2-3.4.2-ubuntu22.04
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "9400:9400"
+    cap_add:
+      - SYS_ADMIN
+    depends_on:
+      - worker
+    restart: unless-stopped
 
 volumes:
   postgres-data:

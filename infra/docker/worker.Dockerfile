@@ -38,5 +38,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 COPY --from=builder /app /app
 
-# Phase 12 will add the actual Celery app. For Phase 1 we expose the entrypoint.
+# D-23: Copy worker entrypoint script (created in Plan 03)
+COPY infra/docker/worker-entrypoint.sh /app/infra/docker/worker-entrypoint.sh
+RUN chmod +x /app/infra/docker/worker-entrypoint.sh
+
+# D-23: Clean shutdown — SIGTERM triggers Celery warm shutdown (drain in-flight tasks).
+# stop_grace_period: 30s in docker-compose gives the worker time to finish.
+STOPSIGNAL SIGTERM
+
+# Health check: ping the Celery worker via inspect. Timeout -t 5 < Docker timeout 10s.
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+    CMD celery -A aerocloud_worker.celery_app inspect ping -t 5 || exit 1
+
 CMD ["python", "-c", "import aerocloud_worker; print('aerocloud-worker', aerocloud_worker.__version__)"]
