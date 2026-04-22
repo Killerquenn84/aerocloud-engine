@@ -132,6 +132,15 @@ class Settings(BaseSettings):
         ge=1,
         description="Re-evaluation interval for elites (D-14)",
     )
+    # Observability settings (Phase 12 PROD-18).
+    otlp_endpoint: str | None = Field(
+        default=None,
+        description=(
+            "OTLP gRPC endpoint for distributed trace export "
+            "(e.g. 'http://otel-collector:4317'). "
+            "When None the TracerProvider runs in NoOp mode (no exporter)."
+        ),
+    )
 
 
 def load_settings() -> Settings:

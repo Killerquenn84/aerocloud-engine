@@ -272,10 +272,19 @@ class TestPrometheusMetrics:
         assert render_duration._name == "aerocloud_render_duration_seconds"
 
     def test_render_total_name(self) -> None:
-        """render_total metric must have the canonical name."""
+        """render_total metric must have the canonical name.
+
+        prometheus_client automatically appends ``_total`` in the exposition
+        format (Prometheus convention for Counters), so the internal ``_name``
+        attribute stores the base name without the ``_total`` suffix.
+        The full exposition name is ``aerocloud_renders_total``.
+        """
         from aerocloud.observability import render_total
 
-        assert render_total._name == "aerocloud_renders_total"
+        # Internal base name (prometheus_client strips _total per convention)
+        assert render_total._name == "aerocloud_renders"
+        # The metric type confirms this is a counter (will be exposed as _total)
+        assert render_total._type == "counter"
 
     def test_gpu_memory_used_name(self) -> None:
         """gpu_memory_used metric must have the canonical name."""
