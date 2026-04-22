@@ -21,13 +21,14 @@ import logging
 from typing import AsyncGenerator
 
 import redis.asyncio as redis_async
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from sse_starlette.sse import EventSourceResponse
 
 from aerocloud.config import settings
 from aerocloud.models.api import RenderRequest
 from aerocloud_worker.celery_app import app as celery_app
+from aerocloud_api.middleware.rate_limit import limiter
 
 log = logging.getLogger(__name__)
 
@@ -43,7 +44,8 @@ _TERMINAL_STAGES = frozenset({"done", "failed", "success"})
 
 
 @router.post("", status_code=202, response_class=JSONResponse)
-async def post_render(body: RenderRequest) -> dict[str, str]:
+@limiter.limit("10/minute")
+async def post_render(request: Request, body: RenderRequest) -> dict[str, str]:
     """Dispatch a render job to the Celery realtime queue (PROD-07).
 
     Returns 202 Accepted with the Celery task ID immediately.
@@ -70,7 +72,7 @@ async def _progress_generator(task_id: str) -> AsyncGenerator[dict[str, str], No
     Terminates when stage is 'done', 'failed', or 'success'.
     """
     channel = f"render:progress:{task_id}"
-    client = redis_async.from_url(settings.redis_url, decode_responses=False)
+    client = redis_async.from_url(settings.redis_url, decode_responses=False)  # type: ignore[no-untyped-call]
     pubsub = client.pubsub()
 
     try:

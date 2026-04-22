@@ -141,6 +141,14 @@ class Settings(BaseSettings):
             "When None the TracerProvider runs in NoOp mode (no exporter)."
         ),
     )
+    # API security settings (Phase 12 PROD-17, T-12-05-01).
+    internal_health_token: str = Field(
+        default="changeme",
+        description=(
+            "Secret token required in X-Internal-Token header for "
+            "GET /health/internal. Override in production via INTERNAL_HEALTH_TOKEN env var."
+        ),
+    )
 
 
 def load_settings() -> Settings:

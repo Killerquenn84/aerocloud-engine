@@ -5,7 +5,8 @@ Design decisions:
     - init_tracing() called at startup with optional OTLP endpoint from settings.
     - NO CORSMiddleware (D-18, CLAUDE.md §12 — server-to-server only; Shopify
       session token auth — no cross-origin browser calls expected).
-    - Rate limiter and Prometheus metrics wired here (Tasks 2 of Plan 05).
+    - Rate limiter wired to app.state and exception handler (Task 2 of Plan 05).
+    - Prometheus auto-instrumentation called after all routers are included (D-20).
 
 Security:
     T-12-05-01 (Spoofing): /health/internal requires X-Internal-Token header.
@@ -20,10 +21,15 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from fastapi import FastAPI
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
 from aerocloud.config import settings
 from aerocloud.observability import init_tracing
 from aerocloud_api import __version__
+from aerocloud_api.metrics import setup_metrics
+from aerocloud_api.middleware.rate_limit import limiter, rate_limit_exceeded_handler
+from aerocloud_api.routes.health import router as health_router
 from aerocloud_api.routes.render import router as render_router
 
 
@@ -57,8 +63,17 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # Wire rate limiter (T-12-05-02)
+    application.state.limiter = limiter
+    application.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)  # type: ignore[arg-type]
+    application.add_middleware(SlowAPIMiddleware)
+
     # Include route groups
     application.include_router(render_router)
+    application.include_router(health_router)
+
+    # Wire Prometheus auto-instrumentation (D-20) — after routers so all routes instrumented
+    setup_metrics(application)
 
     return application
 
