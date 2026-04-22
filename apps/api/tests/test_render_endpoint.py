@@ -159,9 +159,11 @@ def test_get_render_progress_returns_event_stream_content_type() -> None:
     """GET /render/{task_id}/progress → Content-Type: text/event-stream."""
     with patch("aerocloud_api.routes.render.redis_async") as mock_redis_module:
         mock_pubsub = MagicMock()
-        # subscribe returns immediately
+        # subscribe and unsubscribe must be AsyncMock (they are awaited)
         mock_pubsub.subscribe = AsyncMock()
-        # listen yields one progress message then stops
+        mock_pubsub.unsubscribe = AsyncMock()
+
+        # listen yields one terminal progress message then stops
         async def _listen() -> object:  # type: ignore[return]
             msg: dict[str, object] = {
                 "type": "message",
@@ -172,6 +174,7 @@ def test_get_render_progress_returns_event_stream_content_type() -> None:
         mock_pubsub.listen = _listen
         mock_conn = MagicMock()
         mock_conn.pubsub.return_value = mock_pubsub
+        mock_conn.aclose = AsyncMock()
         mock_redis_module.from_url.return_value = mock_conn
 
         client = _make_client()
