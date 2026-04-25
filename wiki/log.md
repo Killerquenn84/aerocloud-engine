@@ -441,3 +441,10 @@ Issues resolved during execution:
 - SVG Sanitization Security CVE
 - Coarse-to-Fine Optimization Pipeline
 - 5-Stage Collision Hierarchy
+
+## [2026-04-25] nightly-research | 5 topics
+- Self-Play Training QD Archive
+- Zipf Law Font Size Normalization
+- TF-IDF-AP Positional Weighting
+- SAT Separating Axis Theorem
+- SVG Sanitization Security CVE
