@@ -448,3 +448,10 @@ Issues resolved during execution:
 - TF-IDF-AP Positional Weighting
 - SAT Separating Axis Theorem
 - SVG Sanitization Security CVE
+
+## [2026-04-26] nightly-research | 5 topics
+- testcontainers Python Integration Tests
+- Medial Axis Transform scikit-fmm
+- Sinkhorn-Knopp Optimal Transport
+- AABB Bounding Box Collision
+- 5-Stage Collision Hierarchy
