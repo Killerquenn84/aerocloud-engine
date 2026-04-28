@@ -462,3 +462,10 @@ Issues resolved during execution:
 - Adam Optimizer Hyperparameters
 - Sentence Transformers Library
 - structlog OpenTelemetry Tracing
+
+## [2026-04-28] nightly-research | 5 topics
+- safetensors Model Checkpoints Security
+- Self-Play Training QD Archive
+- BERT Embeddings all-MiniLM-L6-v2
+- FastAPI Async Patterns
+- 4-Part Loss Function Word Placement
