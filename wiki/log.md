@@ -469,3 +469,10 @@ Issues resolved during execution:
 - BERT Embeddings all-MiniLM-L6-v2
 - FastAPI Async Patterns
 - 4-Part Loss Function Word Placement
+
+## [2026-04-29] nightly-research | 5 topics
+- spaCy Transformer Models German English
+- Rust WASM wasm-bindgen Next.js
+- uv Python Monorepo Workspace
+- Seam Carving Word Cloud Whitespace
+- Self-Play Training QD Archive
