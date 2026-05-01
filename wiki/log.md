@@ -484,3 +484,10 @@ Issues resolved during execution:
 - 4-Part Loss Function Word Placement
 - Rust WASM wasm-bindgen Next.js
 - Failures: 1
+
+## [2026-05-01] nightly-research | 5 topics
+- 5-Stage Collision Hierarchy
+- TF-IDF-AP Positional Weighting
+- uv Python Monorepo Workspace
+- testcontainers Python Integration Tests
+- Bezier Sub-Millimeter Precision Export
