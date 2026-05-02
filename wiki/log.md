@@ -491,3 +491,11 @@ Issues resolved during execution:
 - uv Python Monorepo Workspace
 - testcontainers Python Integration Tests
 - Bezier Sub-Millimeter Precision Export
+
+## [2026-05-02] nightly-research | 5 topics
+- Sinkhorn-Knopp Optimal Transport
+- PyTorch Autograd Graph Memory
+- SVG Sanitization Security CVE
+- Quadtree Spatial Indexing
+- spaCy Transformer Models German English
+- Failures: 1
