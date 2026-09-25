@@ -39,6 +39,7 @@ def _bezier_curve_to_svg_cmd(curve: BezierCurve) -> str:
     Returns:
         SVG C command string.
     """
+
     # (y, x) → (x, y) flip: each point is (y, x), so SVG x = point[1], SVG y = point[0]
     def fmt(point: tuple[float, float]) -> str:
         svg_x = point[1]
@@ -134,4 +135,6 @@ def export_svg(
 
         etree.SubElement(root, f"{{{SVG_NS}}}path", attrib=attrib)
 
-    return etree.tostring(root, encoding="unicode", xml_declaration=False)
+    result = etree.tostring(root, encoding="unicode", xml_declaration=False)
+    assert isinstance(result, str)
+    return result

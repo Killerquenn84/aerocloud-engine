@@ -112,8 +112,7 @@ def test_shutdown_signal_is_connected() -> None:
     )
     # Verify the registered receiver is our function
     receiver_names = [
-        getattr(recv[1](), "__name__", "") if recv[1]() is not None else ""
-        for recv in receivers
+        getattr(recv[1](), "__name__", "") if recv[1]() is not None else "" for recv in receivers
     ]
     assert "on_worker_shutting_down" in receiver_names, (
         "on_worker_shutting_down must be connected to worker_shutting_down signal"

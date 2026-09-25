@@ -29,9 +29,7 @@ from __future__ import annotations
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
 from fastapi.testclient import TestClient
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -194,7 +192,8 @@ def test_no_cors_middleware_on_app() -> None:
     from aerocloud_api.app import app  # noqa: PLC0415
 
     middleware_classes = [
-        m.cls for m in app.user_middleware  # type: ignore[attr-defined]
+        m.cls
+        for m in app.user_middleware  # type: ignore[attr-defined]
         if hasattr(m, "cls")
     ]
     assert CORSMiddleware not in middleware_classes

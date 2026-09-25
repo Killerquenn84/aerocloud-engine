@@ -95,10 +95,10 @@ def init_tracing(
     provider = TracerProvider(resource=resource)
 
     if otlp_endpoint is not None:
-        from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
+        from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (  # noqa: PLC0415
             OTLPSpanExporter,
         )
-        from opentelemetry.sdk.trace.export import BatchSpanProcessor
+        from opentelemetry.sdk.trace.export import BatchSpanProcessor  # noqa: PLC0415
 
         exporter = OTLPSpanExporter(endpoint=otlp_endpoint)
         provider.add_span_processor(BatchSpanProcessor(exporter))
@@ -132,16 +132,16 @@ def _reset_tracing() -> None:
     global _INITIALIZED  # noqa: PLW0603
     _INITIALIZED = False
 
-    import opentelemetry.trace as _tm  # local alias to avoid shadowing module-level `trace`
+    import opentelemetry.trace as _tm  # noqa: PLC0415 — local alias to avoid shadowing module-level `trace`
 
     # Reset the provider reference.  These attributes are private internals of
     # the opentelemetry-api package; we use setattr/getattr to avoid mypy
     # attr-defined errors while remaining explicit about intent.
     if hasattr(_tm, "_TRACER_PROVIDER"):
-        setattr(_tm, "_TRACER_PROVIDER", None)
+        _tm._TRACER_PROVIDER = None
 
     # Reset the Once sentinel so set_tracer_provider() is allowed again.
     if hasattr(_tm, "_TRACER_PROVIDER_SET_ONCE"):
-        once = getattr(_tm, "_TRACER_PROVIDER_SET_ONCE")
+        once = _tm._TRACER_PROVIDER_SET_ONCE
         if hasattr(once, "_done"):
-            once._done = False  # noqa: SLF001  # private attr of Once — intentional test reset
+            once._done = False  # private attr of Once — intentional test reset

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from urllib.parse import urlparse
+
 from pydantic import Field, field_validator
 
 from aerocloud.models.base import AeroCloudBase
@@ -72,3 +74,51 @@ class RenderError(AeroCloudBase):
     error_code: str = Field(..., description="Stable machine-readable code")
     message: str
     details: dict[str, str] = Field(default_factory=dict)
+
+
+# ---------------------------------------------------------------------------
+# Mockup-Engine (Sprint P23, Phase B) — Open-Source PSD compositor
+# ---------------------------------------------------------------------------
+
+
+def _validate_http_url(value: str) -> str:
+    """Reject non-http(s) URLs (SSRF / local-file guard)."""
+    parsed = urlparse(value)
+    if parsed.scheme not in {"http", "https"}:
+        raise ValueError(f"URL scheme must be http or https, got: {parsed.scheme!r}")
+    if not parsed.netloc:
+        raise ValueError("URL must include a host")
+    return value
+
+
+class MockupRenderRequest(AeroCloudBase):
+    """Request payload for POST /mockup/render (Sprint P23, Phase B)."""
+
+    psd_url: str = Field(..., description="HTTPS URL of the PSD template")
+    design_url: str = Field(..., description="HTTPS URL of the wordcloud design PNG")
+    layer_name: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=128,
+        description=(
+            "Name of the Smart-Object layer to replace. "
+            "If omitted (null), the engine auto-detects per Sprint-P24 priority "
+            "(WORDCLOUD > Replace me > Your artwork here > *Design > single-SO)."
+        ),
+    )
+    output_format: str = Field(
+        default="png",
+        description="Output image format (currently only 'png' is supported)",
+    )
+
+    @field_validator("psd_url", "design_url")
+    @classmethod
+    def _validate_url(cls, v: str) -> str:
+        return _validate_http_url(v)
+
+    @field_validator("output_format")
+    @classmethod
+    def _validate_output_format(cls, v: str) -> str:
+        if v.lower() != "png":
+            raise ValueError("output_format must be 'png'")
+        return v.lower()

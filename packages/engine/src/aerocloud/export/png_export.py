@@ -44,9 +44,7 @@ def export_png(tensor: torch.Tensor, mode: str = "RGB") -> bytes:
         ValueError: If mode is not "RGB" or "L".
     """
     if mode not in _SUPPORTED_MODES:
-        raise ValueError(
-            f"Unsupported mode {mode!r}. Supported modes: {sorted(_SUPPORTED_MODES)}"
-        )
+        raise ValueError(f"Unsupported mode {mode!r}. Supported modes: {sorted(_SUPPORTED_MODES)}")
 
     # Clamp to [0, 1] silently (T-12-01-02: internal input, no validation needed)
     t = tensor.clamp(0.0, 1.0)

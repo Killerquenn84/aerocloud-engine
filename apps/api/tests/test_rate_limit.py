@@ -20,9 +20,7 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-import pytest
 from fastapi.testclient import TestClient
-
 
 VALID_PAYLOAD: dict[str, object] = {
     "text": "hello world",
@@ -62,7 +60,7 @@ def test_render_rate_limit_returns_429_after_limit() -> None:
     assert 429 in status_codes, f"Expected 429 in: {status_codes}"
     # First 10 should all be 202
     for i, code in enumerate(status_codes[:10]):
-        assert code == 202, f"Request {i+1} should be 202, got {code}"
+        assert code == 202, f"Request {i + 1} should be 202, got {code}"
 
 
 def test_render_rate_limit_response_has_error_message() -> None:

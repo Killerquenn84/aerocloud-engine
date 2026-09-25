@@ -32,7 +32,7 @@ limiter: Limiter = Limiter(
 )
 
 
-def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded) -> Response:
+def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded) -> Response:  # noqa: ARG001
     """Return a JSON 429 response when the rate limit is exceeded."""
     return JSONResponse(
         status_code=429,

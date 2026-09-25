@@ -67,6 +67,7 @@ app.conf.beat_schedule = {
 
 app.conf.task_routes = {
     "aerocloud_worker.tasks.render.*": {"queue": "realtime"},
+    "mockup.*": {"queue": "realtime"},
     "aerocloud_worker.tasks.self_play.*": {"queue": "background"},
 }
 
@@ -77,8 +78,12 @@ app.conf.task_routes = {
 
 app.conf.task_annotations = {
     "aerocloud_worker.tasks.render.*": {
-        "time_limit": 300,       # 5-min hard kill (T-12-03-01)
+        "time_limit": 300,  # 5-min hard kill (T-12-03-01)
         "soft_time_limit": 270,  # 30s cleanup window before hard kill
+    },
+    "mockup.*": {
+        "time_limit": 300,  # 5-min hard kill (Sprint P23, Phase B)
+        "soft_time_limit": 270,
     },
     "aerocloud_worker.tasks.self_play.*": {
         "soft_time_limit": 28800,  # 8-hour nightly budget

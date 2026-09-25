@@ -306,17 +306,17 @@ Plans:
 
 **Requirements covered:** PROD-01 to PROD-23 (23)
 
-**Plans:** 9 plans in 6 waves
+**Plans:** 8/9 plans executed
 
 Plans:
-- [ ] 12-01-PLAN.md — Dependencies + seam carving + PNG export + boolean union (TDD) [Wave 1] — PROD-01, PROD-02, PROD-05, PROD-06
-- [ ] 12-02-PLAN.md — SVG + PDF export + security validators (TDD) [Wave 1 parallel] — PROD-03, PROD-04, PROD-13, PROD-14, PROD-15
-- [ ] 12-03-PLAN.md — Celery worker hardening: queues, render task, shutdown, entrypoint (TDD) [Wave 2] — PROD-09, PROD-10, PROD-11, PROD-12, PROD-20
-- [ ] 12-04-PLAN.md — Observability: OTLP upgrade + Prometheus metrics (TDD) [Wave 2 parallel] — PROD-18, PROD-19
-- [ ] 12-05-PLAN.md — FastAPI HTTP surface: render, SSE, health, rate limiting, metrics wiring (TDD) [Wave 3] — PROD-07, PROD-08, PROD-16, PROD-17
-- [ ] 12-06-PLAN.md — Docker hardening: DCGM Exporter sidecar + Dockerfile STOPSIGNAL + HEALTHCHECK [Wave 3 parallel] — PROD-19
-- [ ] 12-07-PLAN.md — Golden-image regression tests with SSIM (TDD) [Wave 4] — PROD-21
-- [ ] 12-08-PLAN.md — Load test: 100 concurrent renders with P99 measurement [Wave 5] — PROD-22
+- [x] 12-01-PLAN.md — Dependencies + seam carving + PNG export + boolean union (TDD) [Wave 1] — PROD-01, PROD-02, PROD-05, PROD-06
+- [x] 12-02-PLAN.md — SVG + PDF export + security validators (TDD) [Wave 1 parallel] — PROD-03, PROD-04, PROD-13, PROD-14, PROD-15
+- [x] 12-03-PLAN.md — Celery worker hardening: queues, render task, shutdown, entrypoint (TDD) [Wave 2] — PROD-09, PROD-10, PROD-11, PROD-12, PROD-20
+- [x] 12-04-PLAN.md — Observability: OTLP upgrade + Prometheus metrics (TDD) [Wave 2 parallel] — PROD-18, PROD-19
+- [x] 12-05-PLAN.md — FastAPI HTTP surface: render, SSE, health, rate limiting, metrics wiring (TDD) [Wave 3] — PROD-07, PROD-08, PROD-16, PROD-17
+- [x] 12-06-PLAN.md — Docker hardening: DCGM Exporter sidecar + Dockerfile STOPSIGNAL + HEALTHCHECK [Wave 3 parallel] — PROD-19
+- [x] 12-07-PLAN.md — Golden-image regression tests with SSIM (TDD) [Wave 4] — PROD-21
+- [x] 12-08-PLAN.md — Load test: 100 concurrent renders with P99 measurement [Wave 5] — PROD-22
 - [ ] 12-09-PLAN.md — Release gate + 3-KI review + wiki documentation [Wave 6] — PROD-23
 
 **Success criteria:**

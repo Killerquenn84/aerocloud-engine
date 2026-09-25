@@ -12,11 +12,9 @@ from __future__ import annotations
 
 import ast
 import json
-import sys
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -160,7 +158,7 @@ def test_render_task_publishes_failure_on_soft_time_limit() -> None:
     task_id = "test-timeout-task-id"
 
     # Raise SoftTimeLimitExceeded on the 'nlp' publish call
-    def publish_side_effect(channel: str, message: str) -> int:
+    def publish_side_effect(channel: str, message: str) -> int:  # noqa: ARG001
         msg = json.loads(message)
         if msg.get("stage") == "nlp":
             raise SoftTimeLimitExceeded()
@@ -184,7 +182,10 @@ def test_render_task_publishes_failure_on_soft_time_limit() -> None:
 
 
 def test_render_result_has_required_fields() -> None:
-    """render_task return dict must contain reproducibility_id, placed_words, score, png_b64, elapsed_ms."""
+    """render_task return dict must contain required fields.
+
+    Required: reproducibility_id, placed_words, score, png_b64, elapsed_ms.
+    """
     mod = _render_task_module()
     task = mod.render_task
 

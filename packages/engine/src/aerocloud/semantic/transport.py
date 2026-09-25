@@ -46,7 +46,7 @@ _EPS_MIN: float = 1e-4
 _EPS_MAX: float = 1.0
 
 # Adaptive threshold boundaries (D-09).
-_FAST_CONVERGE_THRESHOLD: int = 10   # halve eps if niter < this
+_FAST_CONVERGE_THRESHOLD: int = 10  # halve eps if niter < this
 _SLOW_CONVERGE_THRESHOLD: int = 500  # double eps if niter > this
 
 
@@ -97,9 +97,7 @@ def compute_transport(
 
     # Validate cost_matrix (SemanticError — not user data, just shape guard).
     if cost_matrix.ndim != 2 or cost_matrix.shape[0] != cost_matrix.shape[1]:
-        raise SemanticError(
-            f"cost_matrix must be square 2D (N, N), got shape {cost_matrix.shape}"
-        )
+        raise SemanticError(f"cost_matrix must be square 2D (N, N), got shape {cost_matrix.shape}")
     n = cost_matrix.shape[0]
     if n == 0:
         raise SemanticError("cost_matrix must have N > 0, got empty matrix")

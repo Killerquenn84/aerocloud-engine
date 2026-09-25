@@ -58,6 +58,7 @@ def validate_hex_color(color: str) -> str:
 # Font validator (PROD-14, D-16)
 # ---------------------------------------------------------------------------
 
+
 def _load_allowed_fonts() -> frozenset[str]:
     """Scan assets/fonts/ directory and return font family names as a frozenset.
 
@@ -84,9 +85,7 @@ def _load_allowed_fonts() -> frozenset[str]:
         fonts_dir = Path(__file__).parent.parent / "assets" / "fonts"
         if not fonts_dir.is_dir():
             return frozenset()
-        return frozenset(
-            d.name for d in fonts_dir.iterdir() if d.is_dir()
-        )
+        return frozenset(d.name for d in fonts_dir.iterdir() if d.is_dir())
 
 
 #: Module-level cache of allowed font names, loaded once at import time.
@@ -131,8 +130,7 @@ def validate_font_name(
 
     if name not in effective_allowed:
         raise ValueError(
-            f"Font {name!r} is not in the allowed font list. "
-            f"Allowed: {sorted(effective_allowed)}"
+            f"Font {name!r} is not in the allowed font list. Allowed: {sorted(effective_allowed)}"
         )
     return name
 

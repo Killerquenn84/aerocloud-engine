@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 import redis.asyncio as redis_async
 from fastapi import APIRouter, Request
@@ -27,8 +27,8 @@ from sse_starlette.sse import EventSourceResponse
 
 from aerocloud.config import settings
 from aerocloud.models.api import RenderRequest
-from aerocloud_worker.celery_app import app as celery_app
 from aerocloud_api.middleware.rate_limit import limiter
+from aerocloud_worker.celery_app import app as celery_app
 
 log = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ _TERMINAL_STAGES = frozenset({"done", "failed", "success"})
 
 @router.post("", status_code=202, response_class=JSONResponse)
 @limiter.limit("10/minute")
-async def post_render(request: Request, body: RenderRequest) -> dict[str, str]:
+async def post_render(request: Request, body: RenderRequest) -> dict[str, str]:  # noqa: ARG001
     """Dispatch a render job to the Celery realtime queue (PROD-07).
 
     Returns 202 Accepted with the Celery task ID immediately.

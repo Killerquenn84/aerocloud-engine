@@ -31,7 +31,7 @@ import structlog
 from celery.exceptions import SoftTimeLimitExceeded
 
 from aerocloud.models.api import RenderRequest, RenderResult
-from aerocloud.models.layout import LayoutScore, PlacedWord
+from aerocloud.models.layout import LayoutScore
 from aerocloud_worker.celery_app import app
 
 log = structlog.get_logger(__name__)
@@ -55,6 +55,7 @@ _PROGRESS_STAGES: list[tuple[str, int]] = [
 # Internal helper
 # ---------------------------------------------------------------------------
 
+
 def _publish_progress(
     redis_client: Any,
     channel: str,
@@ -69,7 +70,7 @@ def _publish_progress(
         redis_client: Sync redis.Redis client instance.
         channel: Redis channel name (e.g., 'render:progress:{task_id}').
         stage: Stage name (e.g., 'nlp', 'done', 'failed').
-        pct: Completion percentage (0–100).
+        pct: Completion percentage (0-100).
         error: Optional error message for 'failed' stage.
     """
     payload: dict[str, Any] = {"stage": stage, "pct": pct}
@@ -82,7 +83,8 @@ def _publish_progress(
 # Render task
 # ---------------------------------------------------------------------------
 
-@app.task(  # type: ignore[misc]
+
+@app.task(
     bind=True,
     name="aerocloud_worker.tasks.render.render_task",
 )
@@ -178,4 +180,5 @@ def render_task(self: Any, request_dict: dict[str, Any]) -> dict[str, Any]:
         )
         raise
 
-    return result.model_dump()
+    dumped: dict[str, Any] = result.model_dump()
+    return dumped

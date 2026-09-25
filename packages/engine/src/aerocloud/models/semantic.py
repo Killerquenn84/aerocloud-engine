@@ -55,14 +55,12 @@ class EmbeddingResult(AeroCloudBase):
     surfaces: tuple[str, ...]
     embeddings: np.ndarray  # (N, 384) float32
 
-    def model_post_init(self, __context: object) -> None:  # noqa: ANN001
+    def model_post_init(self, __context: object) -> None:
         """Coerce embeddings to float32 and validate shape invariants."""
         arr = np.asarray(self.embeddings, dtype=np.float32)
         object.__setattr__(self, "embeddings", arr)
-        if arr.ndim != 2 or arr.shape[1] != 384:  # noqa: PLR2004
-            raise ValueError(
-                f"embeddings must be shape (N, 384), got {arr.shape}"
-            )
+        if arr.ndim != 2 or arr.shape[1] != 384:
+            raise ValueError(f"embeddings must be shape (N, 384), got {arr.shape}")
         if arr.shape[0] != len(self.surfaces):
             raise ValueError(
                 f"embeddings rows ({arr.shape[0]}) != surfaces count ({len(self.surfaces)})"
@@ -93,11 +91,9 @@ class TransportPlan(AeroCloudBase):
     eps_used: float
     iterations: int
 
-    def model_post_init(self, __context: object) -> None:  # noqa: ANN001
+    def model_post_init(self, __context: object) -> None:
         """Coerce transport_matrix to float64 and validate shape invariants."""
         arr = np.asarray(self.transport_matrix, dtype=np.float64)
         object.__setattr__(self, "transport_matrix", arr)
         if arr.ndim != 2 or arr.shape[0] != arr.shape[1]:
-            raise ValueError(
-                f"transport_matrix must be square (N, N), got {arr.shape}"
-            )
+            raise ValueError(f"transport_matrix must be square (N, N), got {arr.shape}")

@@ -23,18 +23,17 @@ Key decisions:
 from __future__ import annotations
 
 import io
-import re
 
-from reportlab.pdfgen import canvas as rl_canvas
 from reportlab.lib.colors import HexColor, black
+from reportlab.pdfgen import canvas as rl_canvas
 
-from aerocloud.geometry.bezier import BezierCurve, BezierGlyph
+from aerocloud.geometry.bezier import BezierGlyph
 
 DPI: int = 300
 PX_TO_PT: float = 72.0 / DPI  # 0.24 pt/px
 
 
-def _hex_to_color(hex_str: str):  # type: ignore[return]
+def _hex_to_color(hex_str: str) -> HexColor:
     """Convert hex color string to ReportLab Color object."""
     return HexColor(hex_str)
 

@@ -46,6 +46,46 @@ async def get_health() -> dict[str, str]:
 
 
 # ---------------------------------------------------------------------------
+# Sprint P26 — split liveness / readiness
+# ---------------------------------------------------------------------------
+
+
+@router.get("/health/live")
+async def get_health_live() -> dict[str, str]:
+    """P26 scenario 13: pure liveness probe — always 200 while the process runs.
+
+    Used by Kubernetes ``livenessProbe`` / container orchestrators that should
+    only restart the process if Python itself is dead. Does NOT check Redis /
+    Postgres — those go through ``/health/ready``.
+    """
+    return {"status": "ok", "version": __version__}
+
+
+@router.get("/health/ready")
+async def get_health_ready() -> JSONResponse:
+    """P26 scenario 13: readiness probe.
+
+    Returns 200 if Redis ping AND Postgres ping succeed, otherwise 503 with a
+    per-dependency breakdown. Used by ``readinessProbe`` to gate traffic.
+    No auth required: dependency status itself leaks nothing sensitive (only
+    'up' / 'down'), unlike ``/health/internal`` which is preserved as the
+    detailed-but-authenticated variant.
+    """
+    redis_state, postgres_state = await _check_redis(), await _check_postgres()
+    redis_ok = redis_state == "ok"
+    postgres_ok = postgres_state == "ok"
+    overall_ok = redis_ok and postgres_ok
+    body = {
+        "status": "ok" if overall_ok else "unavailable",
+        "dependencies": {
+            "redis": "up" if redis_ok else "down",
+            "postgres": "up" if postgres_ok else "down",
+        },
+    }
+    return JSONResponse(status_code=200 if overall_ok else 503, content=body)
+
+
+# ---------------------------------------------------------------------------
 # GET /health/internal — authenticated readiness probe
 # ---------------------------------------------------------------------------
 
@@ -113,11 +153,7 @@ async def get_health_internal(
     )
     gpu_status = _check_gpu()
 
-    overall = (
-        "ok"
-        if postgres_status == "ok" and redis_status == "ok"
-        else "degraded"
-    )
+    overall = "ok" if postgres_status == "ok" and redis_status == "ok" else "degraded"
 
     return JSONResponse(
         content={

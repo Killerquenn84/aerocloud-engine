@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import numpy as np
 
-
 _MAX_CANVAS_DIM = 4096  # T-12-01-01: DoS mitigation — reject oversized inputs
 
 

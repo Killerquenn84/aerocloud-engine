@@ -94,9 +94,7 @@ def semantic_warm_start(
     """
     n_words = len(candidates)
     _seed_val = config.get("seed", settings.seed) if config else settings.seed
-    seed: int = (
-        int(_seed_val) if isinstance(_seed_val, (int, float, str)) else settings.seed
-    )
+    seed: int = int(_seed_val) if isinstance(_seed_val, (int, float, str)) else settings.seed
     _method_val = (
         config.get("projection_method", settings.projection_method)
         if config
@@ -105,14 +103,10 @@ def semantic_warm_start(
     _method_str = str(_method_val) if _method_val is not None else settings.projection_method
     method: Literal["umap", "tsne"] = "tsne" if _method_str == "tsne" else "umap"
     _eps_val = (
-        config.get("eps_init", settings.sinkhorn_eps_init)
-        if config
-        else settings.sinkhorn_eps_init
+        config.get("eps_init", settings.sinkhorn_eps_init) if config else settings.sinkhorn_eps_init
     )
     eps_init: float = (
-        float(_eps_val)
-        if isinstance(_eps_val, (int, float, str))
-        else settings.sinkhorn_eps_init
+        float(_eps_val) if isinstance(_eps_val, (int, float, str)) else settings.sinkhorn_eps_init
     )
 
     surfaces = [c.surface for c in candidates]

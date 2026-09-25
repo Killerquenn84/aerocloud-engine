@@ -98,6 +98,11 @@ ignore_missing_imports = true
 module = "aerocloud_worker.tasks.*"
 disallow_untyped_decorators = false
 
+# Celery signal decorators (worker_shutting_down.connect etc.) are also untyped.
+[[tool.mypy.overrides]]
+module = "aerocloud_worker.shutdown"
+disallow_untyped_decorators = false
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = "-ra -q --strict-markers"
@@ -112,6 +117,7 @@ markers = [
     "slow: long-running tests",
     "integration: spins up postgres+redis via testcontainers",
     "load: load tests (not run by default; run with -m load against a live server)",
+    "release_gate: release gate validation (PROD-23); runs full test suite + type check + lint — slow",
 ]
 env = [
     "CUBLAS_WORKSPACE_CONFIG=:4096:8",

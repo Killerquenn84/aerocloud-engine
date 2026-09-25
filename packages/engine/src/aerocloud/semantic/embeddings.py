@@ -115,9 +115,7 @@ def encode_surfaces(surfaces: list[str]) -> np.ndarray:
 
     # T-08-01: DoS guard — too many surfaces
     if len(surfaces) > MAX_SURFACE_COUNT:
-        raise EmbeddingError(
-            f"Surface list too long: {len(surfaces)} > limit {MAX_SURFACE_COUNT}"
-        )
+        raise EmbeddingError(f"Surface list too long: {len(surfaces)} > limit {MAX_SURFACE_COUNT}")
 
     # T-08-01: DoS guard — surface exceeds BERT max token length
     for surface in surfaces:

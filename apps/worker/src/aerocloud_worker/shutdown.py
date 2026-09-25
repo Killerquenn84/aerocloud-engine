@@ -25,7 +25,7 @@ def on_worker_shutting_down(
     sig: str,
     how: str,
     exitcode: int,
-    **kwargs: Any,
+    **kwargs: Any,  # noqa: ARG001
 ) -> None:
     """Handle worker shutdown signal — log and prepare for clean exit.
 

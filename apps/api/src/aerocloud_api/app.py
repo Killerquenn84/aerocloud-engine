@@ -17,8 +17,8 @@ Security:
 
 from __future__ import annotations
 
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
 
 from fastapi import FastAPI
 from slowapi.errors import RateLimitExceeded
@@ -30,8 +30,8 @@ from aerocloud_api import __version__
 from aerocloud_api.metrics import setup_metrics
 from aerocloud_api.middleware.rate_limit import limiter, rate_limit_exceeded_handler
 from aerocloud_api.routes.health import router as health_router
+from aerocloud_api.routes.mockup import router as mockup_router
 from aerocloud_api.routes.render import router as render_router
-
 
 # ---------------------------------------------------------------------------
 # Lifespan
@@ -39,7 +39,7 @@ from aerocloud_api.routes.render import router as render_router
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:  # noqa: ARG001
     """Startup and shutdown lifecycle handler."""
     # Startup: initialise distributed tracing (NoOp if no endpoint configured)
     init_tracing(otlp_endpoint=settings.otlp_endpoint)
@@ -70,6 +70,7 @@ def create_app() -> FastAPI:
 
     # Include route groups
     application.include_router(render_router)
+    application.include_router(mockup_router)
     application.include_router(health_router)
 
     # Wire Prometheus auto-instrumentation (D-20) — after routers so all routes instrumented
